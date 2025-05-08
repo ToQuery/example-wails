@@ -46,7 +46,7 @@ function SideBar({
                     className={cn("flex-none flex flex-col justify-between items-center text-center select-none z-20", widthClass, bgColorClass)}
                     style={{"--wails-draggable": "drag"} as React.CSSProperties}
                 >
-                    <div className={cn("my-4 flex flex-col gap-6 text-2xl text-gray-500 dark:text-gray-200", isNotMac ? '' : 'mt-14')}>
+                    <div className={cn("my-4 flex flex-col gap-6 text-2xl text-gray-500 dark:text-gray-200", isNotMac ? '' : 'mt-6')}>
                         <div className='items-center justify-center'>{logoNode}</div>
                         {menus.filter(menu => !menu.hidden && !menu.footer).map((menu) => (
                             <Link
