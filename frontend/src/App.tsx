@@ -1,28 +1,38 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+import { Routes, Route } from 'react-router-dom';
+
+// 视图组件
+import User from './pages/User';
+import Setting from './pages/Setting';
+import Index from "./pages/Index";
+import SideBar from "./components/SideBar";
+import WindowTitle from "./components/WindowTitle";
+import {Menus} from "./routes";
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
 
-    function greet() {
-        Greet(name).then(updateResultText);
-    }
+  return (
+    <main className="flex h-screen">
 
-    return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
+      <SideBar menus={Menus} />
+
+      {/* 内容面板 */}
+      <div className="pl-2 w-full bg-white dark:bg-gray-900/90">
+
+        <WindowTitle />
+
+        {/* 路由内容 */}
+        <div className="p-4">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/index" element={<Index />} />
+            <Route path="/home" element={<Index />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/setting" element={<Setting />} />
+          </Routes>
         </div>
-    )
+      </div>
+    </main>
+  );
 }
 
 export default App

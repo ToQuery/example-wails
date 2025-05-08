@@ -21,6 +21,26 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
+// domReady is called after front-end resources have been loaded
+func (a *App) domReady(ctx context.Context) {
+	// Add your action here
+	fmt.Println("domReady", ctx.Value("name"))
+}
+
+// beforeClose is called when the application is about to quit,
+// either by clicking the window close button or calling runtime.Quit.
+// Returning true will cause the application to continue, false will continue shutdown as normal.
+func (a *App) beforeClose(ctx context.Context) (prevent bool) {
+	fmt.Println("beforeClose", ctx.Value("name"))
+	return false
+}
+
+// shutdown is called at application termination
+func (a *App) shutdown(ctx context.Context) {
+	// Perform your teardown here
+	fmt.Println("shutdown", ctx.Value("name"))
+}
+
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
