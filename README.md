@@ -1,5 +1,10 @@
 # README
 
+## Screenshot
+
+![001.png](docs/screenshot/001.png)
+![002.png](docs/screenshot/002.png)
+
 ## About
 
 This is the official Wails React-TS template.
