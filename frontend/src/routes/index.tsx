@@ -1,7 +1,8 @@
-// 定义 menu item 类型
+
 import React from "react";
 import DarkMode from "../components/DarkMode";
 
+// 定义 menu 类型
 export interface Menu {
     text: string;
     path: string;
@@ -15,6 +16,6 @@ export interface Menu {
 export const Menus: Menu[] = [
     { text: "首页", path: "/home", icon: "material-symbols:home-app-logo" },
     { text: "用户", path: "/user", icon: "material-symbols:supervisor-account-outline-rounded" },
-    { text: "模式", path: "/dark-model", icon: "", footer: true, node: <DarkMode/>, hidden: true },
+    { text: "", path: "", icon: "", footer: true, node: <DarkMode/>, hidden: false },
     { text: "设置", path: "/setting", icon: "material-symbols:settings", footer: true },
 ];

@@ -1,18 +1,18 @@
-import { Routes, Route } from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 
 // 视图组件
-import User from './pages/User';
-import Setting from './pages/Setting';
-import Index from "./pages/Index";
-import SideBar from "./components/SideBar";
-import WindowTitle from "./components/WindowTitle";
-import {Menus} from "./routes";
+import User from '@/pages/User';
+import Setting from '@/pages/Setting';
+import Index from "@/pages/Index";
+import SideBar from "@/components/SideBar";
+import WindowTitle from "@/components/WindowTitle";
+import {Menus} from "@/routes";
+import React from "react";
 
 function App() {
 
-  return (
+  return (<>
     <main className="flex h-screen">
-
       <SideBar menus={Menus} />
 
       {/* 内容面板 */}
@@ -32,7 +32,7 @@ function App() {
         </div>
       </div>
     </main>
-  );
+  </>);
 }
 
 export default App

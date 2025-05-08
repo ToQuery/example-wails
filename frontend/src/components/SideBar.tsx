@@ -1,8 +1,8 @@
 import {Link, useLocation} from "react-router-dom";
 import {Icon} from "@iconify/react";
-import {Menu} from "../routes";
+import {Menu} from "@/routes";
 import React from "react";
-import {cn} from "../lib/utils";
+import {cn} from "@/lib/utils";
 
 // 接收 props
 interface SideBarProps {
@@ -24,9 +24,12 @@ function SideBar({
 
     const location = useLocation();
 
+    // 是否非 Mac 平台
+    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+
     return (
         <>
-            {/* 侧边栏导航 */}
+            {/* 侧边栏导航 --wails-draggable：窗口可拖动 */}
             <nav
                 className={cn("flex-none flex flex-col justify-between items-center text-center select-none z-20", widthClass, bgColorClass)}
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}
@@ -42,7 +45,7 @@ function SideBar({
                         </Link>
                     ))}
                 </div>
-                <div className="my-4 flex flex-col gap-4 text-2xl text-gray-500 dark:text-gray-200">
+                <div className="mb-6 my-4 flex flex-col gap-4 text-2xl text-gray-500 dark:text-gray-200">
                     {menus.filter(menu => !menu.hidden && menu.footer).map((menu) => (
                         menu.node ? menu.node :
                             <Link

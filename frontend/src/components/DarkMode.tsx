@@ -10,7 +10,10 @@ function DarkMode() {
     setIsDark(darkModeMediaQuery.matches || document.documentElement.classList.contains('dark'));
 
     // 监听系统主题变化
-    const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    const handleChange = (e: MediaQueryListEvent) => {
+      console.log('handleChange', e.matches);
+      setIsDark(e.matches);
+    };
     darkModeMediaQuery.addEventListener('change', handleChange);
 
     return () => darkModeMediaQuery.removeEventListener('change', handleChange);
@@ -20,12 +23,7 @@ function DarkMode() {
   const toggleDark = () => {
     const newIsDark = !isDark;
     setIsDark(newIsDark);
-
-    if (newIsDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark');
   };
 
   return (
