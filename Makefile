@@ -4,3 +4,7 @@ VERSION ?= v0.0.1
 .PHONY: dev
 dev:
 	wails dev
+
+.PHONY: build
+build:
+	wails build

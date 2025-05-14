@@ -8,8 +8,11 @@ import SideBar from "@/components/SideBar";
 import WindowTitle from "@/components/WindowTitle";
 import {Menus} from "@/routes";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  // 初始化i18n翻译
+  const { t } = useTranslation();
 
   return (<>
     <main className="flex h-screen">
