@@ -19,8 +19,6 @@ const zhCN = {
     'page.home.title': '首页',
     'page.home.counter': '计数器：',
     'page.user.title': '用户',
-
-    // 其他文本可以根据需要添加
   }
 };
 

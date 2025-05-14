@@ -19,8 +19,6 @@ const enUS = {
     'page.home.title': 'Home',
     'page.home.counter': 'Counter: ',
     'page.user.title': 'User',
-
-    // Other text can be added as needed
   }
 };
 

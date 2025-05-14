@@ -5,9 +5,11 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // 导入语言资源
 import zhCN from './locales/zh-CN';
 import enUS from './locales/en-US';
+import zhHK from './locales/zh-HK';
 
 const resources = {
   'zh-CN': zhCN,
+  'zh-HK': zhHK,
   'en-US': enUS,
 };
 
