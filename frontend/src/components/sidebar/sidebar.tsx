@@ -20,7 +20,7 @@ interface SideBarProps {
 const defaultBgClass = 'bg-gray-100 dark:bg-slate-900/80';
 const defaultActiveClass = 'text-blue-600 dark:text-blue-400';
 
-function SideBar({
+function Sidebar({
                      menus,
                      hiddenText = false,
                      widthClass = 'w-[80px]',
@@ -67,4 +67,4 @@ function SideBar({
     );
 }
 
-export default SideBar;
+export default Sidebar;

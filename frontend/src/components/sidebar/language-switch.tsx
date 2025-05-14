@@ -8,7 +8,7 @@ const LANGUAGES = [
     {code: 'en-US', label: 'English', icon: 'emojione:flag-for-united-states'}
 ];
 
-function LanguageSwitcher() {
+function LanguageSwitch() {
     const {i18n} = useTranslation();
     const [currentLang, setCurrentLang] = useState(i18n.language);
     const [showModal, setShowModal] = useState(false);
@@ -38,14 +38,14 @@ function LanguageSwitcher() {
                         }
                     }}
                 >
-                    <div className="bg-gray dark:bg-gray-800 rounded-lg shadow-lg p-6 min-w-[500px]">
+                    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-lg p-6 min-w-[300px]">
                         <div className="mb-4 text-sm font-bold text-center">选择语言</div>
                         <div className="space-y-2">
                             {LANGUAGES.map(lang => (
                                 <button
                                     key={lang.code}
                                     onClick={() => handleChange(lang.code)}
-                                    className={`flex items-center w-full px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 ${currentLang === lang.code ? 'bg-blue-100 dark:bg-blue-900 font-bold' : ''}`}
+                                    className={`flex items-center w-full px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${currentLang === lang.code ? 'bg-blue-100 dark:bg-blue-900 font-bold' : ''}`}
                                 >
                                     <Icon icon={lang.icon} className="mr-2"/> <span
                                     className='text-sm'>{lang.label}</span>
@@ -53,7 +53,7 @@ function LanguageSwitcher() {
                             ))}
                         </div>
                         <button
-                            className="mt-4 w-full text-sm text-gray-700 hover:text-gray-900 dark:hover:text-gray-300"
+                            className="mt-4 w-full text-sm text-gray-500 hover:text-gray-900  dark:hover:text-gray-300"
                             onClick={() => setShowModal(false)}>取消
                         </button>
                     </div>
@@ -63,4 +63,4 @@ function LanguageSwitcher() {
     );
 }
 
-export default LanguageSwitcher;
+export default LanguageSwitch;

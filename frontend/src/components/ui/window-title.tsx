@@ -1,4 +1,4 @@
-import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../../wailsjs/runtime";
+import {Quit, WindowMaximise, WindowMinimise, WindowUnmaximise} from "../../../wailsjs/runtime";
 import {Icon} from "@iconify/react";
 import React, {useState} from "react";
 
