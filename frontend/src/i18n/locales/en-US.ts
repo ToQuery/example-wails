@@ -4,6 +4,8 @@ const enUS = {
     'menu.home': 'Home',
     'menu.user': 'User',
     'menu.setting': 'Settings',
+    'menu.url': 'Url',
+    'menu.browser': 'Browser',
     'menu.light-dark': '',
     'menu.language': 'Language',
 

@@ -3,6 +3,8 @@ const zhHK = {
   'menu.home': '首頁',
   'menu.user': '用戶',
   'menu.setting': '設定',
+  'menu.url': 'Url',
+  'menu.browser': '浏览器',
   'menu.light-dark': '',
   'menu.language': '',
 

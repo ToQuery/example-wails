@@ -4,6 +4,8 @@ const zhCN = {
     'menu.home': '首页',
     'menu.user': '用户',
     'menu.setting': '设置',
+    'menu.url': 'Url',
+    'menu.browser': '浏览器',
     'menu.light-dark': '',
     'menu.language': '',
 

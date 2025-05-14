@@ -5,8 +5,6 @@ import {useTranslation} from 'react-i18next';
 import React from "react";
 import {cn} from "@/lib/utils";
 
-type SideBarDisplayModel = "icon" | "row" | "two-row";
-
 // 接收 props
 interface SideBarProps {
     menus: Menu[];
@@ -35,12 +33,18 @@ function Sidebar({
     const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     const menuItem = (menu: Menu) => {
+        let isActive = false;
+        if (menu.path) {
+            const url = new URL(menu.path, window.location.origin);
+            isActive = location.pathname == url.pathname || location.pathname == menu.path;
+        }
+
         return menu.render
             ? <div className=''>{menu.render}</div>
             : <Link
                 key={menu.name}
                 to={menu.path!}
-                className={cn(location.pathname === menu.path ? activeClass : '', 'flex flex-col items-center justify-center')}
+                className={cn(isActive ? activeClass : '', 'flex flex-col items-center justify-center')}
             >
                 {menu.icon && <Icon icon={menu.icon}/>}
                 {!hiddenText && <p className='text-sm mt-1'>{t(menu.name)}</p>}
