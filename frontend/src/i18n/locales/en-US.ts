@@ -3,6 +3,7 @@ const enUS = {
     // Navigation menu
     'menu.home': 'Home',
     'menu.user': 'User',
+    'menu.example': 'Example',
     'menu.setting': 'Settings',
     'menu.url': 'Url',
     'menu.browser': 'Browser',

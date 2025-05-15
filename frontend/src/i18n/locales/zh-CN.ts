@@ -3,6 +3,7 @@ const zhCN = {
     // 导航菜单
     'menu.home': '首页',
     'menu.user': '用户',
+    'menu.example': '示例',
     'menu.setting': '设置',
     'menu.url': 'Url',
     'menu.browser': '浏览器',

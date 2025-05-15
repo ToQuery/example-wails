@@ -2,6 +2,7 @@ const zhHK = {
   // 導航選單
   'menu.home': '首頁',
   'menu.user': '用戶',
+  'menu.example': 'Example',
   'menu.setting': '設定',
   'menu.url': 'Url',
   'menu.browser': '浏览器',
