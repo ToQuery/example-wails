@@ -14,6 +14,7 @@ const zhCN = {
     'common.button.cancel': '取消',
     'common.button.confirm': '确认',
     'common.button.back': '返回',
+    'common.theme.auto': '自动',
     'common.theme.light': '切换到亮色模式',
     'common.theme.dark': '切换到暗色模式',
 

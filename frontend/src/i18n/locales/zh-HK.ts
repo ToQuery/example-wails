@@ -13,6 +13,7 @@ const zhHK = {
   'common.button.cancel': '取消',
   'common.button.confirm': '確認',
   'common.button.back': '返回',
+  'common.theme.auto': '自动',
   'common.theme.light': '切換至亮色模式',
   'common.theme.dark': '切換至暗色模式',
 

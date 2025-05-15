@@ -22,7 +22,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'zh-CN', // 默认语言
-    debug: false, // 开发环境可以设为true
+    debug: process.env.NODE_ENV === 'development', // 开发环境可以设为true
     interpolation: {
       escapeValue: false, // 不转义特殊字符
     },

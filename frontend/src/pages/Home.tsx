@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
-import {Greet} from "../../wailsjs/go/main/App";
 
 
 function Home() {
@@ -20,13 +19,7 @@ function Home() {
                     {t('page.home.counter')}{count}
                 </button>
             </div>
-            <div>
-                <button type="button"
-                        onClick={() => Greet('Hello Wails!')}
-                        className={butClass}>
-                    Greet
-                </button>
-            </div>
+
         </div>
     );
 }

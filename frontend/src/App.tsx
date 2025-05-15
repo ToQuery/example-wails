@@ -5,11 +5,8 @@ import SideBar from "@/components/sidebar/sidebar";
 import WindowTitle from "@/components/ui/window-title";
 import {Menu, routers} from "@/routes";
 import React from "react";
-import { useTranslation } from 'react-i18next';
 
 function App() {
-  // 初始化i18n翻译
-  const { t } = useTranslation();
 
   return (<>
     <main className="flex w-screen h-screen">
@@ -21,7 +18,7 @@ function App() {
         <WindowTitle />
 
         {/* 路由内容 */}
-        <div className="p-4 w-full h-full">
+        <div className="p-4 ">
           <Routes>
             {routers.filter(router => router.path && router.page).map((route: Menu) => (
                 <Route key={route.name} path={route.path} element={route.page} />

@@ -5,7 +5,9 @@ function User() {
   const { t } = useTranslation();
 
   return (
-    <h1 className="text-xl font-bold">{t('page.user.title')}</h1>
+      <div className='bg-gray-100 w-full h-full'>
+        <h1 className="text-xl font-bold">{t('page.user.title')}</h1>
+      </div>
   );
 }
 

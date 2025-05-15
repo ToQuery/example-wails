@@ -14,6 +14,7 @@ const enUS = {
     'common.button.cancel': 'Cancel',
     'common.button.confirm': 'Confirm',
     'common.button.back': 'Back',
+    'common.theme.auto': 'Auto',
     'common.theme.light': 'Switch to Light Mode',
     'common.theme.dark': 'Switch to Dark Mode',
 

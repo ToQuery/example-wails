@@ -1,10 +1,4 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dev" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile">
-    <makefile filename="$PROJECT_DIR$/Makefile" target="dev" workingDirectory="" arguments="">
-      <envs />
-    </makefile>
-    <method v="2" />
-  </configuration>
   <configuration default="false" name="dev" type="js.build_tools.npm" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/frontend/package.json" />
     <command value="run" />
