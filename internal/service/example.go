@@ -10,11 +10,18 @@ import (
 type ExampleService struct{}
 
 func (s *ExampleService) ClipboardGet() string {
-	//clipboard := application.Clipboard()
-	return ""
+	text, flag := application.Get().Clipboard().Text()
+	if !flag {
+		dialog := application.ErrorDialog()
+		dialog.SetTitle("Error")
+		dialog.SetMessage("Failed to get Clipboard")
+		dialog.Show()
+	}
+	return text
 }
 
 func (s *ExampleService) ClipboardSet(text string) {
+	application.Get().Clipboard().SetText(text)
 }
 
 func (s *ExampleService) InfoDialog() {
@@ -45,6 +52,7 @@ func (s *ExampleService) ErrorDialog() {
 }
 
 func (s ExampleService) FileDialog() {
+	//application.OpenFileDialogWithOptions()
 	dialog := application.OpenFileDialog()
 	dialog.SetOptions(&application.OpenFileDialogOptions{
 		Filters: []application.FileFilter{
@@ -74,6 +82,7 @@ func (s ExampleService) FileDialog() {
 }
 
 func (s *ExampleService) SaveFileDialog() {
+	//application.SaveFileDialogWithOptions()
 	dialog := application.SaveFileDialog()
 	dialog.SetOptions(&application.SaveFileDialogOptions{
 		Filters: []application.FileFilter{

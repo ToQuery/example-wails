@@ -29,25 +29,36 @@ Congratulations on generating your Wails3 application! This README will guide yo
 
 ## Exploring Wails3 Features
 
-## Screenshot
+Now that you have your project set up, it's time to explore the features that Wails3 offers:
 
-![001.png](docs/screenshot/001.png)
-![002.png](docs/screenshot/002.png)
+1. **Check out the examples**: The best way to learn is by example. Visit the `examples` directory in the `v3/examples` directory to see various sample applications.
 
-## About
+2. **Run an example**: To run any of the examples, navigate to the example's directory and use:
 
-This is the official Wails React-TS template.
+   ```
+   go run .
+   ```
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+   Note: Some examples may be under development during the alpha phase.
 
-## Live Development
+3. **Explore the documentation**: Visit the [Wails3 documentation](https://v3alpha.wails.io/) for in-depth guides and API references.
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+4. **Join the community**: Have questions or want to share your progress? Join the [Wails Discord](https://discord.gg/JDdSxwjhGf) or visit the [Wails discussions on GitHub](https://github.com/wailsapp/wails/discussions).
 
-## Building
+## Project Structure
 
-To build a redistributable, production mode package, use `wails build`.
+Take a moment to familiarize yourself with your project structure:
+
+- `frontend/`: Contains your frontend code (HTML, CSS, JavaScript/TypeScript)
+- `main.go`: The entry point of your Go backend
+- `app.go`: Define your application structure and methods here
+- `wails.json`: Configuration file for your Wails project
+
+## Next Steps
+
+1. Modify the frontend in the `frontend/` directory to create your desired UI.
+2. Add backend functionality in `main.go`.
+3. Use `wails3 dev` to see your changes in real-time.
+4. When ready, build your application with `wails3 build`.
+
+Happy coding with Wails3! If you encounter any issues or have questions, don't hesitate to consult the documentation or reach out to the Wails community.

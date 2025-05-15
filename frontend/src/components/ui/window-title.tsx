@@ -20,7 +20,9 @@ function WindowTitle(props: WindowTitleProps) {
     };
     return (<>
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
-        <div className="" style={{"--wails-draggable": "drag"} as React.CSSProperties}>
+        <header className="flex flex-row justify-between" style={{"--wails-draggable": "drag"} as React.CSSProperties}>
+            <div><Icon icon='material-symbols:side-navigation' /></div>
+            <div>定制化窗口按钮</div>
             {/* windows 定制化窗口按钮 */}
             {isNotMac ? (
                 <div className="flex h-10 justify-end flex-0 text-xl ">
@@ -44,7 +46,7 @@ function WindowTitle(props: WindowTitleProps) {
                     </button>
                 </div>
             ) : <></>}
-        </div>
+        </header>
     </>);
 }
 

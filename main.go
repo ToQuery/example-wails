@@ -3,9 +3,11 @@ package main
 import (
 	"embed"
 	_ "embed"
+	"example-wails/cmd/wails"
 	"example-wails/internal/service"
 	"log"
 	"runtime"
+	"time"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
@@ -49,6 +51,16 @@ func main() {
 
 		// Linux platform specific options
 		Linux: application.LinuxOptions{},
+
+		OnShutdown: wails.OnShutdown,
+
+		ShouldQuit: wails.ShouldQuit,
+
+		PanicHandler: wails.PanicHandler,
+
+		WarningHandler: wails.WarningHandler,
+
+		ErrorHandler: wails.ErrorHandler,
 	})
 
 	// Create a new window with the necessary options.
@@ -87,13 +99,13 @@ func main() {
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
-	//go func() {
-	//	for {
-	//		now := time.Now().Format(time.RFC1123)
-	//		app.EmitEvent("time", now)
-	//		time.Sleep(time.Second)
-	//	}
-	//}()
+	go func() {
+		for {
+			now := time.Now().Format(time.RFC1123)
+			app.EmitEvent("example-wails-datetime", now)
+			time.Sleep(time.Second)
+		}
+	}()
 
 	// Run the application. This blocks until the application has been exited.
 	err := app.Run()

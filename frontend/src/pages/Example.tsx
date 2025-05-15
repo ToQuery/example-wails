@@ -1,13 +1,25 @@
 import React from "react";
+import {Events} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 
 function Example() {
+    const [text, setText] = React.useState<string>("");
+    const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
+
     const butClass = 'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center active:scale-95';
 
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
+    Events.On("example-wails-datetime", function(data) {
+        console.log("example-wails-datetime", data);
+        setDateTime(data.data);
+    })
+
     return (<div>
         <div className='pb-6 text-2xl font-black'>Example</div>
+        <div>
+            <input value={text} onChange={event => setText(event.target.value)} />
+        </div>
         <section>
             <h2>Clipboard</h2>
             <div className="flex gap-4 mt-4">
@@ -57,6 +69,9 @@ function Example() {
         {separator}
         <section>
             <h2>Events</h2>
+            <div>DateTime (From Events): {dateTime}</div>
+            <div className="flex gap-4 mt-4">
+            </div>
         </section>
         {separator}
         <section>
