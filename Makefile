@@ -9,12 +9,15 @@ clean:
 gen-bind:
 	wails3 generate bindings
 
-
-
 .PHONY: dev
 dev:
 	wails3 dev
 
 .PHONY: build
 build:
-	wails build
+	wails3 build
+
+.PHONY: package
+package:
+	wails3 package
+
