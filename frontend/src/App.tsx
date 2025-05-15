@@ -24,7 +24,7 @@ function App() {
         <div className="p-4 w-full h-full">
           <Routes>
             {routers.filter(router => router.path && router.page).map((route: Menu) => (
-                <Route path={route.path} element={route.page} />
+                <Route key={route.name} path={route.path} element={route.page} />
             ))}
           </Routes>
         </div>

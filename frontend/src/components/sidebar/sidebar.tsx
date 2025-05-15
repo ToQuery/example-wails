@@ -40,7 +40,7 @@ function Sidebar({
         }
 
         return menu.render
-            ? <div className=''>{menu.render}</div>
+            ? <div key={menu.name} className=''>{menu.render}</div>
             : <Link
                 key={menu.name}
                 to={menu.path!}
