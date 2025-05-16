@@ -42,7 +42,7 @@ interface SidebarProps {
 function Sidebar({
                      menus,
                      sideBarStyle,
-                     widthClass = 'w-[120px]',
+                     widthClass = 'min-w-[120px] w-[120px]',
                      bgColorClass = DefaultBgClass,
                      activeClass = DefaultActiveClass
                  }: SidebarProps) {

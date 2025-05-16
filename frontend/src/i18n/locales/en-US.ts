@@ -1,5 +1,8 @@
 const enUS = {
   translation: {
+    // App
+    'app.title': 'Application Title',
+
     // Navigation menu
     'menu.home': 'Home',
     'menu.user': 'User',
@@ -24,7 +27,7 @@ const enUS = {
     'page.home.title': 'Home',
     'page.home.counter': 'Counter: ',
     'page.user.title': 'User',
-    
+
     'page.example.title': 'Example',
     'page.example.input': 'Input',
     'page.example.clipboard': 'Clipboard',
@@ -48,9 +51,20 @@ const enUS = {
     'page.example.multi-window': 'Multi Window',
     'page.example.webview-window-show': 'Webview Window Show',
     'page.example.webview-window-show-github': 'Webview Window Show (Github)',
-    
-    // App
-    'app.title': 'Application Title',
+
+
+    'page.setting.version': 'Version',
+    'page.setting.new-version-available': 'New Version Available',
+    'page.setting.check-updates': 'Check for Updates',
+    'page.setting.checking-updates': 'Checking for Updates...',
+    'page.setting.appearance': 'Appearance',
+    'page.setting.theme': 'Theme',
+    'page.setting.language': 'Language',
+    'page.setting.about': 'About',
+    'page.setting.description': 'Wails is a project that enables you to write desktop applications using Go and web technologies.',
+    'page.setting.official-website': 'Official Website',
+    'page.setting.documentation': 'Documentation',
+    'page.setting.all-rights-reserved': 'All Rights Reserved'
   }
 };
 

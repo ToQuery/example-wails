@@ -1,6 +1,7 @@
 package service
 
 import (
+	"example-wails/cmd/wails"
 	"fmt"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"log"
@@ -23,6 +24,8 @@ func (s *ExampleService) ClipboardGet() string {
 func (s *ExampleService) ClipboardSet(text string) {
 	application.Get().Clipboard().SetText(text)
 }
+
+/*------Dialog Start--------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) InfoDialog() {
 	dialog := application.InfoDialog()
@@ -85,12 +88,7 @@ func (s *ExampleService) SaveFileDialog() {
 	//application.SaveFileDialogWithOptions()
 	dialog := application.SaveFileDialog()
 	dialog.SetOptions(&application.SaveFileDialogOptions{
-		Filters: []application.FileFilter{
-			{
-				DisplayName: "Text Files (*.txt)",
-				Pattern:     "*.txt",
-			},
-		},
+		Title: "Save File",
 	})
 
 	dialog.SetMessage("Save Document")
@@ -118,9 +116,78 @@ func (s ExampleService) ShowAboutDialog(url string) {
 	application.Get().ShowAboutDialog()
 }
 
-func (s ExampleService) WebviewWindowShow(url string) {
-	webWindows := application.Get().NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		URL: url,
-	})
-	webWindows.Show()
+func (s ExampleService) ShowHelpDialog() {
+	application.Get()
 }
+
+/*------Dialog End----------------------------------------------------------------------------------------------------*/
+
+/*------Multi Windows Start-------------------------------------------------------------------------------------------*/
+
+const windowName = "window1"
+
+func (s ExampleService) WebviewWindowShow(url string) {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows == nil {
+		webWindows = application.Get().NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+			Name:      "window1",
+			Frameless: false,
+			URL:       url,
+			Mac:       wails.MacWindow(),
+		})
+	}
+	webWindows.Show()
+
+}
+
+func (s ExampleService) WebviewWindowHide() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.Hide()
+	}
+}
+
+func (s ExampleService) WebviewWindowCenter() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.Center()
+	}
+}
+
+func (s ExampleService) WebviewWindowToggleFullscreen() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.ToggleFullscreen()
+	}
+}
+
+func (s ExampleService) WebviewWindowFocus() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.Focus()
+	}
+}
+
+func (s ExampleService) WebviewWindowReload() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.Reload()
+	}
+}
+
+func (s ExampleService) WebviewWindowForceReload() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.ForceReload()
+	}
+}
+
+// close 之后必须 new
+func (s ExampleService) WebviewWindowClose() {
+	webWindows := application.Get().GetWindowByName(windowName)
+	if webWindows != nil {
+		webWindows.Close()
+	}
+}
+
+/*------Multi Windows End---------------------------------------------------------------------------------------------*/

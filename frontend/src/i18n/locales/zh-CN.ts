@@ -1,5 +1,8 @@
 const zhCN = {
   translation: {
+    // 应用
+    'app.title': '应用标题',
+
     // 导航菜单
     'menu.home': '首页',
     'menu.user': '用户',
@@ -48,9 +51,19 @@ const zhCN = {
     'page.example.multi-window': '多窗口',
     'page.example.webview-window-show': '显示网页视图窗口',
     'page.example.webview-window-show-github': '显示网页视图窗口（Github）',
-    
-    // 应用
-    'app.title': '应用标题',
+
+    'page.setting.version': '版本',
+    'page.setting.new-version-available': '有新版本',
+    'page.setting.check-updates': '检查更新',
+    'page.setting.checking-updates': '检查更新中...',
+    'page.setting.appearance': '外观',
+    'page.setting.theme': '主题',
+    'page.setting.language': '语言',
+    'page.setting.about': '关于',
+    'page.setting.description': 'Wails是一个允许你使用Go和Web技术编写桌面应用的项目。',
+    'page.setting.official-website': '官方网站',
+    'page.setting.documentation': '文档',
+    'page.setting.all-rights-reserved': '保留所有权利'
   }
 };
 

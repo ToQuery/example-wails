@@ -11,6 +11,8 @@ function Example() {
 
     const butClass = 'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center active:scale-95';
 
+    const butGroupClass = 'flex flex-wrap gap-4 mt-4';
+
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
     Events.On("example-wails-datetime", function(data) {
@@ -20,12 +22,12 @@ function Example() {
 
     return (<div>
         <div>
-            <span>{t('page.example.input')}</span><input className='min-w-96 rounded-s-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 ' value={text} onChange={event => setText(event.target.value)} />
+            <span>{t('page.example.input')}</span><input className='ml-3 min-w-96 rounded-s-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 ' value={text} onChange={event => setText(event.target.value)} />
         </div>
         {separator}
         <section>
             <h2>{t('page.example.clipboard')}</h2>
-            <div className="flex gap-4 mt-4">
+            <div className={butGroupClass}>
                 <button className={butClass} type="button" onClick={async () => setText(await ExampleService.ClipboardGet())}>
                     {t('page.example.get-clipboard')}
                 </button>
@@ -51,7 +53,7 @@ function Example() {
         {separator}
         <section>
             <h2>{t('page.example.dialog')}</h2>
-            <div className="flex gap-4 mt-4">
+            <div className={butGroupClass}>
                 <button className={butClass} type="button" onClick={() => ExampleService.InfoDialog()}>
                     {t('page.example.info-dialog')}
                 </button>
@@ -76,8 +78,8 @@ function Example() {
         {separator}
         <section>
             <h2>{t('page.example.events')}</h2>
-            <div>{t('page.example.datetime')}: {dateTime}</div>
-            <div className="flex gap-4 mt-4">
+            <div className={butGroupClass}>
+                <div>{t('page.example.datetime')}: {dateTime}</div>
             </div>
         </section>
         {separator}
@@ -95,9 +97,25 @@ function Example() {
         {separator}
         <section>
             <h2>{t('page.example.multi-window')}</h2>
-            <div className="flex gap-4 mt-4">
+            <div className={butGroupClass}>
                 <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowShow("/setting")}>
                     {t('page.example.webview-window-show')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowHide()}>
+                    {t('page.example.webview-window-hide')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowCenter()}>
+                    {t('page.example.webview-window-center')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowToggleFullscreen()}>
+                    {t('page.example.webview-window-toggle-fullscreen')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowClose()}>
+                    {t('page.example.webview-window-close')}
                 </button>
 
                 <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowShow("https://github.com")}>

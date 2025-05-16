@@ -1,5 +1,8 @@
 const zhHK = {
   translation: {
+    // 應用
+    'app.title': '應用標題',
+
     // 導航選單
     'menu.home': '首頁',
     'menu.user': '用戶',
@@ -24,7 +27,7 @@ const zhHK = {
     'page.home.title': '首頁',
     'page.home.counter': '點擊次數：',
     'page.user.title': '用戶',
-    
+
     'page.example.title': '示例',
     'page.example.input': '輸入',
     'page.example.clipboard': '剪貼板',
@@ -48,9 +51,20 @@ const zhHK = {
     'page.example.multi-window': '多窗口',
     'page.example.webview-window-show': '顯示網頁視圖窗口',
     'page.example.webview-window-show-github': '顯示網頁視圖窗口（Github）',
-    
-    // 應用
-    'app.title': '應用標題',
+
+
+    'page.setting.version': '版本',
+    'page.setting.new-version-available': '有新版本',
+    'page.setting.check-updates': '檢查更新',
+    'page.setting.checking-updates': '檢查更新中...',
+    'page.setting.appearance': '外觀',
+    'page.setting.theme': '主題',
+    'page.setting.language': '語言',
+    'page.setting.about': '關於',
+    'page.setting.description': 'Wails是一個允許你使用Go和Web技術編寫桌面應用的項目。',
+    'page.setting.official-website': '官方網站',
+    'page.setting.documentation': '文檔',
+    'page.setting.all-rights-reserved': '保留所有權利'
   }
 };
 
