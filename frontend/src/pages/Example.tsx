@@ -86,6 +86,15 @@ function Example() {
         <section>
             <h2>System Tray</h2>
         </section>
+        {separator}
+        <section>
+            <h2>Multi Window</h2>
+            <div className="flex gap-4 mt-4">
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowShow()}>
+                    WebviewWindowShow
+                </button>
+            </div>
+        </section>
     </div>);
 }
 

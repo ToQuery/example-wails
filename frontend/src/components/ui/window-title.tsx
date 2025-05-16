@@ -1,6 +1,6 @@
 import {Icon} from "@iconify/react";
 import React from "react";
-import { CoreService } from '../../../bindings/example-wails/internal/service';
+import {CoreService} from '../../../bindings/example-wails/internal/service';
 import {cn} from "@/lib/utils";
 import {DefaultBgClass} from "@/provider/config";
 
@@ -21,8 +21,12 @@ function WindowTitle(props: WindowTitleProps) {
     };
     return (<>
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
-        <header className={cn("flex flex-row justify-between h-10", DefaultBgClass)} style={{"--wails-draggable": "drag"} as React.CSSProperties}>
-            <div className='hidden'><Icon icon='material-symbols:side-navigation' /></div>
+        <header className={cn("flex flex-row justify-between h-10", DefaultBgClass)}
+                style={{"--wails-draggable": "drag"} as React.CSSProperties}>
+            <div className='flex justify-start items-center px-2 text-base font-medium text-black space-x-2'>
+                <Icon icon='material-symbols:side-navigation' className='text-xl'/>
+                <span>窗口标题</span>
+            </div>
             {/* windows 定制化窗口按钮 */}
             {isNotMac ? (
                 <div className="flex justify-end flex-0 text-xl ">
