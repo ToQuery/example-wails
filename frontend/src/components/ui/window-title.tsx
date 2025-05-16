@@ -1,6 +1,8 @@
 import {Icon} from "@iconify/react";
-import React, {useState} from "react";
+import React from "react";
 import { CoreService } from '../../../bindings/example-wails/internal/service';
+import {cn} from "@/lib/utils";
+import {DefaultBgClass} from "@/provider/config";
 
 // 接收 props
 interface WindowTitleProps {
@@ -8,24 +10,22 @@ interface WindowTitleProps {
 
 function WindowTitle(props: WindowTitleProps) {
     console.log("WindowTitle", props);
-    const [isMaximised, setIsMaximised] = useState(false);
 
     // 是否非 Mac 平台
-    const isNotMac = true; //navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     // 窗口最大化/还原
     const toggleMaximize = () => {
-        console.log("toggleMaximize", isMaximised);
+        console.log("toggleMaximize");
         CoreService.Maximize();
     };
     return (<>
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
-        <header className="flex flex-row justify-between" style={{"--wails-draggable": "drag"} as React.CSSProperties}>
-            <div><Icon icon='material-symbols:side-navigation' /></div>
-            <div>定制化窗口按钮</div>
+        <header className={cn("flex flex-row justify-between h-10", DefaultBgClass)} style={{"--wails-draggable": "drag"} as React.CSSProperties}>
+            <div className='hidden'><Icon icon='material-symbols:side-navigation' /></div>
             {/* windows 定制化窗口按钮 */}
             {isNotMac ? (
-                <div className="flex h-10 justify-end flex-0 text-xl ">
+                <div className="flex justify-end flex-0 text-xl ">
                     <button
                         className="w-10 flex flex-col items-center justify-center hover:bg-[#E9E9E9] dark:hover:bg-[#2D2D2D] hover:text-gray-500"
                         onClick={() => CoreService.Minimize()}

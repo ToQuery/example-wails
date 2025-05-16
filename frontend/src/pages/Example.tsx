@@ -3,7 +3,7 @@ import {Events} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 
 function Example() {
-    const [text, setText] = React.useState<string>("");
+    const [text, setText] = React.useState<string>("Hello Wails！");
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
 
     const butClass = 'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center active:scale-95';
@@ -18,16 +18,17 @@ function Example() {
     return (<div>
         <div className='pb-6 text-2xl font-black'>Example</div>
         <div>
-            <input value={text} onChange={event => setText(event.target.value)} />
+            <span>输入框：</span><input className='min-w-96 rounded-s-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 ' value={text} onChange={event => setText(event.target.value)} />
         </div>
+        {separator}
         <section>
             <h2>Clipboard</h2>
             <div className="flex gap-4 mt-4">
-                <button className={butClass} type="button" onClick={() => ExampleService.ClipboardGet()}>
+                <button className={butClass} type="button" onClick={async () => setText(await ExampleService.ClipboardGet())}>
                    Get Clipboard
                 </button>
 
-                <button className={butClass} type="button" onClick={() => ExampleService.ClipboardSet('Wails')}>
+                <button className={butClass} type="button" onClick={() => ExampleService.ClipboardSet(text)}>
                     Set Clipboard
                 </button>
             </div>

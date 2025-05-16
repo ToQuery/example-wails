@@ -8,7 +8,7 @@ const LANGUAGES = [
     {code: 'en-US', label: 'English', icon: 'emojione:flag-for-united-states'}
 ];
 
-function LanguageSwitch() {
+function LanguageSwitcher() {
     const {i18n} = useTranslation();
     const [currentLang, setCurrentLang] = useState(i18n.language);
     const [showModal, setShowModal] = useState(false);
@@ -63,4 +63,4 @@ function LanguageSwitch() {
     );
 }
 
-export default LanguageSwitch;
+export default LanguageSwitcher;

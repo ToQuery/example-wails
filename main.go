@@ -5,11 +5,9 @@ import (
 	_ "embed"
 	"example-wails/cmd/wails"
 	"example-wails/internal/service"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"log"
 	"runtime"
-	"time"
-
-	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.
@@ -99,13 +97,13 @@ func main() {
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
-	go func() {
-		for {
-			now := time.Now().Format(time.RFC1123)
-			app.EmitEvent("example-wails-datetime", now)
-			time.Sleep(time.Second)
-		}
-	}()
+	//go func() {
+	//	for {
+	//		now := time.Now().Format(time.RFC1123)
+	//		app.EmitEvent("example-wails-datetime", now)
+	//		time.Sleep(time.Second)
+	//	}
+	//}()
 
 	// Run the application. This blocks until the application has been exited.
 	err := app.Run()
