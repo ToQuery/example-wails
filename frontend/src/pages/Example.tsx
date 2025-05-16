@@ -1,8 +1,11 @@
 import React from "react";
 import {Events} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
+import {useTranslation} from "react-i18next";
 
 function Example() {
+    const { t } = useTranslation();
+
     const [text, setText] = React.useState<string>("Hello Wails！");
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
 
@@ -16,82 +19,89 @@ function Example() {
     })
 
     return (<div>
-        <div className='pb-6 text-2xl font-black'>Example</div>
         <div>
-            <span>输入框：</span><input className='min-w-96 rounded-s-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 ' value={text} onChange={event => setText(event.target.value)} />
+            <span>{t('page.example.input')}</span><input className='min-w-96 rounded-s-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 ' value={text} onChange={event => setText(event.target.value)} />
         </div>
         {separator}
         <section>
-            <h2>Clipboard</h2>
+            <h2>{t('page.example.clipboard')}</h2>
             <div className="flex gap-4 mt-4">
                 <button className={butClass} type="button" onClick={async () => setText(await ExampleService.ClipboardGet())}>
-                   Get Clipboard
+                    {t('page.example.get-clipboard')}
                 </button>
 
                 <button className={butClass} type="button" onClick={() => ExampleService.ClipboardSet(text)}>
-                    Set Clipboard
+                    {t('page.example.set-clipboard')}
                 </button>
             </div>
         </section>
         {separator}
         <section>
-            <h2>Context Menus</h2>
+            <h2>{t('page.example.context-menus')}</h2>
         </section>
         {separator}
         <section>
-            <h2>Menu Reference</h2>
+            <h2>{t('page.example.menu-reference')}</h2>
         </section>
         {separator}
         <section>
-            <h2>Application Menu</h2>
+            <h2>{t('page.example.application-menu')}</h2>
         </section>
 
         {separator}
         <section>
-            <h2>Dialog</h2>
+            <h2>{t('page.example.dialog')}</h2>
             <div className="flex gap-4 mt-4">
                 <button className={butClass} type="button" onClick={() => ExampleService.InfoDialog()}>
-                    InfoDialog
+                    {t('page.example.info-dialog')}
                 </button>
                 <button className={butClass} type="button" onClick={() => ExampleService.QuestionDialog()}>
-                    QuestionDialog
+                    {t('page.example.question-dialog')}
                 </button>
                 <button className={butClass} type="button" onClick={() => ExampleService.ErrorDialog()}>
-                    ErrorDialog
+                    {t('page.example.error-dialog')}
                 </button>
                 <button className={butClass} type="button" onClick={() => ExampleService.FileDialog()}>
-                    FileDialog
+                    {t('page.example.file-dialog')}
                 </button>
                 <button className={butClass} type="button" onClick={() => ExampleService.SaveFileDialog()}>
-                    SaveFileDialog
+                    {t('page.example.save-file-dialog')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.ShowAboutDialog()}>
+                    {t('page.example.about-dialog')}
                 </button>
             </div>
         </section>
         {separator}
         <section>
-            <h2>Events</h2>
-            <div>DateTime (From Events): {dateTime}</div>
+            <h2>{t('page.example.events')}</h2>
+            <div>{t('page.example.datetime')}: {dateTime}</div>
             <div className="flex gap-4 mt-4">
             </div>
         </section>
         {separator}
         <section>
-            <h2>Badges</h2>
+            <h2>{t('page.example.badges')}</h2>
         </section>
         {separator}
         <section>
-            <h2>Notifications</h2>
+            <h2>{t('page.example.notifications')}</h2>
         </section>
         {separator}
         <section>
-            <h2>System Tray</h2>
+            <h2>{t('page.example.system-tray')}</h2>
         </section>
         {separator}
         <section>
-            <h2>Multi Window</h2>
+            <h2>{t('page.example.multi-window')}</h2>
             <div className="flex gap-4 mt-4">
-                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowShow()}>
-                    WebviewWindowShow
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowShow("/setting")}>
+                    {t('page.example.webview-window-show')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowShow("https://github.com")}>
+                    {t('page.example.webview-window-show-github')}
                 </button>
             </div>
         </section>

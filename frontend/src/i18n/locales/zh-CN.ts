@@ -9,6 +9,7 @@ const zhCN = {
     'menu.browser': '浏览器',
     'menu.light-dark': '',
     'menu.language': '',
+    'menu.sidebar-style': '侧边栏样式',
 
     // 通用按钮和文本
     'common.button.save': '保存',
@@ -23,6 +24,33 @@ const zhCN = {
     'page.home.title': '首页',
     'page.home.counter': '计数器：',
     'page.user.title': '用户',
+
+    'page.example.title': '示例',
+    'page.example.input': '输入',
+    'page.example.clipboard': '剪切板',
+    'page.example.get-clipboard': '获取剪切板',
+    'page.example.set-clipboard': '设置剪切板',
+    'page.example.context-menus': '上下文菜单',
+    'page.example.menu-reference': '菜单参考',
+    'page.example.application-menu': '应用菜单',
+    'page.example.dialog': '对话框',
+    'page.example.info-dialog': '信息对话框',
+    'page.example.question-dialog': '询问对话框',
+    'page.example.error-dialog': '错误对话框',
+    'page.example.file-dialog': '文件对话框',
+    'page.example.save-file-dialog': '保存文件对话框',
+    'page.example.about-dialog': '关于对话框',
+    'page.example.events': '事件',
+    'page.example.datetime': '日期时间（来自事件）',
+    'page.example.badges': '徽章',
+    'page.example.notifications': '通知',
+    'page.example.system-tray': '系统托盘',
+    'page.example.multi-window': '多窗口',
+    'page.example.webview-window-show': '显示网页视图窗口',
+    'page.example.webview-window-show-github': '显示网页视图窗口（Github）',
+    
+    // 应用
+    'app.title': '应用标题',
   }
 };
 

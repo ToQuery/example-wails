@@ -81,12 +81,7 @@ func main() {
 		BackgroundColour: application.NewRGB(27, 38, 54),
 		URL:              "/",
 
-		Mac: application.MacWindow{
-			InvisibleTitleBarHeight: 50,
-			Backdrop:                application.MacBackdropTranslucent,
-			TitleBar:                application.MacTitleBarHiddenInset,
-			Appearance:              application.NSAppearanceNameVibrantLight,
-		},
+		Mac: wails.MacWindow(),
 
 		Windows: application.WindowsWindow{},
 

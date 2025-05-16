@@ -1,0 +1,22 @@
+{
+  "welcome": {
+    "other": "Welcome to Wails App"
+  },
+  "hello": {
+    "other": "Hello, {{.Name}}"
+  },
+  "dialog": {
+    "error": {
+      "other": "Error"
+    },
+    "success": {
+      "other": "Success"
+    },
+    "warning": {
+      "other": "Warning"
+    },
+    "info": {
+      "other": "Information"
+    }
+  }
+}

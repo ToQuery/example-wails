@@ -9,7 +9,6 @@ function Home() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-xl font-bold">{t('page.home.title')}</h1>
             <div>
                 <button
                     type="button"

@@ -11,6 +11,8 @@ export const DefaultActiveClass = 'text-blue-600 dark:text-blue-500';
 interface ConfigContextType {
   sidebarStyle: SidebarStyle;
   setSidebarStyle: (style: SidebarStyle) => void;
+  windowTitle: string;
+  setWindowTitle: (windowTitle: string) => void;
 }
 
 const defaultConfig: ConfigContextType = {
@@ -21,7 +23,11 @@ const defaultConfig: ConfigContextType = {
     code: 'row-double',
     label: '网格模式',
     icon: 'material-symbols:view-module-outline'
-  }
+  },
+  windowTitle: 'Wails And React',
+  setWindowTitle(windowTitle: string): void {
+    console.log('setWindowTitle', windowTitle);
+  },
 }
 
 const ConfigContext = createContext<ConfigContextType>(defaultConfig);
@@ -29,14 +35,15 @@ const ConfigContext = createContext<ConfigContextType>(defaultConfig);
 // 配置提供者组件
 export function ConfigProvider({ children }: { children: ReactNode }) {
   const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
-
-  const value = {
-    sidebarStyle,
-    setSidebarStyle,
-  };
+  const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
 
   return (
-    <ConfigContext.Provider value={value}>
+    <ConfigContext.Provider value={{
+      sidebarStyle,
+      setSidebarStyle,
+      windowTitle,
+      setWindowTitle,
+    }}>
       {children}
     </ConfigContext.Provider>
   );
@@ -57,6 +64,14 @@ export function useConfigSidebarStyle(): [SidebarStyle, (style: SidebarStyle) =>
     throw new Error('useConfigSidebarStyle must be used within a ConfigProvider');
   }
   return [context.sidebarStyle, context.setSidebarStyle];
+}
+
+export function useConfigWindowTitle(): [string, (windowTitle: string) => void] {
+  const context = useContext(ConfigContext);
+  if (context === undefined) {
+    throw new Error('useConfigSidebarStyle must be used within a ConfigProvider');
+  }
+  return [context.windowTitle, context.setWindowTitle];
 }
 
 export function useTheme() {

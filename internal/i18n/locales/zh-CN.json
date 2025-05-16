@@ -1,0 +1,22 @@
+{
+  "welcome": {
+    "other": "欢迎使用Wails应用"
+  },
+  "hello": {
+    "other": "你好，{{.Name}}"
+  },
+  "dialog": {
+    "error": {
+      "other": "错误"
+    },
+    "success": {
+      "other": "成功"
+    },
+    "warning": {
+      "other": "警告"
+    },
+    "info": {
+      "other": "信息"
+    }
+  }
+}

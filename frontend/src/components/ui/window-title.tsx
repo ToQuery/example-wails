@@ -3,6 +3,9 @@ import React from "react";
 import {CoreService} from '../../../bindings/example-wails/internal/service';
 import {cn} from "@/lib/utils";
 import {DefaultBgClass} from "@/provider/config";
+import {useLocation} from "react-router-dom";
+import {Menu, routers} from "@/routes";
+import {useTranslation} from 'react-i18next';
 
 // 接收 props
 interface WindowTitleProps {
@@ -10,6 +13,27 @@ interface WindowTitleProps {
 
 function WindowTitle(props: WindowTitleProps) {
     console.log("WindowTitle", props);
+
+    const { t } = useTranslation();
+    const location = useLocation();
+
+    // 根据当前路径获取路由信息
+    const getCurrentRoute = (): Menu | undefined => {
+        // 移除查询参数，只保留路径部分
+        const pathname = location.pathname;
+        return routers.find(route => route.path === pathname || (pathname === '/' && route.path === '/'));
+    };
+
+    // 获取当前路由
+    const currentRoute = getCurrentRoute();
+
+    // 获取标题
+    const getTitle = (): string => {
+        if (currentRoute && currentRoute.name) {
+            return t(currentRoute.name);
+        }
+        return t('app.title', '应用');
+    };
 
     // 是否非 Mac 平台
     const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
@@ -21,11 +45,11 @@ function WindowTitle(props: WindowTitleProps) {
     };
     return (<>
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
-        <header className={cn("flex flex-row justify-between h-10", DefaultBgClass)}
+        <header className={cn("flex flex-row justify-between h-12", DefaultBgClass)}
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}>
-            <div className='flex justify-start items-center px-2 text-base font-medium text-black space-x-2'>
-                <Icon icon='material-symbols:side-navigation' className='text-xl'/>
-                <span>窗口标题</span>
+            <div className='flex justify-start items-center px-2 text-xl font-medium text-black dark:text-gray-300 space-x-2'>
+                <Icon icon='material-symbols:side-navigation' className='text-xl hidden'/>
+                <span>{getTitle()}</span>
             </div>
             {/* windows 定制化窗口按钮 */}
             {isNotMac ? (

@@ -114,7 +114,13 @@ func (s *ExampleService) SaveFileDialog() {
 	fmt.Println("写入成功，文件路径为:", path)
 }
 
-func (s ExampleService) WebviewWindowShow() {
-	webWindows := application.NewWindow(application.WebviewWindowOptions{})
+func (s ExampleService) ShowAboutDialog(url string) {
+	application.Get().ShowAboutDialog()
+}
+
+func (s ExampleService) WebviewWindowShow(url string) {
+	webWindows := application.Get().NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+		URL: url,
+	})
 	webWindows.Show()
 }
