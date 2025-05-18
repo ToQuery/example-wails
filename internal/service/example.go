@@ -2,13 +2,63 @@ package service
 
 import (
 	"example-wails/cmd/wails"
+	"example-wails/internal/model"
 	"fmt"
-	"github.com/wailsapp/wails/v3/pkg/application"
 	"log"
 	"os"
+	"os/exec"
+	"runtime"
+
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-type ExampleService struct{}
+type ExampleService struct {
+	AppInfo model.AppInfoModel
+}
+
+func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
+	return &ExampleService{AppInfo: appInfo}
+}
+
+/*------App Start-----------------------------------------------------------------------------------------------------*/
+
+func (s *ExampleService) GetAppInfo() model.AppInfoModel {
+	return s.AppInfo
+}
+
+func (s *ExampleService) AppUpdate(newVersion, force bool) *model.UpdateInfoModel {
+	if newVersion {
+		return &model.UpdateInfoModel{
+			Version:     "1.1.0",
+			VersionCode: 2,
+			ForceUpdate: force,
+			Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
+			DownloadUrl: "https://github.com/wailsapp/wails/releases/download/v1.16.0/wails-v1.16.0-darwin-x64.tar.gz",
+		}
+	}
+	return nil
+}
+
+func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
+	updateInfo := s.AppUpdate(newVersion, force)
+	application.Get().EmitEvent(wails.AppUpdate, updateInfo)
+}
+
+func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
+	updateInfo := &model.UpdateInfoModel{
+		Version:     "1.1.0",
+		VersionCode: 2,
+		ForceUpdate: false,
+		Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
+		DownloadUrl: "https://github.com/wailsapp/wails/releases/download/v1.16.0/wails-v1.16.0-darwin-x64.tar.gz",
+	}
+	if updateInfo.VersionCode > s.AppInfo.VersionCode {
+		return updateInfo
+	}
+	return nil
+}
+
+/*------App End-------------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) ClipboardGet() string {
 	text, flag := application.Get().Clipboard().Text()
@@ -112,7 +162,7 @@ func (s *ExampleService) SaveFileDialog() {
 	fmt.Println("写入成功，文件路径为:", path)
 }
 
-func (s ExampleService) ShowAboutDialog(url string) {
+func (s ExampleService) ShowAboutDialog() {
 	application.Get().ShowAboutDialog()
 }
 
@@ -124,9 +174,7 @@ func (s ExampleService) ShowHelpDialog() {
 
 /*------Multi Windows Start-------------------------------------------------------------------------------------------*/
 
-const windowName = "window1"
-
-func (s ExampleService) WebviewWindowShow(url string) {
+func (s ExampleService) WebviewWindowShow(windowName string, url string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows == nil {
 		webWindows = application.Get().NewWebviewWindowWithOptions(application.WebviewWindowOptions{
@@ -140,42 +188,42 @@ func (s ExampleService) WebviewWindowShow(url string) {
 
 }
 
-func (s ExampleService) WebviewWindowHide() {
+func (s ExampleService) WebviewWindowHide(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.Hide()
 	}
 }
 
-func (s ExampleService) WebviewWindowCenter() {
+func (s ExampleService) WebviewWindowCenter(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.Center()
 	}
 }
 
-func (s ExampleService) WebviewWindowToggleFullscreen() {
+func (s ExampleService) WebviewWindowToggleFullscreen(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.ToggleFullscreen()
 	}
 }
 
-func (s ExampleService) WebviewWindowFocus() {
+func (s ExampleService) WebviewWindowFocus(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.Focus()
 	}
 }
 
-func (s ExampleService) WebviewWindowReload() {
+func (s ExampleService) WebviewWindowReload(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.Reload()
 	}
 }
 
-func (s ExampleService) WebviewWindowForceReload() {
+func (s ExampleService) WebviewWindowForceReload(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.ForceReload()
@@ -183,11 +231,72 @@ func (s ExampleService) WebviewWindowForceReload() {
 }
 
 // close 之后必须 new
-func (s ExampleService) WebviewWindowClose() {
+func (s ExampleService) WebviewWindowClose(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
 	if webWindows != nil {
 		webWindows.Close()
 	}
 }
 
+func (s ExampleService) WebviewWindowSetAlwaysOnTop(windowName string, alwaysOnTop bool) {
+	if window := application.Get().GetWindowByName(windowName); window != nil {
+		window.SetAlwaysOnTop(alwaysOnTop)
+	}
+}
+
+func (s ExampleService) WebviewWindowMinimize(windowName string) {
+	if window := application.Get().GetWindowByName(windowName); window != nil {
+		window.Minimise()
+	}
+}
+
+func (s ExampleService) WebviewWindowMaximize(windowName string) {
+	if window := application.Get().GetWindowByName(windowName); window != nil {
+		if window.IsMaximised() {
+			window.UnMaximise()
+		} else {
+			window.Maximise()
+		}
+	}
+}
+
 /*------Multi Windows End---------------------------------------------------------------------------------------------*/
+
+/*------Other Start---------------------------------------------------------------------------------------------------*/
+
+func (s ExampleService) EmbedExecBinary() {
+}
+
+func (s ExampleService) EmbedFile() {
+
+}
+
+func (s ExampleService) EmbedOpenApplication(application string) {
+	// 根据不同操作系统打开应用程序
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "darwin": // macOS
+		cmd = exec.Command("open", "-a", application)
+	case "windows": // Windows
+		cmd = exec.Command("cmd", "/c", "start", "", application)
+	case "linux": // Linux
+		cmd = exec.Command("xdg-open", application)
+	default:
+		log.Printf("不支持的操作系统: %s\n", runtime.GOOS)
+		return
+	}
+
+	// 执行命令
+	err := cmd.Start()
+	if err != nil {
+		log.Printf("打开应用程序 %s 失败: %v\n", application, err)
+	}
+}
+
+func (s ExampleService) EmbedOpenBrowser(url string) {
+	// 使用Wails提供的runtime.BrowseURL函数打开浏览器
+	application.Get()
+}
+
+/*------Other End-----------------------------------------------------------------------------------------------------*/

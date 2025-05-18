@@ -7,17 +7,8 @@ import Browser from "@/pages/Browser";
 import Setting from "@/pages/Setting";
 import Example from "@/pages/Example";
 import SidebarStyleSwitcher from "@/components/sidebar/sidebar-style-switcher";
+import {Menu} from "@/components/sidebar/sidebar";
 
-// 定义 menu 类型
-export interface Menu {
-    name: string;
-    path?: string;
-    icon?: string;
-    render?: React.ReactNode;
-    page?: React.ReactNode;
-    footer?: boolean;
-    hidden?: boolean;
-}
 
 // 侧边栏导航
 export const routers: Menu[] = [

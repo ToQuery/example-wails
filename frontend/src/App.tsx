@@ -1,9 +1,9 @@
 import {Route, Routes} from 'react-router-dom';
 
 // 视图组件
-import Sidebar from "@/components/sidebar/sidebar";
+import Sidebar, {Menu} from "@/components/sidebar/sidebar";
 import WindowTitle from "@/components/ui/window-title";
-import {Menu, routers} from "@/routes";
+import {routers} from "../config/routes";
 import React from "react";
 
 function App() {

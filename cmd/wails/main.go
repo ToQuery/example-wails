@@ -1,8 +1,8 @@
 package wails
 
 import (
+	"fmt"
 	"github.com/wailsapp/wails/v3/pkg/application"
-	"log"
 )
 
 func MacWindow() application.MacWindow {
@@ -15,20 +15,26 @@ func MacWindow() application.MacWindow {
 }
 
 func OnShutdown() {
+	fmt.Println("Shutting down")
 }
 
 func ShouldQuit() bool {
+	fmt.Println("Should quit")
 	return true
 }
 
 func PanicHandler(err interface{}) {
-	log.Fatal(err)
+	fmt.Println("Panic")
 }
 
 func WarningHandler(text string) {
-
+	fmt.Println("Warning")
 }
 
 func ErrorHandler(err error) {
+	fmt.Println("Error")
+}
 
+func RawMessageHandler(window application.Window, message string) {
+	fmt.Println("Raw message", message)
 }

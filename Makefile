@@ -7,7 +7,7 @@ clean:
 
 .PHONY: gen-bind
 gen-bind:
-	wails3 generate bindings
+	wails3 generate bindings -ts
 
 .PHONY: dev
 dev:

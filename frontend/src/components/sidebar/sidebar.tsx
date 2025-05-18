@@ -1,6 +1,5 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import {Icon} from "@iconify/react";
-import {Menu} from "@/routes";
 import {useTranslation} from 'react-i18next';
 import React from "react";
 import {cn} from "@/lib/utils";
@@ -12,22 +11,34 @@ export type SidebarStyle = {
     icon: string;
 };
 
-
-export const SidebarStyles: SidebarStyle[] = [{
+export const sidebarStyleIcon: SidebarStyle = {
     code: 'icon',
     label: '图标模式',
     icon: 'material-symbols:view-headline'
-}, {
+};
+
+export const sidebarStyleRow: SidebarStyle = {
     code: 'row', label: '列表模式', icon: 'material-symbols:view-sidebar'
-}, {
-    code: 'row-double',
+};
+
+export const sidebarStyleGrid: SidebarStyle = {
+    code: 'grid',
     label: '网格模式',
     icon: 'material-symbols:view-module-outline'
-}];
+}
 
+export const SidebarStyles: SidebarStyle[] = [sidebarStyleIcon, sidebarStyleRow, sidebarStyleGrid];
 
-export const DefaultSidebarStyle: SidebarStyle = SidebarStyles[2];
-
+// 定义 menu 类型
+export interface Menu {
+    name: string;
+    path?: string;
+    icon?: string;
+    render?: React.ReactNode;
+    page?: React.ReactNode;
+    footer?: boolean;
+    hidden?: boolean;
+}
 
 // 接收 props
 interface SidebarProps {
@@ -51,7 +62,7 @@ function Sidebar({
     const location = useLocation();
     const {t} = useTranslation();
 
-    const [configSidebarStyle, ] = useConfigSidebarStyle();
+    const [configSidebarStyle,] = useConfigSidebarStyle();
 
     if (!sideBarStyle) {
         sideBarStyle = configSidebarStyle;
@@ -93,7 +104,7 @@ function Sidebar({
                         </li>;
                 break;
             }
-            case 'row-double': {
+            case 'grid': {
                 const rowDoubleClass = cn(menuItemStyle, 'flex-col justify-center py-2');
                 node = menu.render
                     ? <li key={menu.name} className={rowDoubleClass}>{menu.render}</li>

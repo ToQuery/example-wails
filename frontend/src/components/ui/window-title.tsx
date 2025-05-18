@@ -1,11 +1,12 @@
 import {Icon} from "@iconify/react";
 import React from "react";
-import {CoreService} from '../../../bindings/example-wails/internal/service';
+import {ExampleService} from '../../../bindings/example-wails/internal/service';
 import {cn} from "@/lib/utils";
 import {DefaultBgClass} from "@/provider/config";
 import {useLocation} from "react-router-dom";
-import {Menu, routers} from "@/routes";
+import {routers} from "@/../config/routes";
 import {useTranslation} from 'react-i18next';
+import {Menu} from "@/components/sidebar/sidebar";
 
 // 接收 props
 interface WindowTitleProps {
@@ -14,6 +15,7 @@ interface WindowTitleProps {
 function WindowTitle(props: WindowTitleProps) {
     console.log("WindowTitle", props);
 
+    const windowName = 'main';
     const { t } = useTranslation();
     const location = useLocation();
 
@@ -41,7 +43,7 @@ function WindowTitle(props: WindowTitleProps) {
     // 窗口最大化/还原
     const toggleMaximize = () => {
         console.log("toggleMaximize");
-        CoreService.Maximize();
+        ExampleService.WebviewWindowMaximize(windowName);
     };
     return (<>
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
@@ -56,7 +58,7 @@ function WindowTitle(props: WindowTitleProps) {
                 <div className="flex justify-end flex-0 text-xl ">
                     <button
                         className="w-10 flex flex-col items-center justify-center hover:bg-[#E9E9E9] dark:hover:bg-[#2D2D2D] hover:text-gray-500"
-                        onClick={() => CoreService.Minimize()}
+                        onClick={() => ExampleService.WebviewWindowMinimize(windowName)}
                     >
                         <Icon icon="mdi:window-minimize"/>
                     </button>
@@ -68,7 +70,7 @@ function WindowTitle(props: WindowTitleProps) {
                     </button>
                     <button
                         className="w-10 flex flex-col items-center justify-center hover:bg-red-500 hover:text-white"
-                        onClick={() => CoreService.Close()}
+                        onClick={() => ExampleService.WebviewWindowClose(windowName)}
                     >
                         <Icon icon="mdi:close"/>
                     </button>
