@@ -27,9 +27,9 @@ export default function Setting() {
             {/* 标题 */}
             <div className="mb-8 text-center">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-blue-600 transition-all duration-500">
-                    应用设置
+                    {t('page.setting.title')}
                 </h1>
-                <p className="text-gray-500 dark:text-gray-400 mt-2">自定义您的应用体验</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">{t('page.setting.subtitle')}</p>
             </div>
 
             {/* 应用信息 */}
@@ -42,12 +42,12 @@ export default function Setting() {
                             <Icon icon="fluent:app-title-24-filled" className="text-4xl text-blue-500"/>
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">Wails 应用</h2>
-                            <p className="text-gray-500 dark:text-gray-300">基于 Wails 和 React 构建</p>
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">{t('page.setting.app.title')}</h2>
+                            <p className="text-gray-500 dark:text-gray-300">{t('page.setting.app.subtitle')}</p>
                         </div>
                     </div>
                     <div className="text-right">
-                        <div className="text-sm text-gray-500 dark:text-gray-400">当前版本</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{t('page.setting.current_version')}</div>
                         <div className="text-lg font-semibold text-gray-800 dark:text-white">{appInfo?.version}</div>
                     </div>
                 </div>
@@ -59,14 +59,14 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:update" className="mr-2 text-blue-500"/>
-                        版本与更新
+                        {t('page.setting.version_and_updates')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="mb-4 md:mb-0">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">检查更新</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">检查是否有新版本可用</p>
+                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.setting.check_updates')}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.setting.check_updates_desc')}</p>
                         </div>
                         <button
                             onClick={checkForUpdates}
@@ -77,12 +77,12 @@ export default function Setting() {
                                 {isCheckingUpdate ? (
                                     <>
                                         <Icon icon="eos-icons:loading" className="mr-1 animate-spin"/>
-                                        检查中...
+                                        {t('page.setting.checking_updates')}
                                     </>
                                 ) : (
                                     <>
                                         <Icon icon="mdi:refresh" className="mr-1"/>
-                                        检查更新
+                                        {t('page.setting.check_updates')}
                                     </>
                                 )}
                             </div>
@@ -97,14 +97,14 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:theme-light-dark" className="mr-2 text-blue-500"/>
-                        主题设置
+                        {t('page.setting.theme_settings')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="mb-4 md:mb-0">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">深色模式</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">切换应用的显示主题</p>
+                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.setting.dark_mode')}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.setting.theme_switch_desc')}</p>
                         </div>
                         <div className="flex space-x-2">
 
@@ -131,14 +131,14 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:translate" className="mr-2 text-blue-500"/>
-                        语言设置
+                        {t('page.setting.language_settings')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="mb-4 md:mb-0">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">界面语言</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">选择应用的显示语言</p>
+                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.setting.interface_language')}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.setting.language_switch_desc')}</p>
                         </div>
                         <div className="relative">
                             <select
@@ -163,18 +163,18 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:information" className="mr-2 text-blue-500"/>
-                        关于
+                        {t('page.setting.about')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
-                        这是一个使用 Wails 和 React 构建的桌面应用程序示例。Wails 提供了一种使用 Go 和 Web 技术构建桌面应用的简单方法。
+                        {t('page.setting.about_description')}
                     </p>
                     <div className="flex flex-wrap gap-4">
                         <button onClick={() => Browser.OpenURL("https://wails.io")}
                                 className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="simple-icons:wails" className="mr-2"/>
-                            Wails 官网
+                            {t('page.setting.wails_website')}
                         </button>
                         <button onClick={() => Browser.OpenURL("https://github.com/ToQuery/example-wails")}
                                 className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
@@ -185,7 +185,7 @@ export default function Setting() {
                             onClick={() => Browser.OpenURL("https://v3alpha.wails.io/getting-started/installation/")}
                             className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="mdi:book-open-variant" className="mr-2"/>
-                            文档
+                            {t('page.setting.documentation')}
                         </button>
                     </div>
                 </div>
@@ -195,9 +195,9 @@ export default function Setting() {
             <div className="text-center text-gray-500 dark:text-gray-400 text-sm mt-12 mb-6">
                 <div className="flex items-center justify-center mb-2">
                     <Icon icon="mdi:copyright" className="mr-1"/>
-                    2023 Wails 示例应用
+                    2023 {t('page.setting.wails_example_app')}
                 </div>
-                <div>使用 Wails 和 React 构建</div>
+                <div>{t('page.setting.built_with_wails_react')}</div>
             </div>
         </div>
     );
