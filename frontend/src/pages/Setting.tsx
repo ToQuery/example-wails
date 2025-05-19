@@ -1,6 +1,7 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
-import {useConfigUpdate} from "@/provider/config";
+import {useConfigLanguage, useConfigUpdate} from "@/provider/config";
+import {languages} from "@/i18n";
 
 // 设置页面组件
 export default function Setting() {
@@ -8,6 +9,8 @@ export default function Setting() {
 
     const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo , checkForUpdates] = useConfigUpdate();
+    const [showModal, setShowModal, language, setLanguage] = useConfigLanguage();
+
 
 
     return (
@@ -140,8 +143,9 @@ export default function Setting() {
                         <div className="relative">
                             <select
                                 className="appearance-none bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white px-4 py-2 pr-8 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="zh-CN">简体中文</option>
-                                <option value="en-US">English</option>
+                                {languages.map((lang) => (
+                                    <option key={lang.code} value={lang.code}>{lang.label}</option>
+                                ))}
                             </select>
                             <div
                                 className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">

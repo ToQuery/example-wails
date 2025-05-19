@@ -2,9 +2,9 @@ import React from "react";
 import {Events} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
-import {AppInfoModel, DirInfoModel} from "../../bindings/example-wails/internal/model";
+import {AppInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event} from "@/const";
-import {useConfigUpdate} from "@/provider/config";
+import {useConfigLoading, useConfigUpdate} from "@/provider/config";
 import {cn} from "@/lib/utils";
 
 function Example() {
@@ -14,6 +14,8 @@ function Example() {
     const [appInfo, setAppInfo] = React.useState<AppInfoModel>();
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
     const [windowName, setWindowName] = React.useState<string>("main");
+
+    const [, setLoading] = useConfigLoading();
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
 
 
@@ -93,12 +95,18 @@ function Example() {
                         onClick={async () => await ExampleService.AppUpdateFromEvent(true, true)}>
                     {t('page.example.app-force-update-from-event')}
                 </button>
-
-                <button className={butClass} type="button" onClick={() => ExampleService.AppEmbedExecBinary()}>
-                    {t('page.example.app-embed-exec-binary')}
-                </button>
                 <button className={butClass} type="button" onClick={() => ExampleService.AppEmbedFile()}>
                     {t('page.example.app-embed-file')}
+                </button>
+                <button className={butClass} type="button" onClick={() => {
+                    setLoading(true);
+                    ExampleService.AppEmbedExecBinary().then(() => {
+                        console.log("AppEmbedExecBinary done");
+                    }).catch((err) => {
+                        console.log("AppEmbedExecBinary err", err);
+                    }).finally(() => setLoading(false));
+                }}>
+                    {t('page.example.app-embed-exec-binary')}
                 </button>
                 <button className={butClass} type="button"
                         onClick={() => ExampleService.AppOpenApplication("WeChat")}>
