@@ -6,44 +6,22 @@ import {useConfigThemeModel} from "@/provider/config";
 type ThemeMode = 'auto' | 'light' | 'dark';
 
 export const themeModeAuto: ThemeMode = 'auto';
-const themeModeLight: ThemeMode = 'light';
-const themeModeDark: ThemeMode = 'dark';
+export const themeModeLight: ThemeMode = 'light';
+export const themeModeDark: ThemeMode = 'dark';
 
 function ThemeMode() {
     const {t} = useTranslation();
-    const [themeMode, setThemeMode] = useConfigThemeModel();
-
-    // 初始化时检查当前主题
-    useEffect(() => {
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        // 监听系统主题变化
-        const handleChange = (e: MediaQueryListEvent) => {
-            const isDark = e.matches
-            console.log('handleChange isDark =', isDark);
-
-            if (isDark) {
-                setThemeMode(themeModeDark);
-                document.documentElement.classList.add('dark');
-            } else {
-                setThemeMode(themeModeLight);
-                document.documentElement.classList.remove('dark');
-            }
-        };
-        darkModeMediaQuery.addEventListener('change', handleChange);
-
-        return () => darkModeMediaQuery.removeEventListener('change', handleChange);
-    }, []);
+    const [themeModel, setThemeModel] = useConfigThemeModel();
 
     // 切换暗黑模式
     const toggleDark = () => {
         const isDark = document.documentElement.classList.contains('dark');
 
         if (isDark) {
-            setThemeMode(themeModeLight);
+            setThemeModel(themeModeLight);
             document.documentElement.classList.remove('dark');
         } else {
-            setThemeMode(themeModeDark);
+            setThemeModel(themeModeDark);
             document.documentElement.classList.add('dark');
         }
 
@@ -51,7 +29,7 @@ function ThemeMode() {
 
     const themeModeIcon = () => {
         let themeModeIcon = <Icon icon="icon-park:refresh"/>;
-        switch (themeMode) {
+        switch (themeModel) {
             case themeModeAuto: {
                 themeModeIcon = <Icon icon="icon-park:refresh-one"/>;
                 break;
@@ -74,7 +52,7 @@ function ThemeMode() {
 
     const themeModeText = () => {
         let themeModeText = t('common.theme.auto');
-        switch (themeMode) {
+        switch (themeModel) {
             case themeModeAuto: {
                 themeModeText = t('common.theme.auto');
                 break;

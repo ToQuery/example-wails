@@ -1,6 +1,6 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import {SidebarStyle} from "@/components/sidebar/sidebar";
-import ThemeMode, {themeModeAuto} from "@/components/sidebar/theme-mode";
+import ThemeMode, {themeModeAuto, themeModeDark, themeModeLight} from "@/components/sidebar/theme-mode";
 import DialogUpdate, {UpdateInfo} from "@/components/biz/dialog-update";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {Events} from "@wailsio/runtime";
@@ -110,7 +110,7 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
     const [showLanguageDialog, setShowLanguageDialog] = useState<boolean>(defaultConfig.showLanguageDialog);
-    
+
     // 包装 setLanguage 函数，使其同时调用 i18n.changeLanguage
     const setLanguage = (lang: string) => {
         i18n.changeLanguage(lang);
@@ -125,6 +125,28 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     useEffect(() => {
         setLanguage(i18n.language);
     }, [i18n.language]);
+
+    // 初始化时检查当前主题
+    useEffect(() => {
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // 监听系统主题变化
+        const handleChange = (e: MediaQueryListEvent) => {
+            const isDark = e.matches
+            console.log('handleChange isDark =', isDark);
+
+            if (isDark) {
+                setThemeModel(themeModeDark);
+                document.documentElement.classList.add('dark');
+            } else {
+                setThemeModel(themeModeLight);
+                document.documentElement.classList.remove('dark');
+            }
+        };
+        darkModeMediaQuery.addEventListener('change', handleChange);
+
+        return () => darkModeMediaQuery.removeEventListener('change', handleChange);
+    }, []);
 
     Events.On(Event.events.AppUpdate, function (event) {
         console.log(Event.events.AppUpdate, event);
