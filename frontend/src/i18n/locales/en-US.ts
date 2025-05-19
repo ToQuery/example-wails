@@ -2,10 +2,17 @@ const enUS = {
   translation: {
     // App
     'app.title': 'Application Title',
+    // Update Dialog
+    'app.update.new-version': 'New Version Found',
+    'app.update.version': 'New Version:',
+    'app.update.changelog': 'Changelog:',
+    'app.update.force-update-message': 'This is a required update. You need to update to continue using the application.',
+    'app.update.later': 'Update Later',
+    'app.update.download-now': 'Download Now',
 
     // Navigation menu
     'menu.home': 'Home',
-    'menu.user': 'User',
+    'menu.file': 'File',
     'menu.example': 'Example',
     'menu.setting': 'Settings',
     'menu.url': 'Url',
@@ -26,7 +33,7 @@ const enUS = {
     // Page
     'page.home.title': 'Home',
     'page.home.counter': 'Counter: ',
-    'page.user.title': 'User',
+    'page.user.title': 'File',
 
     'page.example.title': 'Example',
     'page.example.input': 'Input',
@@ -37,7 +44,8 @@ const enUS = {
     'page.example.app-force-update-from-event': 'Force App Update From Event',
     'page.example.app-embed-exec-binary': 'Embed Exec Binary',
     'page.example.app-embed-file': 'Embed File',
-    'page.example.app-open-application': 'Open Application',
+    'page.example.app-open-application-wechat': 'Open Application(Wechat)',
+    'page.example.app-open-application-qq': 'Open Application(QQ)',
     'page.example.app-open-browser': 'Open Browser',
     'page.example.clipboard': 'Clipboard',
     'page.example.get-clipboard': 'Get Clipboard',
@@ -79,7 +87,8 @@ const enUS = {
     'page.setting.description': 'Wails is a project that enables you to write desktop applications using Go and web technologies.',
     'page.setting.official-website': 'Official Website',
     'page.setting.documentation': 'Documentation',
-    'page.setting.all-rights-reserved': 'All Rights Reserved'
+    'page.setting.all-rights-reserved': 'All Rights Reserved',
+
   }
 };
 

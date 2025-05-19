@@ -4,13 +4,16 @@ import (
 	"example-wails/cmd/wails"
 	"example-wails/internal/model"
 	"fmt"
-	"github.com/wailsapp/wails/v3/pkg/application"
 	"io"
 	"io/fs"
 	"log"
 	"os"
 	"os/exec"
 	"runtime"
+
+	"github.com/adrg/xdg"
+
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 type ExampleService struct {
@@ -20,6 +23,118 @@ type ExampleService struct {
 
 func NewExampleService(appInfo model.AppInfoModel, assets fs.FS) *ExampleService {
 	return &ExampleService{AppInfo: appInfo, Assets: assets}
+}
+
+/*------File Start----------------------------------------------------------------------------------------------------*/
+
+func (s *ExampleService) GetDirInfo() model.DirInfoModel {
+	userCacheDir, err := os.UserCacheDir()
+	if err != nil {
+		log.Printf("获取用户缓存目录失败: %v", err)
+	}
+	userConfigDir, err := os.UserConfigDir()
+	if err != nil {
+		log.Printf("获取用户配置目录失败: %v", err)
+	}
+	userHomeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.Printf("获取用户主目录失败: %v", err)
+	}
+
+	return model.DirInfoModel{
+		OSTempDir:       os.TempDir(),
+		OSUserCacheDir:  userCacheDir,
+		OSUserConfigDir: userConfigDir,
+		OSUserHomeDir:   userHomeDir,
+		// XDG 目录规范相关字段
+		XDGHome:       xdg.Home,
+		XDGDataHome:   xdg.DataHome,
+		XDGDataDirs:   xdg.DataDirs,
+		XDGConfigHome: xdg.ConfigHome,
+		XDGConfigDirs: xdg.ConfigDirs,
+		XDGStateHome:  xdg.StateHome,
+		XDGCacheHome:  xdg.CacheHome,
+		XDGRuntimeDir: xdg.RuntimeDir,
+		XDGBinHome:    xdg.BinHome,
+		XDGUserDirs: map[string]string{
+			"desktop":     xdg.UserDirs.Desktop,
+			"download":    xdg.UserDirs.Download,
+			"documents":   xdg.UserDirs.Documents,
+			"music":       xdg.UserDirs.Music,
+			"pictures":    xdg.UserDirs.Pictures,
+			"videos":      xdg.UserDirs.Videos,
+			"templates":   xdg.UserDirs.Templates,
+			"publicShare": xdg.UserDirs.PublicShare,
+		},
+		XDGFontDirs:        xdg.FontDirs,
+		XDGApplicationDirs: xdg.ApplicationDirs,
+		XDGUserDirectories: map[string]string{
+			"desktop":     xdg.UserDirs.Desktop,
+			"download":    xdg.UserDirs.Download,
+			"documents":   xdg.UserDirs.Documents,
+			"music":       xdg.UserDirs.Music,
+			"pictures":    xdg.UserDirs.Pictures,
+			"videos":      xdg.UserDirs.Videos,
+			"templates":   xdg.UserDirs.Templates,
+			"publicShare": xdg.UserDirs.PublicShare,
+		},
+	}
+}
+
+/*------File End------------------------------------------------------------------------------------------------------*/
+
+func (s *ExampleService) GetAppDirInfo() model.DirInfoModel {
+	userCacheDir, err := os.UserCacheDir()
+	if err != nil {
+		log.Printf("获取用户缓存目录失败: %v", err)
+	}
+	userConfigDir, err := os.UserConfigDir()
+	if err != nil {
+		log.Printf("获取用户配置目录失败: %v", err)
+	}
+	userHomeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.Printf("获取用户主目录失败: %v", err)
+	}
+
+	return model.DirInfoModel{
+		OSTempDir:       os.TempDir(),
+		OSUserCacheDir:  userCacheDir,
+		OSUserConfigDir: userConfigDir,
+		OSUserHomeDir:   userHomeDir,
+		// XDG 目录规范相关字段
+		XDGHome:       xdg.Home,
+		XDGDataHome:   xdg.DataHome,
+		XDGDataDirs:   xdg.DataDirs,
+		XDGConfigHome: xdg.ConfigHome,
+		XDGConfigDirs: xdg.ConfigDirs,
+		XDGStateHome:  xdg.StateHome,
+		XDGCacheHome:  xdg.CacheHome,
+		XDGRuntimeDir: xdg.RuntimeDir,
+		XDGBinHome:    xdg.BinHome,
+		XDGUserDirs: map[string]string{
+			"desktop":     xdg.UserDirs.Desktop,
+			"download":    xdg.UserDirs.Download,
+			"documents":   xdg.UserDirs.Documents,
+			"music":       xdg.UserDirs.Music,
+			"pictures":    xdg.UserDirs.Pictures,
+			"videos":      xdg.UserDirs.Videos,
+			"templates":   xdg.UserDirs.Templates,
+			"publicShare": xdg.UserDirs.PublicShare,
+		},
+		XDGFontDirs:        xdg.FontDirs,
+		XDGApplicationDirs: xdg.ApplicationDirs,
+		XDGUserDirectories: map[string]string{
+			"desktop":     xdg.UserDirs.Desktop,
+			"download":    xdg.UserDirs.Download,
+			"documents":   xdg.UserDirs.Documents,
+			"music":       xdg.UserDirs.Music,
+			"pictures":    xdg.UserDirs.Pictures,
+			"videos":      xdg.UserDirs.Videos,
+			"templates":   xdg.UserDirs.Templates,
+			"publicShare": xdg.UserDirs.PublicShare,
+		},
+	}
 }
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
@@ -61,6 +176,67 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 }
 
 func (s ExampleService) AppEmbedExecBinary() {
+	// 根据当前操作系统和架构确定要执行的二进制文件路径
+	var binaryPath string
+	// 构建二进制文件路径，格式为：assets/binary/example/{os}_{arch}/example[.exe]
+	binaryName := "example-wails"
+	if runtime.GOOS == "windows" {
+		binaryName += ".exe"
+	}
+
+	binaryPath = fmt.Sprintf("assets/binary/example/%s_%s/%s", runtime.GOOS, runtime.GOARCH, binaryName)
+
+	// 从嵌入的资源中打开二进制文件
+	embeddedFile, err := s.Assets.Open(binaryPath)
+	if err != nil {
+		log.Printf("无法打开嵌入的二进制文件: %v", err)
+		return
+	}
+	defer embeddedFile.Close()
+
+	// 创建临时文件来存储二进制内容
+	tempFile, err := os.CreateTemp("", "example-binary-*")
+	if err != nil {
+		log.Printf("创建临时文件失败: %v", err)
+		return
+	}
+	// 获取文件的完整路径
+	tempFilePath := tempFile.Name()
+	log.Printf("临时文件路径: %s", tempFilePath)
+
+	defer os.Remove(tempFilePath) // 确保在函数结束时删除临时文件
+
+	// 将嵌入的二进制文件内容复制到临时文件
+	_, err = io.Copy(tempFile, embeddedFile)
+	if err != nil {
+		log.Printf("复制二进制内容失败: %v", err)
+		tempFile.Close()
+		return
+	}
+	tempFile.Close()
+
+	// 设置执行权限
+	if runtime.GOOS != "windows" {
+		if err := os.Chmod(tempFilePath, 0755); err != nil {
+			log.Printf("设置执行权限失败: %v", err)
+			return
+		}
+	}
+
+	// 执行二进制文件
+	cmd := exec.Command(tempFilePath)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Printf("执行二进制文件失败: %v, 输出: %s", err, output)
+		return
+	}
+
+	log.Printf("二进制文件执行成功，输出: %s", output)
+
+	dialog := application.InfoDialog()
+	dialog.SetTitle("Exec Binary From Embed Assets")
+	dialog.SetMessage(string(output))
+	dialog.Show()
 }
 
 func (s ExampleService) AppEmbedFile() {

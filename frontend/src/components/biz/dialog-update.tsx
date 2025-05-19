@@ -2,6 +2,7 @@ import React from 'react';
 import {Icon} from '@iconify/react';
 import {DefaultBg, useConfigUpdate} from '@/provider/config';
 import {cn} from "@/lib/utils";
+import {useTranslation} from "react-i18next";
 
 // 更新信息接口
 export interface UpdateInfo {
@@ -20,7 +21,7 @@ export interface UpdateInfo {
 
 // 更新弹窗组件
 const DialogUpdate = () => {
-
+    const {t} = useTranslation();
     const [showModal, setShowModal, updateInfo] = useConfigUpdate();
 
     // 如果是强制更新，添加模糊背景效果
@@ -40,7 +41,7 @@ const DialogUpdate = () => {
                                 <div className="flex items-center justify-between">
                                     <h3 className="text-lg font-bold flex items-center">
                                         <Icon icon="mdi:update" className="mr-2 text-xl"/>
-                                        发现新版本
+                                        {t('app.update.new-version')}
                                     </h3>
                                     {!updateInfo.forceUpdate && (
                                         <button
@@ -57,13 +58,13 @@ const DialogUpdate = () => {
                             <div className="p-5">
                                 <div className="mb-4">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-gray-600 dark:text-gray-300">新版本:</span>
+                                        <span className="text-gray-600 dark:text-gray-300">{t('app.update.version')}</span>
                                         <span
                                             className="font-semibold text-blue-600 dark:text-blue-400">{updateInfo.version}</span>
                                     </div>
 
                                     <div className="mb-4">
-                                        <div className="text-gray-600 dark:text-gray-300 mb-1">更新内容:</div>
+                                        <div className="text-gray-600 dark:text-gray-300 mb-1">{t('app.update.changelog')}</div>
                                         <div
                                             className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg text-sm whitespace-pre-line">
                                             {updateInfo.changelog}
@@ -77,7 +78,7 @@ const DialogUpdate = () => {
                                                 <Icon icon="mdi:alert"
                                                       className="text-yellow-500 mr-2 text-xl flex-shrink-0 mt-0.5"/>
                                                 <p className="text-yellow-700 dark:text-yellow-200 text-sm">
-                                                    这是一个必要的更新，您需要更新后才能继续使用应用。
+                                                    {t('app.update.force-update-message')}
                                                 </p>
                                             </div>
                                         </div>
@@ -91,7 +92,7 @@ const DialogUpdate = () => {
                                             onClick={() => setShowModal(false)}
                                             className="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                                         >
-                                            稍后更新
+                                            {t('app.update.later')}
                                         </button>
                                     )}
                                     <a
@@ -102,7 +103,7 @@ const DialogUpdate = () => {
                                     >
                                         <div className="flex items-center">
                                             <Icon icon="mdi:download" className="mr-1"/>
-                                            立即下载
+                                            {t('app.update.download-now')}
                                         </div>
                                     </a>
                                 </div>

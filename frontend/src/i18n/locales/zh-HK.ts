@@ -2,10 +2,17 @@ const zhHK = {
   translation: {
     // 應用
     'app.title': '應用標題',
+    // 更新對話框
+    'app.update.new-version': '發現新版本',
+    'app.update.version': '新版本:',
+    'app.update.changelog': '更新內容:',
+    'app.update.force-update-message': '這是一個必要的更新，您需要更新後才能繼續使用應用。',
+    'app.update.later': '稍後更新',
+    'app.update.download-now': '立即下載',
 
     // 導航選單
     'menu.home': '首頁',
-    'menu.user': '用戶',
+    'menu.file': '文件',
     'menu.example': '示例',
     'menu.setting': '設定',
     'menu.url': 'Url',
@@ -37,7 +44,8 @@ const zhHK = {
     'page.example.app-force-update-from-event': '從事件強制更新應用',
     'page.example.app-embed-exec-binary': '嵌入執行二進制文件',
     'page.example.app-embed-file': '嵌入文件',
-    'page.example.app-open-application': '打開應用程序',
+    'page.example.app-open-application-wechat': '打開應用程序(Wechat)',
+    'page.example.app-open-application-qq': '打开应用程序(QQ)',
     'page.example.app-open-browser': '打開瀏覽器',
     'page.example.clipboard': '剪貼板',
     'page.example.get-clipboard': '獲取剪貼板',
@@ -79,7 +87,8 @@ const zhHK = {
     'page.setting.description': 'Wails是一個允許你使用Go和Web技術編寫桌面應用的項目。',
     'page.setting.official-website': '官方網站',
     'page.setting.documentation': '文檔',
-    'page.setting.all-rights-reserved': '保留所有權利'
+    'page.setting.all-rights-reserved': '保留所有權利',
+
   }
 };
 

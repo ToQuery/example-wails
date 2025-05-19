@@ -2,9 +2,10 @@ import React from "react";
 import {Events} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
-import {AppInfoModel, UpdateInfoModel} from "../../bindings/example-wails/internal/model";
+import {AppInfoModel, DirInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event} from "@/const";
 import {useConfigUpdate} from "@/provider/config";
+import {cn} from "@/lib/utils";
 
 function Example() {
     const {t} = useTranslation();
@@ -13,7 +14,7 @@ function Example() {
     const [appInfo, setAppInfo] = React.useState<AppInfoModel>();
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
     const [windowName, setWindowName] = React.useState<string>("main");
-    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo , checkForUpdates] = useConfigUpdate();
+    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
 
 
     const butClass = 'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center active:scale-95';
@@ -39,9 +40,11 @@ function Example() {
         {separator}
         <section>
             <h2>{t('page.example.app-info')}</h2>
-            <div className={butGroupClass}>
+            <div className={cn(butGroupClass)}>
                 <div>Version: {appInfo?.Version}</div>
                 <div>VersionCode: {appInfo?.VersionCode}</div>
+                <div>BuildId: {appInfo?.BuildId}</div>
+                <div>BuildTime: {appInfo?.BuildTime}</div>
             </div>
             <div className={butGroupClass}>
                 <button className={butClass} type="button"
@@ -99,7 +102,11 @@ function Example() {
                 </button>
                 <button className={butClass} type="button"
                         onClick={() => ExampleService.AppOpenApplication("WeChat")}>
-                    {t('page.example.app-open-application')}
+                    {t('page.example.app-open-application-wechat')}
+                </button>
+                <button className={butClass} type="button"
+                        onClick={() => ExampleService.AppOpenApplication("QQ")}>
+                    {t('page.example.app-open-application-qq')}
                 </button>
                 <button className={butClass} type="button"
                         onClick={() => ExampleService.AppOpenBrowser("https://github.com")}>
@@ -238,6 +245,11 @@ function Example() {
                     {t('page.example.webview-window-show-github')}
                 </button>
             </div>
+        </section>
+        {separator}
+        <section>
+            <h2>{t('page.example.other')}</h2>
+            <div className={butGroupClass}></div>
         </section>
     </div>);
 }
