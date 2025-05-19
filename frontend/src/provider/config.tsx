@@ -3,6 +3,9 @@ import {SidebarStyle} from "@/components/sidebar/sidebar";
 import ThemeMode, {themeModeAuto} from "@/components/sidebar/theme-mode";
 import DialogUpdate, {UpdateInfo} from "@/components/biz/dialog-update";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
+import {Events} from "@wailsio/runtime";
+import {Event} from "@/const";
+import {UpdateInfoModel} from "../../bindings/example-wails/internal/model";
 
 
 // 侧边栏导航激活样式
@@ -78,9 +81,20 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     const [updateInfo, setUpdateInfo] = useState<UpdateInfo>(defaultConfig.updateInfo);
     const [showUpdateDialog, setShowUpdateDialog] = useState<boolean>(false);
 
-    // Events.On(appUpdate, function (data) {
-    //   console.log(appUpdate, data);
-    // });
+    Events.On(Event.events.AppUpdate, function (event) {
+        console.log(Event.events.AppUpdate, event);
+        const eventDatas: UpdateInfoModel[] = event.data;
+        const eventData: UpdateInfoModel = eventDatas[0];
+        console.log(Event.events.AppUpdate + " data ", eventData);
+        setUpdateInfo({
+            version: eventData.Version,
+            versionCode: eventData.VersionCode,
+            forceUpdate: eventData.ForceUpdate,
+            changelog: eventData.Changelog,
+            downloadUrl: eventData.DownloadUrl,
+        });
+        setShowUpdateDialog(true);
+    });
 
     // 检查更新函数
     const checkForUpdates = () => {
@@ -114,7 +128,7 @@ export function ConfigProvider({children}: { children: ReactNode }) {
             checkForUpdates,
             setUpdateInfo,
         }}>
-            <DialogUpdate />
+            <DialogUpdate/>
             {children}
         </ConfigContext.Provider>
     );

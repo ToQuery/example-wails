@@ -12,6 +12,7 @@ import (
 	"log"
 	"runtime"
 	"strconv"
+	"time"
 )
 
 var (
@@ -28,6 +29,9 @@ var (
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+//go:embed all:assets
+var goAssets embed.FS
 
 // main function serves as the application's entry point. It initializes the application, creates a window,
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
@@ -55,7 +59,7 @@ func main() {
 		Name: "example-wails",
 
 		Services: []application.Service{
-			application.NewService(service.NewExampleService(appInfo)),
+			application.NewService(service.NewExampleService(appInfo, goAssets)),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -119,13 +123,13 @@ func main() {
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
-	//go func() {
-	//	for {
-	//		now := time.Now().Format(time.RFC1123)
-	//		app.EmitEvent(wails.AppDatetime, now)
-	//		time.Sleep(time.Second)
-	//	}
-	//}()
+	go func() {
+		for {
+			now := time.Now().Format(time.RFC1123)
+			app.EmitEvent(wails.AppDatetime, now)
+			time.Sleep(time.Second)
+		}
+	}()
 
 	// Run the application. This blocks until the application has been exited.
 	err = app.Run()

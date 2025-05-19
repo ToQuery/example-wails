@@ -4,20 +4,22 @@ import (
 	"example-wails/cmd/wails"
 	"example-wails/internal/model"
 	"fmt"
+	"github.com/wailsapp/wails/v3/pkg/application"
+	"io"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
 	"runtime"
-
-	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 type ExampleService struct {
 	AppInfo model.AppInfoModel
+	Assets  fs.FS
 }
 
-func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
-	return &ExampleService{AppInfo: appInfo}
+func NewExampleService(appInfo model.AppInfoModel, assets fs.FS) *ExampleService {
+	return &ExampleService{AppInfo: appInfo, Assets: assets}
 }
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
@@ -56,6 +58,58 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 		return updateInfo
 	}
 	return nil
+}
+
+func (s ExampleService) AppEmbedExecBinary() {
+}
+
+func (s ExampleService) AppEmbedFile() {
+	file, err := s.Assets.Open("assets/README.md")
+	if err != nil {
+		log.Printf("打开文件失败: %v\n", err)
+		return
+	}
+
+	content, err := io.ReadAll(file)
+	if err != nil {
+		log.Printf("读取文件内容失败: %v\n", err)
+		return
+	}
+	log.Printf("文件内容: %s\n", string(content))
+
+	dialog := application.InfoDialog()
+	dialog.SetTitle("Get File From Embed Assets")
+	dialog.SetMessage(string(content))
+	dialog.Show()
+
+}
+
+func (s ExampleService) AppOpenApplication(application string) {
+	// 根据不同操作系统打开应用程序
+	var cmd *exec.Cmd
+
+	switch runtime.GOOS {
+	case "darwin": // macOS
+		cmd = exec.Command("open", "-a", application)
+	case "windows": // Windows
+		cmd = exec.Command("cmd", "/c", "start", "", application)
+	case "linux": // Linux
+		cmd = exec.Command("xdg-open", application)
+	default:
+		log.Printf("不支持的操作系统: %s\n", runtime.GOOS)
+		return
+	}
+
+	// 执行命令
+	err := cmd.Start()
+	if err != nil {
+		log.Printf("打开应用程序 %s 失败: %v\n", application, err)
+	}
+}
+
+func (s ExampleService) AppOpenBrowser(url string) {
+	// 使用Wails提供的runtime.BrowseURL函数打开浏览器
+	application.Get()
 }
 
 /*------App End-------------------------------------------------------------------------------------------------------*/
@@ -263,40 +317,5 @@ func (s ExampleService) WebviewWindowMaximize(windowName string) {
 /*------Multi Windows End---------------------------------------------------------------------------------------------*/
 
 /*------Other Start---------------------------------------------------------------------------------------------------*/
-
-func (s ExampleService) EmbedExecBinary() {
-}
-
-func (s ExampleService) EmbedFile() {
-
-}
-
-func (s ExampleService) EmbedOpenApplication(application string) {
-	// 根据不同操作系统打开应用程序
-	var cmd *exec.Cmd
-
-	switch runtime.GOOS {
-	case "darwin": // macOS
-		cmd = exec.Command("open", "-a", application)
-	case "windows": // Windows
-		cmd = exec.Command("cmd", "/c", "start", "", application)
-	case "linux": // Linux
-		cmd = exec.Command("xdg-open", application)
-	default:
-		log.Printf("不支持的操作系统: %s\n", runtime.GOOS)
-		return
-	}
-
-	// 执行命令
-	err := cmd.Start()
-	if err != nil {
-		log.Printf("打开应用程序 %s 失败: %v\n", application, err)
-	}
-}
-
-func (s ExampleService) EmbedOpenBrowser(url string) {
-	// 使用Wails提供的runtime.BrowseURL函数打开浏览器
-	application.Get()
-}
 
 /*------Other End-----------------------------------------------------------------------------------------------------*/

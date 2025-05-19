@@ -2,7 +2,7 @@ import React from "react";
 import {Events} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
-import {AppInfoModel} from "../../bindings/example-wails/internal/model";
+import {AppInfoModel, UpdateInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event} from "@/const";
 import {useConfigUpdate} from "@/provider/config";
 
@@ -22,9 +22,12 @@ function Example() {
 
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
-    Events.On(Event.events.AppDatetime, function (data) {
-        console.log(Event.events.AppDatetime, data);
-        setDateTime(data.data);
+    Events.On(Event.events.AppDatetime, function (event) {
+        console.log(Event.events.AppDatetime, event);
+        const eventDatas: string[] = event.data;
+        const eventData: string = eventDatas[0];
+        console.log(Event.events.AppDatetime + " data ", eventData);
+        setDateTime(eventData);
     });
 
     return (<div>
@@ -86,6 +89,21 @@ function Example() {
                 <button className={butClass} type="button"
                         onClick={async () => await ExampleService.AppUpdateFromEvent(true, true)}>
                     {t('page.example.app-force-update-from-event')}
+                </button>
+
+                <button className={butClass} type="button" onClick={() => ExampleService.AppEmbedExecBinary()}>
+                    {t('page.example.app-embed-exec-binary')}
+                </button>
+                <button className={butClass} type="button" onClick={() => ExampleService.AppEmbedFile()}>
+                    {t('page.example.app-embed-file')}
+                </button>
+                <button className={butClass} type="button"
+                        onClick={() => ExampleService.AppOpenApplication("WeChat")}>
+                    {t('page.example.app-open-application')}
+                </button>
+                <button className={butClass} type="button"
+                        onClick={() => ExampleService.AppOpenBrowser("https://github.com")}>
+                    {t('page.example.app-open-browser')}
                 </button>
             </div>
         </section>
@@ -218,26 +236,6 @@ function Example() {
                 <button className={butClass} type="button"
                         onClick={() => ExampleService.WebviewWindowShow(windowName, "https://github.com")}>
                     {t('page.example.webview-window-show-github')}
-                </button>
-            </div>
-        </section>
-        {separator}
-        <section>
-            <h2>{t('page.example.other')}</h2>
-            <div className={butGroupClass}>
-                <button className={butClass} type="button" onClick={() => ExampleService.EmbedExecBinary()}>
-                    {t('page.example.embed-exec-binary')}
-                </button>
-                <button className={butClass} type="button" onClick={() => ExampleService.EmbedFile()}>
-                    {t('page.example.embed-file')}
-                </button>
-                <button className={butClass} type="button"
-                        onClick={() => ExampleService.EmbedOpenApplication("WeChat")}>
-                    {t('page.example.open-application')}
-                </button>
-                <button className={butClass} type="button"
-                        onClick={() => ExampleService.EmbedOpenBrowser("https://github.com")}>
-                    {t('page.example.open-browser')}
                 </button>
             </div>
         </section>
