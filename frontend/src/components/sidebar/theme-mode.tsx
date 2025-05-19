@@ -1,13 +1,40 @@
-import {useEffect} from 'react';
 import {Icon} from '@iconify/react';
 import {useTranslation} from 'react-i18next';
 import {useConfigThemeModel} from "@/provider/config";
 
-type ThemeMode = 'auto' | 'light' | 'dark';
+type ThemeMode = {
+    icon: string;
+    code: string;
+    name: string;
+    label: string;
+};
 
-export const themeModeAuto: ThemeMode = 'auto';
-export const themeModeLight: ThemeMode = 'light';
-export const themeModeDark: ThemeMode = 'dark';
+export const themeModeAuto: ThemeMode = {
+    icon: 'mdi:theme-light-dark',
+    code: 'auto',
+    name: 'app.theme.auto',
+    label: 'app.theme.auto-label',
+};
+
+export const themeModeLight: ThemeMode = {
+    icon: 'mdi:white-balance-sunny',
+    code: 'light',
+    name: 'app.theme.light',
+    label: 'app.theme.light-label',
+};
+export const themeModeDark: ThemeMode = {
+    icon: 'mdi:weather-night',
+    code: 'dark',
+    name: 'app.theme.dark',
+    label: 'app.theme.dark-label',
+};
+
+export const themeModeOptions: ThemeMode[] = [
+    themeModeAuto,
+    themeModeLight,
+    themeModeDark,
+];
+
 
 function ThemeMode() {
     const {t} = useTranslation();
@@ -27,60 +54,14 @@ function ThemeMode() {
 
     };
 
-    const themeModeIcon = () => {
-        let themeModeIcon = <Icon icon="icon-park:refresh"/>;
-        switch (themeModel) {
-            case themeModeAuto: {
-                themeModeIcon = <Icon icon="icon-park:refresh-one"/>;
-                break;
-            }
-            case themeModeLight: {
-                themeModeIcon = <Icon icon="icon-park:dark-mode"/>;
-                break;
-            }
-            case themeModeDark: {
-                themeModeIcon = <Icon icon="icon-park:sun-one"/>;
-                break;
-            }
-            default: {
-                themeModeIcon = <Icon icon="icon-park:refresh"/>;
-                break;
-            }
-        }
-        return themeModeIcon;
-    }
-
-    const themeModeText = () => {
-        let themeModeText = t('common.theme.auto');
-        switch (themeModel) {
-            case themeModeAuto: {
-                themeModeText = t('common.theme.auto');
-                break;
-            }
-            case themeModeLight: {
-                themeModeText = t('common.theme.dark');
-                break;
-            }
-            case themeModeDark: {
-                themeModeText = t('common.theme.light');
-                break;
-            }
-            default: {
-                themeModeText = t('common.theme.auto');
-                break;
-            }
-        }
-        return themeModeText;
-    };
-
     return (
         <button
             onClick={toggleDark}
             className="text-2xl hover:rotate-6"
-            title={themeModeText()}
-            aria-label={themeModeText()}
+            title={t(themeModel.name)}
+            aria-label={t(themeModel.label)}
         >
-            {themeModeIcon()}
+            <Icon icon={themeModel.icon}/>
         </button>
     );
 }

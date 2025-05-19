@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
+	"github.com/wailsapp/wails/v3/pkg/services/kvstore"
 	"log"
 	"runtime"
 	"strconv"
@@ -50,6 +51,11 @@ func main() {
 		BuildTime:   BuildTime,
 	}
 
+	config := &kvstore.Config{
+		Filename: "example-wails.db",
+		AutoSave: true,
+	}
+
 	// Create a new Wails application by providing the necessary options.
 	// Variables 'Name' and 'Description' are for application metadata.
 	// 'Assets' configures the asset server with the 'FS' variable pointing to the frontend files.
@@ -59,6 +65,7 @@ func main() {
 		Name: "example-wails",
 
 		Services: []application.Service{
+			application.NewService(kvstore.New(config)),
 			application.NewService(service.NewExampleService(appInfo, goAssets)),
 		},
 		Assets: application.AssetOptions{

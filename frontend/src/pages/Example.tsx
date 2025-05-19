@@ -1,9 +1,9 @@
 import React from "react";
-import {Events} from '@wailsio/runtime'
+import {Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
-import {Event} from "@/const";
+import {Event, UI} from "@/const";
 import {useConfigLoading, useConfigUpdate} from "@/provider/config";
 import {cn} from "@/lib/utils";
 
@@ -14,12 +14,10 @@ function Example() {
     const [appInfo, setAppInfo] = React.useState<AppInfoModel>();
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
     const [windowName, setWindowName] = React.useState<string>("main");
+    const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
 
     const [, setLoading] = useConfigLoading();
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
-
-
-    const butClass = 'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center active:scale-95';
 
     const butGroupClass = 'flex flex-wrap gap-4 mt-4';
 
@@ -49,11 +47,11 @@ function Example() {
                 <div>BuildTime: {appInfo?.BuildTime}</div>
             </div>
             <div className={butGroupClass}>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => setAppInfo(await ExampleService.GetAppInfo())}>
                     {t('page.example.app-info')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => {
                             const updateInfoModel = await ExampleService.AppUpdate(true, false);
                             console.log("updateInfoModel", updateInfoModel);
@@ -70,7 +68,7 @@ function Example() {
                         }}>
                     {t('page.example.app-update')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => {
                             const updateInfoModel = await ExampleService.AppUpdate(true, true);
                             console.log("updateInfoModel", updateInfoModel);
@@ -87,18 +85,18 @@ function Example() {
                         }}>
                     {t('page.example.app-force-update')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => await ExampleService.AppUpdateFromEvent(true, false)}>
                     {t('page.example.app-update-from-event')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => await ExampleService.AppUpdateFromEvent(true, true)}>
                     {t('page.example.app-force-update-from-event')}
                 </button>
-                <button className={butClass} type="button" onClick={() => ExampleService.AppEmbedFile()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.AppEmbedFile()}>
                     {t('page.example.app-embed-file')}
                 </button>
-                <button className={butClass} type="button" onClick={() => {
+                <button className={UI.ui.btn} type="button" onClick={() => {
                     setLoading(true);
                     ExampleService.AppEmbedExecBinary().then(() => {
                         console.log("AppEmbedExecBinary done");
@@ -108,15 +106,15 @@ function Example() {
                 }}>
                     {t('page.example.app-embed-exec-binary')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.AppOpenApplication("WeChat")}>
                     {t('page.example.app-open-application-wechat')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.AppOpenApplication("QQ")}>
                     {t('page.example.app-open-application-qq')}
                 </button>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.AppOpenBrowser("https://github.com")}>
                     {t('page.example.app-open-browser')}
                 </button>
@@ -126,12 +124,12 @@ function Example() {
         <section>
             <h2>{t('page.example.clipboard')}</h2>
             <div className={butGroupClass}>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => setText(await ExampleService.ClipboardGet())}>
                     {t('page.example.get-clipboard')}
                 </button>
 
-                <button className={butClass} type="button" onClick={() => ExampleService.ClipboardSet(text)}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ClipboardSet(text)}>
                     {t('page.example.set-clipboard')}
                 </button>
             </div>
@@ -153,23 +151,23 @@ function Example() {
         <section>
             <h2>{t('page.example.dialog')}</h2>
             <div className={butGroupClass}>
-                <button className={butClass} type="button" onClick={() => ExampleService.InfoDialog()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.InfoDialog()}>
                     {t('page.example.info-dialog')}
                 </button>
-                <button className={butClass} type="button" onClick={() => ExampleService.QuestionDialog()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.QuestionDialog()}>
                     {t('page.example.question-dialog')}
                 </button>
-                <button className={butClass} type="button" onClick={() => ExampleService.ErrorDialog()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ErrorDialog()}>
                     {t('page.example.error-dialog')}
                 </button>
-                <button className={butClass} type="button" onClick={() => ExampleService.FileDialog()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.FileDialog()}>
                     {t('page.example.file-dialog')}
                 </button>
-                <button className={butClass} type="button" onClick={() => ExampleService.SaveFileDialog()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.SaveFileDialog()}>
                     {t('page.example.save-file-dialog')}
                 </button>
 
-                <button className={butClass} type="button" onClick={() => ExampleService.ShowAboutDialog()}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ShowAboutDialog()}>
                     {t('page.example.about-dialog')}
                 </button>
             </div>
@@ -224,31 +222,48 @@ function Example() {
                 </div>
             </div>
             <div className={butGroupClass}>
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.WebviewWindowShow(windowName, "/setting")}>
                     {t('page.example.webview-window-show')}
                 </button>
 
-                <button className={butClass} type="button" onClick={() => ExampleService.WebviewWindowHide(windowName)}>
+                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.WebviewWindowHide(windowName)}>
                     {t('page.example.webview-window-hide')}
                 </button>
 
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.WebviewWindowCenter(windowName)}>
                     {t('page.example.webview-window-center')}
                 </button>
 
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.WebviewWindowToggleFullscreen(windowName)}>
                     {t('page.example.webview-window-toggle-fullscreen')}
                 </button>
 
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
+                        onClick={async () => {
+                            const currentScreens = await Screens.GetCurrent();
+                            ExampleService.WebviewWindowSetSize(windowName, 800, currentScreens.WorkArea.Height)
+                        }}>
+                    {t('page.example.webview-window-set-size')}
+                </button>
+
+                <button className={UI.ui.btn} type="button"
+                        onClick={() => {
+                            const newVal = !alwaysOnTop;
+                            ExampleService.WebviewWindowSetAlwaysOnTop(windowName, newVal);
+                            setAlwaysOnTop(newVal);
+                        }}>
+                    {alwaysOnTop ? t('page.example.webview-window-set-always-on-top-false'): t('page.example.webview-window-set-always-on-top-true')}
+                </button>
+
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.WebviewWindowClose(windowName)}>
                     {t('page.example.webview-window-close')}
                 </button>
 
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={() => ExampleService.WebviewWindowShow(windowName, "https://github.com")}>
                     {t('page.example.webview-window-show-github')}
                 </button>

@@ -3,13 +3,12 @@ import {useTranslation} from 'react-i18next';
 import {cn} from "@/lib/utils";
 import {DirInfoModel} from "../../bindings/example-wails/internal/model";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
+import {UI} from "@/const";
 
 function File() {
     const {t} = useTranslation();
 
     const [dirInfo, setDirInfo] = React.useState<DirInfoModel>();
-
-    const butClass = 'text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center active:scale-95';
 
     const dirClass = 'mt-4 space-y-4';
 
@@ -20,7 +19,7 @@ function File() {
             <div className='flex justify-between item-center'>
                 <h1 className='w-full'>目录</h1>
 
-                <button className={butClass} type="button"
+                <button className={UI.ui.btn} type="button"
                         onClick={async () => setDirInfo(await ExampleService.GetDirInfo())}>
                     {t('page.file.dir-info')}
                 </button>

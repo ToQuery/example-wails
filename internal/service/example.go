@@ -460,6 +460,12 @@ func (s ExampleService) WebviewWindowForceReload(windowName string) {
 	}
 }
 
+func (s ExampleService) WebviewWindowSetSize(windowName string, width, height int) {
+	if window := application.Get().GetWindowByName(windowName); window != nil {
+		window.SetSize(width, height)
+	}
+}
+
 // close 之后必须 new
 func (s ExampleService) WebviewWindowClose(windowName string) {
 	webWindows := application.Get().GetWindowByName(windowName)
@@ -485,7 +491,7 @@ func (s ExampleService) WebviewWindowMaximize(windowName string) {
 		if window.IsMaximised() {
 			window.UnMaximise()
 		} else {
-			window.Maximise()
+			window.EnableSizeConstraints()
 		}
 	}
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
+import {Browser} from "@wailsio/runtime";
+
 import {DefaultBg, useConfigUpdate} from '@/provider/config';
 import {cn} from "@/lib/utils";
 import {useTranslation} from "react-i18next";
@@ -73,7 +75,7 @@ const DialogUpdate = () => {
                                     <Icon icon="mdi:alert"
                                           className="text-yellow-500 mr-2 text-xl flex-shrink-0 mt-0.5"/>
                                     <p className="text-yellow-700 dark:text-yellow-200 text-sm">
-                                        {t('app.update.force-update-message')}
+                                        {t('app.update.force-update-tip')}
                                     </p>
                                 </div>
                             </div>
@@ -90,17 +92,15 @@ const DialogUpdate = () => {
                                 {t('app.update.later')}
                             </button>
                         )}
-                        <a
-                            href={updateInfo.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={cn(DefaultBg, "px-4 py-2 rounded-lg text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
+                        <button
+                            onClick={() => Browser.OpenURL(updateInfo.downloadUrl)}
+                            className={cn(DefaultBg, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
                         >
                             <div className="flex items-center">
                                 <Icon icon="mdi:download" className="mr-1"/>
                                 {t('app.update.download-now')}
                             </div>
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>

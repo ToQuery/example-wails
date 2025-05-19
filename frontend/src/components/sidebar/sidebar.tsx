@@ -4,6 +4,7 @@ import {useTranslation} from 'react-i18next';
 import React from "react";
 import {cn} from "@/lib/utils";
 import {DefaultActiveClass, DefaultBgClass, useConfigSidebarStyle} from "@/provider/config";
+import {Browser} from "@wailsio/runtime";
 
 export type SidebarStyle = {
     code: string;
@@ -72,10 +73,23 @@ function Sidebar({
     // 是否非 Mac 平台
     const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
+    const handleMenuItemClick = (menu: Menu) => {
+        const path = menu.path
+        if (path) {
+            if (path.startsWith("http://") || path.startsWith("https://")) {
+                Browser.OpenURL(path)
+            }else {
+                navigate(path);
+            }
+        }
+    }
+
     const menuItemNode = (index: number, menu: Menu) => {
         let isActive = false;
-        if (menu.path) {
-            const url = new URL(menu.path, window.location.origin);
+        const path = menu.path
+
+        if (path && !path.startsWith("http://") && !path.startsWith("https://")) {
+            const url = new URL(path, window.location.origin);
             isActive = location.pathname == url.pathname || location.pathname == menu.path;
         }
 
@@ -87,7 +101,7 @@ function Sidebar({
                 node = menu.render
                     ? <li key={menu.name} className={cn(menuItemStyle, 'justify-center')}>{menu.render}</li>
                     : <li key={menu.name} className={cn(menuItemStyle, isActive ? activeClass : '', 'justify-center')}
-                          onClick={() => navigate(menu.path!)}>
+                          onClick={() => handleMenuItemClick(menu)}>
                         {menu.icon && <Icon icon={menu.icon}/>}
                     </li>
                 break;
@@ -98,7 +112,7 @@ function Sidebar({
                         ? <li key={menu.name} className={cn(menuItemStyle, 'justify-center')}>{menu.render}</li>
                         : <li key={menu.name}
                               className={cn(menuItemStyle, isActive ? activeClass : '', 'flex-row pl-[20px]')}
-                              onClick={() => navigate(menu.path!)}>
+                              onClick={() => handleMenuItemClick(menu)}>
                             {menu.icon && <Icon icon={menu.icon} className='text-xl'/>}
                             <span className='text-sm ml-1.5'>{t(menu.name)}</span>
                         </li>;
@@ -109,7 +123,7 @@ function Sidebar({
                 node = menu.render
                     ? <li key={menu.name} className={rowDoubleClass}>{menu.render}</li>
                     : <li key={menu.name} className={cn(rowDoubleClass, isActive ? activeClass : '')}
-                          onClick={() => navigate(menu.path!)}>
+                          onClick={() => handleMenuItemClick(menu)}>
                         {menu.icon && <Icon icon={menu.icon}/>}
                         <span className='text-sm mt-1'>{t(menu.name)}</span>
                     </li>;

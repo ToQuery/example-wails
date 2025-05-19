@@ -16,8 +16,16 @@ export const DefaultActiveClass = 'text-blue-600 dark:text-blue-500';
 
 export const DefaultBg = 'bg-blue-600 dark:text-blue-500';
 
+export type AppInfo = {
+    name: string;
+    version: string;
+    versionCode: number;
+}
+
 // 配置上下文
 interface ConfigContextType {
+    appInfo: AppInfo;
+    setAppInfo: (appInfo: AppInfo) => void;
     // 侧边栏
     sidebarStyle: SidebarStyle;
     setSidebarStyle: (style: SidebarStyle) => void;
@@ -46,6 +54,14 @@ interface ConfigContextType {
 }
 
 const defaultConfig: ConfigContextType = {
+    appInfo: {
+        name: 'example-wails',
+        version: 'v0.0.0',
+        versionCode: 0
+    },
+    setAppInfo: function (appInfo: AppInfo): void {
+        throw new Error('Function not implemented.');
+    },
     setSidebarStyle(style: SidebarStyle): void {
         console.log('setSidebarStyle', style);
     },
@@ -102,14 +118,41 @@ const ConfigContext = createContext<ConfigContextType>(defaultConfig);
 export function ConfigProvider({children}: { children: ReactNode }) {
     const {i18n} = useTranslation();
 
+    const [appInfo, setAppInfo] = useState<AppInfo>(defaultConfig.appInfo);
     const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
     const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
-    const [themeModel, setThemeModel] = useState<ThemeMode>(defaultConfig.themeModel);
+    const [themeModel, setThemeModelState] = useState<ThemeMode>(defaultConfig.themeModel);
     const [loading, setLoading] = useState<boolean>(defaultConfig.loading);
 
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
     const [showLanguageDialog, setShowLanguageDialog] = useState<boolean>(defaultConfig.showLanguageDialog);
+
+    // 包装 setLanguage 函数，使其同时调用 i18n.changeLanguage
+    const setThemeModel = (themeModel: ThemeMode) => {
+        setThemeModelState(themeModel);
+        switch (themeModel) {
+            case themeModeAuto: {
+                document.documentElement.classList.remove('dark');
+                break;
+            }
+            case themeModeLight: {
+                document.documentElement.classList.remove('dark');
+                break;
+            }
+            case themeModeDark: {
+                const isDark = document.documentElement.classList.contains('dark');
+                if (!isDark) {
+                    document.documentElement.classList.add('dark');
+                }
+                break;
+            }
+            default: {
+                document.documentElement.classList.remove('dark');
+                break;
+            }
+        }
+    };
 
     // 包装 setLanguage 函数，使其同时调用 i18n.changeLanguage
     const setLanguage = (lang: string) => {
@@ -121,8 +164,39 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     const [updateInfo, setUpdateInfo] = useState<UpdateInfo>(defaultConfig.updateInfo);
     const [showUpdateDialog, setShowUpdateDialog] = useState<boolean>(defaultConfig.showUpdateDialog);
 
+    const getAppInfo = () => {
+        ExampleService.GetAppInfo().then(async (appInfo) => {
+            console.log('ConfigProvider GetAppInfo', appInfo);
+            setAppInfo({
+                name: "example-wails",
+                version: appInfo.Version,
+                versionCode: appInfo.VersionCode,
+            });
+        });
+    };
+
+    // 检查更新函数
+    const checkForUpdates = () => {
+        ExampleService.AppCheckUpdate().then((updateInfo) => {
+            if (updateInfo) {
+                setUpdateInfo({
+                    version: updateInfo.Version,
+                    versionCode: updateInfo.VersionCode,
+                    forceUpdate: updateInfo.ForceUpdate,
+                    changelog: updateInfo.Changelog,
+                    downloadUrl: updateInfo.DownloadUrl,
+                });
+                setShowUpdateDialog(true);
+            }
+        });
+    };
 
     useEffect(() => {
+        getAppInfo();
+    }, []);
+
+    useEffect(() => {
+        console.log('ConfigProvider i18n.language', i18n.language);
         setLanguage(i18n.language);
     }, [i18n.language]);
 
@@ -133,7 +207,7 @@ export function ConfigProvider({children}: { children: ReactNode }) {
         // 监听系统主题变化
         const handleChange = (e: MediaQueryListEvent) => {
             const isDark = e.matches
-            console.log('handleChange isDark =', isDark);
+            console.log('ConfigProvider handleChange isDark =', isDark);
 
             if (isDark) {
                 setThemeModel(themeModeDark);
@@ -163,23 +237,10 @@ export function ConfigProvider({children}: { children: ReactNode }) {
         setShowUpdateDialog(true);
     });
 
-    // 检查更新函数
-    const checkForUpdates = () => {
-        ExampleService.AppCheckUpdate().then((updateInfo) => {
-            if (updateInfo) {
-                setUpdateInfo({
-                    version: updateInfo.Version,
-                    versionCode: updateInfo.VersionCode,
-                    forceUpdate: updateInfo.ForceUpdate,
-                    changelog: updateInfo.Changelog,
-                    downloadUrl: updateInfo.DownloadUrl,
-                });
-                setShowUpdateDialog(true);
-            }
-        });
-    };
 
     const value = {
+        appInfo,
+        setAppInfo,
         sidebarStyle,
         setSidebarStyle,
         windowTitle,
@@ -219,6 +280,14 @@ export function useConfig() {
         throw new Error('useConfig must be used within a ConfigProvider');
     }
     return context;
+}
+
+export function useConfigAppInfo(): [AppInfo, (appInfo: AppInfo) => void] {
+    const context = useContext(ConfigContext);
+    if (context === undefined) {
+        throw new Error('useConfig must be used within a ConfigProvider');
+    }
+    return [context.appInfo, context.setAppInfo];
 }
 
 export function useConfigSidebarStyle(): [SidebarStyle, (style: SidebarStyle) => void] {

@@ -1,14 +1,22 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
-import {useConfigLanguage, useConfigUpdate} from "@/provider/config";
+import {AppInfo, useConfigLanguage, useConfigThemeModel, useConfigUpdate} from "@/provider/config";
 import {languages} from "@/i18n";
+import {Browser} from "@wailsio/runtime";
+import {themeModeOptions} from "@/components/sidebar/theme-mode";
+import {cn} from "@/lib/utils";
+import {useTranslation} from "react-i18next";
 
 // 设置页面组件
 export default function Setting() {
-    const appVersion = "v1.0.0";
+
+    const {t} = useTranslation();
+
+    const [appInfo, setAppInfo] = React.useState<AppInfo>();
 
     const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
-    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo , checkForUpdates] = useConfigUpdate();
+    const [themeModel, setThemeModel] = useConfigThemeModel();
+    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
     const [showModal, setShowModal, language, setLanguage] = useConfigLanguage();
 
 
@@ -40,7 +48,7 @@ export default function Setting() {
                     </div>
                     <div className="text-right">
                         <div className="text-sm text-gray-500 dark:text-gray-400">当前版本</div>
-                        <div className="text-lg font-semibold text-gray-800 dark:text-white">{appVersion}</div>
+                        <div className="text-lg font-semibold text-gray-800 dark:text-white">{appInfo?.version}</div>
                     </div>
                 </div>
             </div>
@@ -99,27 +107,19 @@ export default function Setting() {
                             <p className="text-gray-500 dark:text-gray-400 text-sm">切换应用的显示主题</p>
                         </div>
                         <div className="flex space-x-2">
-                            <button
-                                className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
-                                <div className="flex items-center">
-                                    <Icon icon="mdi:white-balance-sunny" className="mr-1"/>
-                                    浅色
-                                </div>
-                            </button>
-                            <button
-                                className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">
-                                <div className="flex items-center">
-                                    <Icon icon="mdi:weather-night" className="mr-1"/>
-                                    深色
-                                </div>
-                            </button>
-                            <button
-                                className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
-                                <div className="flex items-center">
-                                    <Icon icon="mdi:theme-light-dark" className="mr-1"/>
-                                    自动
-                                </div>
-                            </button>
+
+                            {themeModeOptions.map((item) => {
+                                return <button
+                                    key={item.code}
+                                    onClick={() => setThemeModel(item)}
+                                    className={cn("px-4 py-2 rounded-lg  transition-colors", item.code == themeModel.code ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600')}>
+                                    <div className="flex items-center">
+                                        <Icon icon={item.icon} className="mr-1"/>
+                                        {item.code == themeModel.code ? t(item.name) : t(item.label)}
+                                    </div>
+                                </button>;
+                            })}
+
                         </div>
                     </div>
                 </div>
@@ -142,6 +142,7 @@ export default function Setting() {
                         </div>
                         <div className="relative">
                             <select
+                                onChange={(e) => setLanguage(e.target.value)}
                                 className="appearance-none bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white px-4 py-2 pr-8 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 {languages.map((lang) => (
                                     <option key={lang.code} value={lang.code}>{lang.label}</option>
@@ -170,21 +171,22 @@ export default function Setting() {
                         这是一个使用 Wails 和 React 构建的桌面应用程序示例。Wails 提供了一种使用 Go 和 Web 技术构建桌面应用的简单方法。
                     </p>
                     <div className="flex flex-wrap gap-4">
-                        <a href="https://wails.io" target="_blank" rel="noopener noreferrer"
-                           className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
+                        <button onClick={() => Browser.OpenURL("https://wails.io")}
+                                className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="simple-icons:wails" className="mr-2"/>
                             Wails 官网
-                        </a>
-                        <a href="https://github.com/wailsapp/wails" target="_blank" rel="noopener noreferrer"
-                           className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
+                        </button>
+                        <button onClick={() => Browser.OpenURL("https://github.com/ToQuery/example-wails")}
+                                className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="mdi:github" className="mr-2"/>
                             GitHub
-                        </a>
-                        <a href="https://wails.io/docs/" target="_blank" rel="noopener noreferrer"
-                           className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
+                        </button>
+                        <button
+                            onClick={() => Browser.OpenURL("https://v3alpha.wails.io/getting-started/installation/")}
+                            className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="mdi:book-open-variant" className="mr-2"/>
                             文档
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
