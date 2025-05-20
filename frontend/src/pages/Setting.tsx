@@ -6,6 +6,7 @@ import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
 import {cn} from "@/lib/utils";
 import {useTranslation} from "react-i18next";
+import {UI} from "@/const";
 
 // 设置页面组件
 export default function Setting() {
@@ -71,7 +72,7 @@ export default function Setting() {
                         <button
                             onClick={checkForUpdates}
                             disabled={isCheckingUpdate}
-                            className={`px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium hover:shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none`}
+                            className={UI.ui.btn}
                         >
                             <div className="flex items-center">
                                 {isCheckingUpdate ? (
