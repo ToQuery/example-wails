@@ -3,9 +3,20 @@ const enUS = {
         // App
         'app.title': 'Application Title',
         // Theme
+        'app.theme.title': 'Auto',
         'app.theme.auto': 'Auto',
-        'app.theme.light': 'Switch to Light Mode',
-        'app.theme.dark': 'Switch to Dark Mode',
+        'app.theme.light': 'Light',
+        'app.theme.dark': 'Dark',
+        'app.theme.auto-label': 'Switch to Auto Mode',
+        'app.theme.light-label': 'Switch to Light Mode',
+        'app.theme.dark-label': 'Switch to Dark Mode',
+
+        // Language
+        'app.language.title': 'Language Settings',
+        'app.language.auto': 'Auto',
+        'app.language.zh-CN': '简体中文',
+        'app.language.zh-TW': '繁體中文',
+        'app.language.en': 'English',
         // Update Dialog
         'app.update.new-version': 'New Version Found',
         'app.update.version': 'New Version:',
@@ -21,7 +32,7 @@ const enUS = {
         'menu.setting': 'Settings',
         'menu.url': 'Url',
         'menu.browser': 'Browser',
-        'menu.light-dark': '',
+        'menu.light-dark': 'Light/Dark',
         'menu.language': 'Language',
         'menu.sidebar-style': 'Sidebar Style',
 

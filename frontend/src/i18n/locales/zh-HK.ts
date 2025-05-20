@@ -3,9 +3,20 @@ const zhHK = {
         // 應用
         'app.title': '應用標題',
         // 主題
+        'app.theme.title': '自動',
         'app.theme.auto': '自動',
-        'app.theme.light': '切換至亮色模式',
-        'app.theme.dark': '切換至暗色模式',
+        'app.theme.light': '亮色',
+        'app.theme.dark': '暗色',
+        'app.theme.auto-label': '切換至自動模式',
+        'app.theme.light-label': '切換至亮色模式',
+        'app.theme.dark-label': '切換至暗色模式',
+        
+        // 語言
+        'app.language.title': '語言設置',
+        'app.language.auto': '自動',
+        'app.language.zh-CN': '簡體中文',
+        'app.language.zh-TW': '繁體中文',
+        'app.language.en': 'English',
         // 更新對話框
         'app.update.new-version': '發現新版本',
         'app.update.version': '新版本:',
@@ -21,8 +32,8 @@ const zhHK = {
         'menu.setting': '設定',
         'menu.url': 'Url',
         'menu.browser': '瀏覽器',
-        'menu.light-dark': '',
-        'menu.language': '',
+        'menu.light-dark': '亮色/暗色',
+        'menu.language': '語言',
         'menu.sidebar-style': '側邊欄樣式',
 
         // 通用按鈕和文字

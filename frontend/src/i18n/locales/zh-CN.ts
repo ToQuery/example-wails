@@ -12,7 +12,7 @@ const zhCN = {
         'app.theme.dark-label': '切换到暗色模式',
 
         // language
-        'app.language.title': '主题设置',
+        'app.language.title': '语言设置',
         'app.language.auto': '自动',
         'app.language.zh-CN': '简体中文',
         'app.language.zh-TW': '繁體中文',
@@ -33,8 +33,8 @@ const zhCN = {
         'menu.setting': '设置',
         'menu.url': 'Url',
         'menu.browser': '浏览器',
-        'menu.light-dark': '',
-        'menu.language': '',
+        'menu.light-dark': '亮色/暗色',
+        'menu.language': '语言',
         'menu.sidebar-style': '侧边栏样式',
 
         // 通用按钮和文本
