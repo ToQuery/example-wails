@@ -10,7 +10,7 @@ type UpdateInfoModel struct {
 }
 
 type AppInfoModel struct {
-	// Add your properties here
+	Name        string
 	Version     string
 	VersionCode int
 	BuildId     string

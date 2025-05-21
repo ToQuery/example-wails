@@ -4,17 +4,17 @@
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleName</key>
-        <string>My Product</string>
+        <string>Example Wails</string>
         <key>CFBundleExecutable</key>
-        <string>example-wails</string>
+        <string></string>
         <key>CFBundleIdentifier</key>
-        <string>com.wails.example-wails</string>
+        <string>io.github.toquery.example-wails</string>
         <key>CFBundleVersion</key>
-        <string>0.1.0</string>
+        <string>v0.0.1</string>
         <key>CFBundleGetInfoString</key>
-        <string>This is a comment</string>
+        <string>Some Product Comments</string>
         <key>CFBundleShortVersionString</key>
-        <string>0.1.0</string>
+        <string>v0.0.1</string>
         <key>CFBundleIconFile</key>
         <string>icons</string>
         <key>LSMinimumSystemVersion</key>
@@ -22,7 +22,7 @@
         <key>NSHighResolutionCapable</key>
         <string>true</string>
         <key>NSHumanReadableCopyright</key>
-        <string>© now, My Company</string>
+        <string>(c) 2025, ToQuery</string>
         <key>NSAppTransportSecurity</key>
         <dict>
             <key>NSAllowsLocalNetworking</key>

@@ -150,7 +150,7 @@ func (s *ExampleService) AppUpdate(newVersion, force bool) *model.UpdateInfoMode
 			VersionCode: 2,
 			ForceUpdate: force,
 			Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
-			DownloadUrl: "https://github.com/wailsapp/wails/releases/download/v1.16.0/wails-v1.16.0-darwin-x64.tar.gz",
+			DownloadUrl: "https://github.com/toquery/example-wails",
 		}
 	}
 	return nil
@@ -167,7 +167,7 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 		VersionCode: 2,
 		ForceUpdate: false,
 		Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
-		DownloadUrl: "https://github.com/wailsapp/wails/releases/download/v1.16.0/wails-v1.16.0-darwin-x64.tar.gz",
+		DownloadUrl: "https://github.com/toquery/example-wails",
 	}
 	if updateInfo.VersionCode > s.AppInfo.VersionCode {
 		return updateInfo

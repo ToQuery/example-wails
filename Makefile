@@ -9,6 +9,10 @@ clean:
 gen-bind:
 	wails3 generate bindings -ts
 
+.PHONY: update-build-assets
+update-build-assets:
+	wails3 update build-assets -config build/config.yml
+
 .PHONY: dev
 dev:
 	wails3 dev

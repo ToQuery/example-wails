@@ -5,19 +5,19 @@
 !include "FileFunc.nsh"
 
 !ifndef INFO_PROJECTNAME
-    !define INFO_PROJECTNAME "example-wails"
+    !define INFO_PROJECTNAME ""
 !endif
 !ifndef INFO_COMPANYNAME
-    !define INFO_COMPANYNAME "My Company"
+    !define INFO_COMPANYNAME "ToQuery"
 !endif
 !ifndef INFO_PRODUCTNAME
-    !define INFO_PRODUCTNAME "My Product"
+    !define INFO_PRODUCTNAME "Example Wails"
 !endif
 !ifndef INFO_PRODUCTVERSION
-    !define INFO_PRODUCTVERSION "0.1.0"
+    !define INFO_PRODUCTVERSION "v0.0.1"
 !endif
 !ifndef INFO_COPYRIGHT
-    !define INFO_COPYRIGHT "© now, My Company"
+    !define INFO_COPYRIGHT "(c) 2025, ToQuery"
 !endif
 !ifndef PRODUCT_EXECUTABLE
     !define PRODUCT_EXECUTABLE "${INFO_PROJECTNAME}.exe"

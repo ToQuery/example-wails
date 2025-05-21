@@ -45,6 +45,7 @@ func main() {
 	}
 
 	appInfo := model.AppInfoModel{
+		Name:        "example-wails",
 		Version:     Version,
 		VersionCode: versionCodeNum,
 		BuildId:     BuildId,
@@ -69,7 +70,7 @@ func main() {
 			application.NewService(service.NewExampleService(appInfo, goAssets)),
 		},
 		Assets: application.AssetOptions{
-			Handler: application.AssetFileServerFS(assets),
+			Handler: application.BundledAssetFileServer(assets),
 		},
 
 		// Mac platform specific options
