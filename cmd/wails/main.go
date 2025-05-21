@@ -25,9 +25,9 @@ func MacWindow() application.MacWindow {
 func DiskFileMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		if strings.HasPrefix(req.URL.Path, DiskFilePrefix) {
-			log.Printf("Requesting URL path:%s", req.URL.Path)
+			log.Printf("Requesting URL path=%s", req.URL.Path)
 			requestedFilename := strings.TrimPrefix(req.URL.Path, DiskFilePrefix)
-			log.Printf("Requesting requestedFilename:%s", requestedFilename)
+			log.Printf("Requesting requestedFilename=%s", requestedFilename)
 			http.ServeFile(res, req, requestedFilename)
 		} else {
 			next.ServeHTTP(res, req)
@@ -62,7 +62,7 @@ func WarningHandler(text string) {
 }
 
 func ErrorHandler(err error) {
-	log.Printf("ErrorHandler  %s \n", err.Error())
+	log.Printf("ErrorHandler  %s \n%v", err.Error(), err)
 }
 
 func RawMessageHandler(window application.Window, message string) {
