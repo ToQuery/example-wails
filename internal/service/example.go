@@ -236,11 +236,6 @@ func (s ExampleService) AppOpenApplication(application string) {
 	}
 }
 
-func (s ExampleService) AppOpenBrowser(url string) {
-	// 使用Wails提供的runtime.BrowseURL函数打开浏览器
-	application.Get()
-}
-
 /*------App End-------------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) ClipboardGet() string {
@@ -298,6 +293,7 @@ func (s ExampleService) FileDialog() {
 			},
 		},
 	})
+	dialog.CanChooseFiles(true)
 	dialog.SetTitle("Select Image")
 
 	path, err := dialog.PromptForSingleSelection()
@@ -315,6 +311,29 @@ func (s ExampleService) FileDialog() {
 	}
 	// Use selected file paths
 	log.Println(paths)
+}
+
+func (s ExampleService) FileDialogImage() string {
+	dialog := application.OpenFileDialogWithOptions(&application.OpenFileDialogOptions{
+		Title:          "Select Image",
+		CanChooseFiles: true,
+		Filters: []application.FileFilter{
+			{
+				DisplayName: "Images (*.png;*.jpg)",
+				Pattern:     "*.png;*.jpg",
+			},
+		},
+	})
+
+	path, err := dialog.PromptForSingleSelection()
+	// Single file selection
+	if err != nil {
+		log.Panic(err)
+	}
+	// Use selected file path
+	log.Println(path)
+
+	return path
 }
 
 func (s *ExampleService) SaveFileDialog() {

@@ -51,7 +51,7 @@ func main() {
 		BuildTime:   BuildTime,
 	}
 
-	wails.OnStart(appInfo, goAssets)
+	wails.OnStartBefore(appInfo, goAssets)
 
 	config := &kvstore.Config{
 		Filename: appInfo.Name + ".db",
@@ -71,7 +71,9 @@ func main() {
 			application.NewService(service.NewExampleService(appInfo, goAssets)),
 		},
 		Assets: application.AssetOptions{
-			Handler: application.BundledAssetFileServer(assets),
+			Handler:        application.BundledAssetFileServer(assets),
+			Middleware:     wails.DiskFileMiddleware,
+			DisableLogging: false,
 		},
 
 		// Mac platform specific options
@@ -139,6 +141,8 @@ func main() {
 			time.Sleep(time.Second)
 		}
 	}()
+
+	wails.OnStart(appInfo)
 
 	// Run the application. This blocks until the application has been exited.
 	err = app.Run()

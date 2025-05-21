@@ -7,7 +7,11 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/events"
 	"io/fs"
 	"log"
+	"net/http"
+	"strings"
 )
+
+const DiskFilePrefix = "/disk_file"
 
 func MacWindow() application.MacWindow {
 	return application.MacWindow{
@@ -18,9 +22,26 @@ func MacWindow() application.MacWindow {
 	}
 }
 
-func OnStart(appInfo model.AppInfoModel, assets fs.FS) {
-	log.Printf("OnStart")
+func DiskFileMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		if strings.HasPrefix(req.URL.Path, DiskFilePrefix) {
+			println("Requesting file path:", req.URL.Path)
+			requestedFilename := strings.TrimPrefix(req.URL.Path, DiskFilePrefix)
+			println("Requesting file:", requestedFilename)
+			http.ServeFile(res, req, requestedFilename)
+		} else {
+			next.ServeHTTP(res, req)
+		}
+	})
+}
+
+func OnStartBefore(appInfo model.AppInfoModel, assets fs.FS) {
+	log.Printf("OnStartBefore")
 	pkg.CopyBinAddPath("example-wails", "example-wails", appInfo, assets)
+}
+
+func OnStart(appInfo model.AppInfoModel) {
+	log.Printf("OnStart")
 }
 
 func OnShutdown() {
@@ -33,7 +54,7 @@ func ShouldQuit() bool {
 }
 
 func PanicHandler(err interface{}) {
-	log.Printf("PanicHandler")
+	log.Printf("PanicHandler", err)
 }
 
 func WarningHandler(text string) {
@@ -41,11 +62,11 @@ func WarningHandler(text string) {
 }
 
 func ErrorHandler(err error) {
-	log.Printf("ErrorHandler %s", err)
+	log.Printf("ErrorHandler  %s \n", err.Error())
 }
 
 func RawMessageHandler(window application.Window, message string) {
-	log.Printf("Raw message:\n%s", message)
+	log.Printf("Window [%s] Raw message: \n %s", window.Name(), message)
 }
 
 func OnApplicationEvent(event *application.ApplicationEvent) {

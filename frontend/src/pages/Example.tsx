@@ -3,7 +3,7 @@ import {Browser, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
-import {Event, UI} from "@/const";
+import {Event, UI, Value} from "@/const";
 import {useConfigLoading, useConfigUpdate} from "@/provider/config";
 import {cn} from "@/lib/utils";
 
@@ -15,6 +15,7 @@ function Example() {
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
     const [windowName, setWindowName] = React.useState<string>("main");
     const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
+    const [diskImagePath, setDiskImagePath] = React.useState<string>();
 
     const [, setLoading] = useConfigLoading();
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
@@ -114,7 +115,8 @@ function Example() {
                         onClick={() => ExampleService.AppOpenApplication("QQ")}>
                     {t('page.example.app-open-application-qq')}
                 </button>
-                <button className={UI.ui.btn} type="button" onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
+                <button className={UI.ui.btn} type="button"
+                        onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
                     {t('page.example.app-open-browser')}
                 </button>
             </div>
@@ -150,6 +152,12 @@ function Example() {
         <section>
             <h2>{t('page.example.dialog')}</h2>
             <div className={butGroupClass}>
+                <div className=''>
+                    {diskImagePath ? (
+                        <img className='w-[300px] h-[300px] ' src={diskImagePath ? Value.value.diskFilePrefix + diskImagePath : ""} alt=''/>) : <p className='text-red-600'>请选择图片文件(选择后将展示本地磁盘文件)</p>}
+                </div>
+            </div>
+            <div className={butGroupClass}>
                 <button className={UI.ui.btn} type="button" onClick={() => ExampleService.InfoDialog()}>
                     {t('page.example.info-dialog')}
                 </button>
@@ -162,6 +170,16 @@ function Example() {
                 <button className={UI.ui.btn} type="button" onClick={() => ExampleService.FileDialog()}>
                     {t('page.example.file-dialog')}
                 </button>
+
+                <button className={UI.ui.btn} type="button" onClick={() => {
+                    ExampleService.FileDialogImage().then((path) => {
+                        console.log("FileDialogImage", path);
+                        setDiskImagePath(path);
+                    });
+                }}>
+                    {t('page.example.image-dialog')}
+                </button>
+
                 <button className={UI.ui.btn} type="button" onClick={() => ExampleService.SaveFileDialog()}>
                     {t('page.example.save-file-dialog')}
                 </button>
@@ -226,7 +244,8 @@ function Example() {
                     {t('page.example.webview-window-show')}
                 </button>
 
-                <button className={UI.ui.btn} type="button" onClick={() => ExampleService.WebviewWindowHide(windowName)}>
+                <button className={UI.ui.btn} type="button"
+                        onClick={() => ExampleService.WebviewWindowHide(windowName)}>
                     {t('page.example.webview-window-hide')}
                 </button>
 
@@ -254,7 +273,7 @@ function Example() {
                             ExampleService.WebviewWindowSetAlwaysOnTop(windowName, newVal);
                             setAlwaysOnTop(newVal);
                         }}>
-                    {alwaysOnTop ? t('page.example-wails.webview-window-set-always-on-top-false'): t('page.example-wails.webview-window-set-always-on-top-true')}
+                    {alwaysOnTop ? t('page.example-wails.webview-window-set-always-on-top-false') : t('page.example-wails.webview-window-set-always-on-top-true')}
                 </button>
 
                 <button className={UI.ui.btn} type="button"
