@@ -1,5 +1,5 @@
 import React from "react";
-import {Events, Screens} from '@wailsio/runtime'
+import {Browser, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
@@ -114,8 +114,7 @@ function Example() {
                         onClick={() => ExampleService.AppOpenApplication("QQ")}>
                     {t('page.example.app-open-application-qq')}
                 </button>
-                <button className={UI.ui.btn} type="button"
-                        onClick={() => ExampleService.AppOpenBrowser("https://github.com")}>
+                <button className={UI.ui.btn} type="button" onClick={() => Browser.OpenURL('https://github.com')}>
                     {t('page.example.app-open-browser')}
                 </button>
             </div>
