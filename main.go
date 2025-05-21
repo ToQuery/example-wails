@@ -52,6 +52,8 @@ func main() {
 		BuildTime:   BuildTime,
 	}
 
+	wails.Init(appInfo, goAssets)
+
 	config := &kvstore.Config{
 		Filename: "example-wails.db",
 		AutoSave: true,

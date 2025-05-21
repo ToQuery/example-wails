@@ -114,7 +114,7 @@ function Example() {
                         onClick={() => ExampleService.AppOpenApplication("QQ")}>
                     {t('page.example.app-open-application-qq')}
                 </button>
-                <button className={UI.ui.btn} type="button" onClick={() => Browser.OpenURL('https://github.com')}>
+                <button className={UI.ui.btn} type="button" onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
                     {t('page.example.app-open-browser')}
                 </button>
             </div>
@@ -245,7 +245,7 @@ function Example() {
                             const currentScreens = await Screens.GetCurrent();
                             ExampleService.WebviewWindowSetSize(windowName, 800, currentScreens.WorkArea.Height)
                         }}>
-                    {t('page.example.webview-window-set-size')}
+                    {t('page.example-wails.webview-window-set-size')}
                 </button>
 
                 <button className={UI.ui.btn} type="button"
@@ -254,7 +254,7 @@ function Example() {
                             ExampleService.WebviewWindowSetAlwaysOnTop(windowName, newVal);
                             setAlwaysOnTop(newVal);
                         }}>
-                    {alwaysOnTop ? t('page.example.webview-window-set-always-on-top-false'): t('page.example.webview-window-set-always-on-top-true')}
+                    {alwaysOnTop ? t('page.example-wails.webview-window-set-always-on-top-false'): t('page.example-wails.webview-window-set-always-on-top-true')}
                 </button>
 
                 <button className={UI.ui.btn} type="button"

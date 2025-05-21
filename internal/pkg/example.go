@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/adrg/xdg"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,7 +20,11 @@ func InitEnv(binPath string) {
 		envKey := envKV[0]
 		envVal := envKV[1]
 		if envKey == "PATH" {
-			os.Setenv("PATH", envVal+":"+binPath)
+			err := os.Setenv("PATH", envVal+":"+binPath)
+			if err != nil {
+				log.Printf("Failed to set PATH: %s", binPath)
+				return
+			}
 		}
 	}
 
