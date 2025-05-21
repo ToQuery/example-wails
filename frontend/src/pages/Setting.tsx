@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
-import {AppInfo, useConfigLanguage, useConfigThemeModel, useConfigUpdate} from "@/provider/config";
+import {useConfigAppInfo, useConfigLanguage, useConfigThemeModel, useConfigUpdate} from "@/provider/config";
 import {languages} from "@/i18n";
 import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
@@ -13,7 +13,7 @@ export default function Setting() {
 
     const {t} = useTranslation();
 
-    const [appInfo, setAppInfo] = React.useState<AppInfo>();
+    const [appInfo, ] = useConfigAppInfo();
 
     const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
     const [themeModel, setThemeModel] = useConfigThemeModel();

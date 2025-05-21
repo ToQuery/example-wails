@@ -3,7 +3,7 @@ package service
 import (
 	"example-wails/cmd/wails"
 	"example-wails/internal/model"
-	"fmt"
+	"example-wails/internal/pkg"
 	"io"
 	"io/fs"
 	"log"
@@ -176,14 +176,8 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 }
 
 func (s ExampleService) AppEmbedExecBinary() {
-	// 构建二进制文件路径，格式为：assets/binary/example-wails/{os}_{arch}/example-wails[.exe]
-	binaryName := "example-wails"
-	if runtime.GOOS == "windows" {
-		binaryName += ".exe"
-	}
-
 	// 执行二进制文件
-	cmd := exec.Command(binaryName)
+	cmd := exec.Command(pkg.GetBinName("example-wails"))
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Printf("执行二进制文件失败: %v, 输出: %s", err, output)
@@ -344,19 +338,15 @@ func (s *ExampleService) SaveFileDialog() {
 	// 将内容写入文件
 	err = os.WriteFile(path, []byte("123456789"), 0644)
 	if err != nil {
-		fmt.Println("写入文件失败:", err)
+		log.Printf("写入文件失败: %s", path, err)
 		return
 	}
 
-	fmt.Println("写入成功，文件路径为:", path)
+	log.Printf("写入成功，文件路径为: %s", path)
 }
 
 func (s ExampleService) ShowAboutDialog() {
 	application.Get().ShowAboutDialog()
-}
-
-func (s ExampleService) ShowHelpDialog() {
-	application.Get()
 }
 
 /*------Dialog End----------------------------------------------------------------------------------------------------*/

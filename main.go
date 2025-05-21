@@ -6,7 +6,6 @@ import (
 	"example-wails/cmd/wails"
 	"example-wails/internal/model"
 	"example-wails/internal/service"
-	"fmt"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 	"github.com/wailsapp/wails/v3/pkg/services/kvstore"
@@ -23,8 +22,8 @@ var (
 	BuildTime   = "unknown"
 )
 
-// Wails uses Go's `embed` package to embed the frontend files into the binary.
-// Any files in the frontend/dist folder will be embedded into the binary and
+// Wails uses Go's `embed` package to embed the frontend files into the bin.
+// Any files in the frontend/dist folder will be embedded into the bin and
 // made available to the frontend.
 // See https://pkg.go.dev/embed for more information.
 
@@ -52,10 +51,10 @@ func main() {
 		BuildTime:   BuildTime,
 	}
 
-	wails.Init(appInfo, goAssets)
+	wails.OnStart(appInfo, goAssets)
 
 	config := &kvstore.Config{
-		Filename: "example-wails.db",
+		Filename: appInfo.Name + ".db",
 		AutoSave: true,
 	}
 
@@ -65,7 +64,7 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name: "example-wails",
+		Name: appInfo.Name,
 
 		Services: []application.Service{
 			application.NewService(kvstore.New(config)),
@@ -126,10 +125,10 @@ func main() {
 		Linux: application.LinuxWindow{},
 	})
 
-	//for s, event := range events.DefaultWindowEventMapping() {
-	//	fmt.Println(s, event)
-	//	app.OnApplicationEvent(events.ApplicationEventType(s), wails.OnApplicationEvent)
-	//}
+	for windowEventType, event := range events.DefaultWindowEventMapping() {
+		log.Printf("app.OnApplicationEvent windowEventType=%d event=%d windowEvent=%s JSEvent=%s", windowEventType, event, events.JSEvent(uint(windowEventType)), events.JSEvent(uint(event)))
+		app.OnApplicationEvent(events.ApplicationEventType(windowEventType), wails.OnApplicationEvent)
+	}
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
@@ -148,12 +147,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func OnApplicationEvent(event *application.ApplicationEvent) {
-	eventType := events.DefaultWindowEventMapping()[events.WindowEventType(event.Id)]
-
-	fmt.Printf("OnApplicationEvent \n", events.JSEvent(event.Id), eventType)
 }
 
 func OnApplicationCheckUpdate(event *application.CustomEvent) {

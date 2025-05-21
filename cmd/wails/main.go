@@ -3,42 +3,11 @@ package wails
 import (
 	"example-wails/internal/model"
 	"example-wails/internal/pkg"
+	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v3/pkg/events"
 	"io/fs"
 	"log"
-	"path"
-	"path/filepath"
-	"runtime"
-
-	"github.com/wailsapp/wails/v3/pkg/application"
 )
-
-func Init(appInfo model.AppInfoModel, assets fs.FS) {
-
-	appConfigHome := pkg.AppConfigHome(appInfo)
-	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
-	log.Println("appConfigHomeBinPath", appConfigHomeBinPath)
-
-	binName := "example-wails"
-	if runtime.GOOS == "windows" {
-		binName += ".exe"
-	}
-
-	newBinPath := filepath.Join(appConfigHomeBinPath, binName)
-
-	// 嵌入式文件系统 fs.FS 需要使用正斜杠 / 作为路径分隔符，无论操作系统是什么。
-	binPath := path.Join("assets", "binary", "example-wails", runtime.GOOS+"_"+runtime.GOARCH, binName)
-	log.Printf("binPath %s", binPath)
-
-	binFile, err := assets.Open(binPath)
-
-	if err != nil {
-		log.Println("Failed to open embedded binary file:", err)
-		return
-	}
-	pkg.InitBinary(binFile, newBinPath)
-
-	pkg.InitEnv(appConfigHomeBinPath)
-}
 
 func MacWindow() application.MacWindow {
 	return application.MacWindow{
@@ -49,27 +18,37 @@ func MacWindow() application.MacWindow {
 	}
 }
 
+func OnStart(appInfo model.AppInfoModel, assets fs.FS) {
+	log.Printf("OnStart")
+	pkg.CopyBinAddPath("example-wails", "example-wails", appInfo, assets)
+}
+
 func OnShutdown() {
-	log.Println("OnShutdown")
+	log.Printf("OnShutdown")
 }
 
 func ShouldQuit() bool {
-	log.Println("ShouldQuit")
+	log.Printf("ShouldQuit")
 	return true
 }
 
 func PanicHandler(err interface{}) {
-	log.Println("PanicHandler")
+	log.Printf("PanicHandler")
 }
 
 func WarningHandler(text string) {
-	log.Println("WarningHandler", text)
+	log.Printf("WarningHandler %s", text)
 }
 
 func ErrorHandler(err error) {
-	log.Println("ErrorHandler", err)
+	log.Printf("ErrorHandler %s", err)
 }
 
 func RawMessageHandler(window application.Window, message string) {
-	log.Println("Raw message", message)
+	log.Printf("Raw message:\n%s", message)
+}
+
+func OnApplicationEvent(event *application.ApplicationEvent) {
+	eventType := events.DefaultWindowEventMapping()[events.WindowEventType(event.Id)]
+	log.Printf("OnApplicationEvent event.Id=%d JSEvent=%s eventType=%d", event.Id, events.JSEvent(event.Id), eventType)
 }

@@ -4,8 +4,6 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"sync"
-
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
 )
@@ -17,13 +15,10 @@ var (
 	bundle      *i18n.Bundle
 	localizers  map[string]*i18n.Localizer
 	defaultLang string
-	mutex       sync.RWMutex
 )
 
 // 初始化i18n包
 func Init(defaultLanguage string) error {
-	mutex.Lock()
-	defer mutex.Unlock()
 
 	// 设置默认语言
 	defaultLang = defaultLanguage
@@ -65,9 +60,6 @@ func Init(defaultLanguage string) error {
 
 // T 翻译文本
 func T(lang, messageID string, templateData map[string]interface{}) string {
-	mutex.RLock()
-	defer mutex.RUnlock()
-
 	// 获取对应语言的localizer，如果不存在则使用默认语言
 	localizer, ok := localizers[lang]
 	if !ok {

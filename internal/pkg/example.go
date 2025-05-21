@@ -2,27 +2,34 @@ package pkg
 
 import (
 	"example-wails/internal/model"
-	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
+	"runtime"
 
 	"github.com/adrg/xdg"
 )
 
-const AppName = "example-wails"
+func GetBinName(binName string) string {
+	if runtime.GOOS == "windows" {
+		binName += ".exe"
+	}
+	return binName
+}
 
-func InitEnv(binPath string) {
+func AddEnv(binDir string) {
 	// 获取当前 PATH
 	pathVal := os.Getenv("PATH")
 	log.Printf("Env PATH: %s", pathVal)
 	if pathVal == "" {
-		pathVal = binPath
+		pathVal = binDir
 	} else {
 		// 使用系统特定的路径分隔符
 		separator := string(os.PathListSeparator)
-		pathVal += separator + binPath
+		pathVal += separator + binDir
 	}
 
 	// 设置新的 PATH
@@ -35,12 +42,12 @@ func InitEnv(binPath string) {
 	log.Printf("Updated PATH: %s", pathVal)
 }
 
-func InitBinary(embeddedFile io.Reader, binaryPath string) {
+func CopyBin(embeddedFile io.Reader, binPath string) {
 
 	// 1. 判断二进制文件是否存在
-	_, err := os.Stat(binaryPath)
+	_, err := os.Stat(binPath)
 	if err == nil {
-		fmt.Println("Binary already exists:", binaryPath)
+		log.Printf("Binary already exists: %s", binPath)
 		return
 	}
 
@@ -48,47 +55,73 @@ func InitBinary(embeddedFile io.Reader, binaryPath string) {
 	if os.IsNotExist(err) {
 
 		// 创建目标目录（如果不存在）
-		err = os.MkdirAll(filepath.Dir(binaryPath), 0755)
+		binDir := filepath.Dir(binPath)
+		err = os.MkdirAll(binDir, 0755)
 		if err != nil {
-			fmt.Println("Failed to create directory:", err)
+			log.Printf("Failed to create directory: %s", binDir)
 			return
 		}
 
 		// 创建目标文件
-		outFile, err := os.Create(binaryPath)
+		outFile, err := os.Create(binPath)
 		if err != nil {
-			fmt.Println("Failed to create binary file:", err)
+			log.Printf("Failed to create bin file: %s", binPath, err)
 			return
 		}
 		defer outFile.Close()
 
 		// 拷贝内容
-		log.Println("binaryPath=%s", binaryPath, "embeddedFile=", embeddedFile)
 		_, err = io.Copy(outFile, embeddedFile)
 		if err != nil {
-			fmt.Println("Failed to copy binary content:", err)
+			log.Printf("binPath=%s outFile=%s ", binPath, outFile)
 			return
 		}
 
 		// 设置可执行权限（Unix 系统下）
-		err = os.Chmod(binaryPath, 0755)
+		err = os.Chmod(binPath, 0755)
 		if err != nil {
-			fmt.Println("Failed to set file permissions:", err)
+			log.Printf("Failed to set file permissions: %s", binPath, err)
 			return
 		}
-		fmt.Println("Binary initialized at:", binaryPath)
+		log.Printf("Binary initialized at: %s", binPath)
 	}
 
 }
 
+func CopyBinAddPath(binDir, binName string, appInfo model.AppInfoModel, assets fs.FS) {
+	binName = GetBinName(binName)
+
+	appConfigHome := AppConfigHome(appInfo)
+	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
+	log.Println("appConfigHomeBinPath", appConfigHomeBinPath)
+
+	newBinPath := filepath.Join(appConfigHomeBinPath, binName)
+
+	// 嵌入式文件系统 fs.FS 需要使用正斜杠 / 作为路径分隔符，无论操作系统是什么。
+	binPath := path.Join("assets", "binary", binDir, runtime.GOOS+"_"+runtime.GOARCH, binName)
+	log.Printf("binPath %s", binPath)
+
+	binFile, err := assets.Open(binPath)
+
+	if err != nil {
+		log.Println("Failed to open embedded bin file:", err)
+		return
+	}
+	CopyBin(binFile, newBinPath)
+
+	AddEnv(appConfigHomeBinPath)
+}
+
 func AppConfigHome(appInfo model.AppInfoModel) string {
-	return filepath.Join(xdg.ConfigHome, AppName, appInfo.Version)
+	return filepath.Join(xdg.ConfigHome, appInfo.Name, appInfo.Version)
 }
 
 func AppCacheHome(appInfo model.AppInfoModel) string {
 	userCacheDir, err := os.UserCacheDir()
 	if err != nil || userCacheDir == "" {
-		userCacheDir = filepath.Join(xdg.CacheHome, AppName, appInfo.Version)
+		userCacheDir = filepath.Join(xdg.CacheHome, appInfo.Name, appInfo.Version)
+	} else {
+		userCacheDir = filepath.Join(userCacheDir, appInfo.Name, appInfo.Version)
 	}
 	return userCacheDir
 }
