@@ -302,7 +302,7 @@ func (s ExampleService) FileDialog() {
 		log.Panic(err)
 	}
 	// Use selected file path
-	log.Println(path)
+	log.Printf("Selected file path: %s", path)
 
 	// Multiple file selection
 	paths, err := dialog.PromptForMultipleSelection()
@@ -310,7 +310,7 @@ func (s ExampleService) FileDialog() {
 		log.Panic(err)
 	}
 	// Use selected file paths
-	log.Println(paths)
+	log.Printf("Selected file paths: %v", paths)
 }
 
 func (s ExampleService) FileDialogImage() string {
@@ -331,7 +331,7 @@ func (s ExampleService) FileDialogImage() string {
 		log.Panic(err)
 	}
 	// Use selected file path
-	log.Println(path)
+	log.Printf("Selected file path: %s", path)
 
 	return path
 }
@@ -352,7 +352,7 @@ func (s *ExampleService) SaveFileDialog() {
 	}
 
 	// Save file to selected path
-	log.Println(path)
+	log.Printf("Selected file path: %s", path)
 
 	// 将内容写入文件
 	err = os.WriteFile(path, []byte("123456789"), 0644)

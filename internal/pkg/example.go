@@ -93,7 +93,7 @@ func CopyBinAddPath(binDir, binName string, appInfo model.AppInfoModel, assets f
 
 	appConfigHome := AppConfigHome(appInfo)
 	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
-	log.Println("appConfigHomeBinPath", appConfigHomeBinPath)
+	log.Printf("appConfigHomeBinPath=%s", appConfigHomeBinPath)
 
 	newBinPath := filepath.Join(appConfigHomeBinPath, binName)
 
@@ -104,7 +104,7 @@ func CopyBinAddPath(binDir, binName string, appInfo model.AppInfoModel, assets f
 	binFile, err := assets.Open(binPath)
 
 	if err != nil {
-		log.Println("Failed to open embedded bin file:", err)
+		log.Printf("Failed to open embedded bin file:%s", err.Error())
 		return
 	}
 	CopyBin(binFile, newBinPath)
