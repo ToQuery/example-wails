@@ -3,14 +3,29 @@ package wails
 import (
 	"example-wails/internal/model"
 	"example-wails/internal/pkg"
-	"github.com/wailsapp/wails/v3/pkg/application"
 	"io/fs"
 	"log"
 	"path/filepath"
 	"runtime"
+
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 func Init(appInfo model.AppInfoModel, assets fs.FS) {
+
+	 // 打印 assets 中的所有文件（用于调试）
+    log.Println("Listing all files in assets:")
+    err := fs.WalkDir(assets, ".", func(path string, d fs.DirEntry, err error) error {
+        if err != nil {
+            return err
+        }
+        log.Printf("- %s (isDir: %v)", path, d.IsDir())
+        return nil
+    })
+    if err != nil {
+        log.Printf("Error walking assets: %v", err)
+    }
+
 	appConfigHome := pkg.AppConfigHome(appInfo)
 	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
 	log.Println("appConfigHomeBinPath", appConfigHomeBinPath)
@@ -20,13 +35,19 @@ func Init(appInfo model.AppInfoModel, assets fs.FS) {
 		binName += ".exe"
 	}
 
-	binFile := filepath.Join(appConfigHomeBinPath, binName)
+	newBinPath := filepath.Join(appConfigHomeBinPath, binName)
+	
 
-	newBinFile, err := assets.Open(filepath.Join("assets", "binary", "example-wails", runtime.GOOS+"_"+runtime.GOARCH, binName))
+	binPath := filepath.Join("assets", "binary", "example-wails", runtime.GOOS+"_"+runtime.GOARCH, binName)
+	log.Printf("binPath %s", binPath)
+
+	binFile, err := assets.Open(binPath)
+
 	if err != nil {
-
+		log.Println("Failed to open embedded binary file:", err)
+		return
 	}
-	pkg.InitBinary(binFile, newBinFile)
+	pkg.InitBinary(binFile, newBinPath)
 
 	pkg.InitEnv(appConfigHomeBinPath)
 }

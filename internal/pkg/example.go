@@ -3,34 +3,39 @@ package pkg
 import (
 	"example-wails/internal/model"
 	"fmt"
-	"github.com/adrg/xdg"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
+
+	"github.com/adrg/xdg"
 )
 
-const AppName = "QNWallpaper"
+const AppName = "example-wails"
 
 func InitEnv(binPath string) {
-	envs := os.Environ()
-	for _, env := range envs {
-		envKV := strings.Split(env, "=")
-		envKey := envKV[0]
-		envVal := envKV[1]
-		if envKey == "PATH" {
-			err := os.Setenv("PATH", envVal+":"+binPath)
-			if err != nil {
-				log.Printf("Failed to set PATH: %s", binPath)
-				return
-			}
-		}
+	// 获取当前 PATH
+	pathVal := os.Getenv("PATH")
+	log.Printf("Env PATH: %s", pathVal)
+	if pathVal == "" {
+		pathVal = binPath
+	} else {
+		// 使用系统特定的路径分隔符
+		separator := string(os.PathListSeparator)
+		pathVal += separator + binPath
 	}
 
+	// 设置新的 PATH
+	err := os.Setenv("PATH", pathVal)
+	if err != nil {
+		log.Printf("Failed to set PATH: %s", err)
+		return
+	}
+
+	log.Printf("Updated PATH: %s", pathVal)
 }
 
-func InitBinary(binaryPath string, embeddedFile io.Reader) {
+func InitBinary(embeddedFile io.Reader, binaryPath string) {
 
 	// 1. 判断二进制文件是否存在
 	_, err := os.Stat(binaryPath)
@@ -58,6 +63,7 @@ func InitBinary(binaryPath string, embeddedFile io.Reader) {
 		defer outFile.Close()
 
 		// 拷贝内容
+		log.Println("binaryPath=%s", binaryPath, "embeddedFile=", embeddedFile)
 		_, err = io.Copy(outFile, embeddedFile)
 		if err != nil {
 			fmt.Println("Failed to copy binary content:", err)
