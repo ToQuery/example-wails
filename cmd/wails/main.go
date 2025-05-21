@@ -5,6 +5,7 @@ import (
 	"example-wails/internal/pkg"
 	"io/fs"
 	"log"
+	"path"
 	"path/filepath"
 	"runtime"
 
@@ -12,19 +13,6 @@ import (
 )
 
 func Init(appInfo model.AppInfoModel, assets fs.FS) {
-
-	 // 打印 assets 中的所有文件（用于调试）
-    log.Println("Listing all files in assets:")
-    err := fs.WalkDir(assets, ".", func(path string, d fs.DirEntry, err error) error {
-        if err != nil {
-            return err
-        }
-        log.Printf("- %s (isDir: %v)", path, d.IsDir())
-        return nil
-    })
-    if err != nil {
-        log.Printf("Error walking assets: %v", err)
-    }
 
 	appConfigHome := pkg.AppConfigHome(appInfo)
 	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
@@ -36,9 +24,9 @@ func Init(appInfo model.AppInfoModel, assets fs.FS) {
 	}
 
 	newBinPath := filepath.Join(appConfigHomeBinPath, binName)
-	
 
-	binPath := filepath.Join("assets", "binary", "example-wails", runtime.GOOS+"_"+runtime.GOARCH, binName)
+	// 嵌入式文件系统 fs.FS 需要使用正斜杠 / 作为路径分隔符，无论操作系统是什么。
+	binPath := path.Join("assets", "binary", "example-wails", runtime.GOOS+"_"+runtime.GOARCH, binName)
 	log.Printf("binPath %s", binPath)
 
 	binFile, err := assets.Open(binPath)

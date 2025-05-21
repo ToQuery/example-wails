@@ -5,6 +5,7 @@ version: '3'
 
 # This information is used to generate the build assets.
 info:
+  projectName: "example-wails" # The name of the application
   companyName: "ToQuery" # The name of the company
   productName: "Example Wails" # The name of the application
   productIdentifier: "io.github.toquery.example-wails" # The unique product identifier
