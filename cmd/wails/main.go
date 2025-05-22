@@ -63,7 +63,7 @@ func WarningHandler(text string) {
 }
 
 func ErrorHandler(err error) {
-	log.Printf("ErrorHandler  %s \n%v", err.Error(), err)
+	log.Printf("ErrorHandler  %s \n%+v", err.Error(), err)
 }
 
 func RawMessageHandler(window application.Window, message string) {

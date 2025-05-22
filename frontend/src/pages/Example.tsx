@@ -154,7 +154,7 @@ function Example() {
             <div className={butGroupClass}>
                 <div className=''>
                     {diskImagePath ? (
-                        <img className='w-[300px] h-[300px] ' src={diskImagePath ? Value.value.diskFilePrefix + diskImagePath : ""} alt=''/>) : <p className='text-red-600'>请选择图片文件(选择后将展示本地磁盘文件)</p>}
+                        <img className='w-[300px] h-[300px] ' src={diskImagePath ? Value.value.diskFilePrefix + "/" + diskImagePath : ""} alt=''/>) : <p className='text-red-600'>请选择图片文件(选择后将展示本地磁盘文件)</p>}
                 </div>
             </div>
             <div className={butGroupClass}>
