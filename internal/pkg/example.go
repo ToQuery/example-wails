@@ -6,12 +6,17 @@ import (
 	"io/fs"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"runtime"
 
 	"github.com/adrg/xdg"
 )
+
+func SetCmdSysProcAttr(cmd *exec.Cmd) {
+	log.Printf("SetCmdSysProcAttr: %s", cmd.Path)
+}
 
 func Ternary[T any](cond bool, a, b T) T {
 	if cond {
