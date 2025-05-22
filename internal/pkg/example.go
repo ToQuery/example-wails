@@ -13,6 +13,13 @@ import (
 	"github.com/adrg/xdg"
 )
 
+func Ternary[T any](cond bool, a, b T) T {
+	if cond {
+		return a
+	}
+	return b
+}
+
 func GetBinName(binName string) string {
 	if runtime.GOOS == "windows" {
 		binName += ".exe"

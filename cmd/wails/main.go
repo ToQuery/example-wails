@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"runtime"
 	"strings"
 )
 
@@ -26,9 +27,9 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		if strings.HasPrefix(req.URL.Path, DiskFilePrefix) {
 			log.Printf("Requesting URL path=%s", req.URL.Path)
-			requestedFilename := strings.TrimPrefix(req.URL.Path, DiskFilePrefix)
-			log.Printf("Requesting requestedFilename=%s", requestedFilename)
-			http.ServeFile(res, req, requestedFilename)
+			requestedFile := strings.TrimPrefix(req.URL.Path, pkg.Ternary[string](runtime.GOOS == "windows", DiskFilePrefix+"/", DiskFilePrefix))
+			log.Printf("Requesting requestedFile=%s", requestedFile)
+			http.ServeFile(res, req, requestedFile)
 		} else {
 			next.ServeHTTP(res, req)
 		}
