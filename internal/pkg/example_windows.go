@@ -14,7 +14,5 @@ func SetCmdSysProcAttr(cmd *exec.Cmd) {
 	if cmd.SysProcAttr == nil {
 		cmd.SysProcAttr = &syscall.SysProcAttr{}
 	}
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		HideWindow: true,
-	}
+	cmd.SysProcAttr.HideWindow = true
 }

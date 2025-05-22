@@ -8,7 +8,7 @@ import (
 )
 
 // SetCmdSysProcAttr 设置命令的系统进程属性
-// 在非 Windows 平台下，不做任何特殊处理
+// 在  linux 平台，设置 Setpgid 为 true 以设置进程组ID
 func SetCmdSysProcAttr(cmd *exec.Cmd) {
 	//
 	if cmd.SysProcAttr == nil {

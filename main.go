@@ -152,7 +152,3 @@ func main() {
 		log.Fatal(err)
 	}
 }
-
-func OnApplicationCheckUpdate(event *application.CustomEvent) {
-
-}
