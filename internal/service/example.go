@@ -178,6 +178,10 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 func (s ExampleService) AppEmbedExecBinary() {
 	// 执行二进制文件
 	cmd := exec.Command(pkg.GetBinName("example-wails"))
+
+	// 设置进程属性
+	pkg.SetCmdSysProcAttr(cmd)
+
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		log.Printf("执行二进制文件失败: %v, 输出: %s", err, output)

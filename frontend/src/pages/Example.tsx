@@ -264,7 +264,7 @@ function Example() {
                             const currentScreens = await Screens.GetCurrent();
                             ExampleService.WebviewWindowSetSize(windowName, 800, currentScreens.WorkArea.Height)
                         }}>
-                    {t('page.example-wails.webview-window-set-size')}
+                    {t('page.example.webview-window-set-size')}
                 </button>
 
                 <button className={UI.ui.btn} type="button"
@@ -273,7 +273,7 @@ function Example() {
                             ExampleService.WebviewWindowSetAlwaysOnTop(windowName, newVal);
                             setAlwaysOnTop(newVal);
                         }}>
-                    {alwaysOnTop ? t('page.example-wails.webview-window-set-always-on-top-false') : t('page.example-wails.webview-window-set-always-on-top-true')}
+                    {alwaysOnTop ? t('page.example.webview-window-set-always-on-top-false') : t('page.example.webview-window-set-always-on-top-true')}
                 </button>
 
                 <button className={UI.ui.btn} type="button"
