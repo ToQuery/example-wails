@@ -42,11 +42,13 @@ func OnStartBefore(appInfo model.AppInfoModel) {
 	exampleWails, err := assets.AssetsBinaryExampleWails()
 	if err == nil && exampleWails != nil {
 		pkg.CopyBinAddPath("example-wails", appInfo, exampleWails)
+	} else {
+		log.Printf("Failed to load example-wails binary: %s", err)
 	}
 }
 
 func OnStart(appInfo model.AppInfoModel) {
-	log.Printf("OnStart")
+	log.Printf("OnStart %s", appInfo.Name)
 }
 
 func OnShutdown() {

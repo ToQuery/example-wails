@@ -2,6 +2,7 @@ package assets
 
 import (
 	"embed"
+	pkg "example-wails/internal/pkg/example"
 	"io/fs"
 	"log"
 	"path"
@@ -21,8 +22,9 @@ func AssetsBinaryExampleWails() (fs.File, error) {
 }
 
 func AssetsBinaryFile(binDir, binName string) (fs.File, error) {
+	binFileName := pkg.GetBinFileName(binName)
 	// 嵌入式文件系统 fs.FS 需要使用正斜杠 / 作为路径分隔符，无论操作系统是什么。
-	binPath := path.Join("binary", binDir, runtime.GOOS+"_"+runtime.GOARCH, binName)
+	binPath := path.Join("binary", binDir, runtime.GOOS+"_"+runtime.GOARCH, binFileName)
 	log.Printf("binPath %s", binPath)
 
 	binFile, err := goAssetsBinary.Open(binPath)
