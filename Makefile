@@ -28,4 +28,4 @@ package:
 
 .PHONY: package-windows
 package-windows:
-	wails3 wails3 task windows:package
+	wails3 task windows:package

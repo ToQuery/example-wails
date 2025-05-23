@@ -4,6 +4,7 @@
 package pkg
 
 import (
+	"log"
 	"os/exec"
 	"syscall"
 )
