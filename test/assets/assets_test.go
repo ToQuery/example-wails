@@ -21,8 +21,8 @@ func PrintAssetFiles(assets fs.FS) {
 }
 
 func TestAssets(t *testing.T) {
-	assets := assets.Assets()
-	PrintAssetFiles(assets)
+	assetsFiles := assets.Assets()
+	PrintAssetFiles(assetsFiles)
 }
 
 func TestAssetsBinary(t *testing.T) {
