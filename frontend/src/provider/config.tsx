@@ -20,6 +20,8 @@ export type AppInfo = {
     name: string;
     version: string;
     versionCode: number;
+    buildId: string;
+    buildTime: string;
 }
 
 // 配置上下文
@@ -57,7 +59,9 @@ const defaultConfig: ConfigContextType = {
     appInfo: {
         name: 'example-wails',
         version: 'v0.0.0',
-        versionCode: 0
+        versionCode: 0,
+        buildId: '0x000001',
+        buildTime: 'unknown',
     },
     setAppInfo: function (appInfo: AppInfo): void {
         throw new Error('Function not implemented.');
@@ -171,6 +175,8 @@ export function ConfigProvider({children}: { children: ReactNode }) {
                 name: "example-wails",
                 version: appInfo.Version,
                 versionCode: appInfo.VersionCode,
+                buildId: appInfo.BuildId,
+                buildTime: appInfo.BuildTime,
             });
         });
     };

@@ -4,20 +4,20 @@ import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event, UI, Value} from "@/const";
-import {useConfigLoading, useConfigUpdate} from "@/provider/config";
+import {useConfigAppInfo, useConfigLoading, useConfigUpdate} from "@/provider/config";
 import {cn} from "@/lib/utils";
 
 function Example() {
     const {t} = useTranslation();
 
     const [text, setText] = React.useState<string>("Hello Wails！");
-    const [appInfo, setAppInfo] = React.useState<AppInfoModel>();
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
     const [windowName, setWindowName] = React.useState<string>("main");
     const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
     const [diskImagePath, setDiskImagePath] = React.useState<string>();
 
     const [, setLoading] = useConfigLoading();
+    const [appInfo, setAppInfo] = useConfigAppInfo();
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
 
     const butGroupClass = 'flex flex-wrap gap-4 mt-4';
@@ -42,14 +42,31 @@ function Example() {
         <section>
             <h2>{t('page.example.app-info')}</h2>
             <div className={cn(butGroupClass)}>
-                <div>Version: {appInfo?.Version}</div>
-                <div>VersionCode: {appInfo?.VersionCode}</div>
-                <div>BuildId: {appInfo?.BuildId}</div>
-                <div>BuildTime: {appInfo?.BuildTime}</div>
+                <div>Version: {appInfo.version}</div>
+                <div>VersionCode: {appInfo.versionCode}</div>
+                <div>BuildId: {appInfo.buildId}</div>
+                <div>BuildTime: {appInfo.buildTime}</div>
             </div>
             <div className={butGroupClass}>
                 <button className={UI.ui.btn} type="button"
-                        onClick={async () => setAppInfo(await ExampleService.GetAppInfo())}>
+                        onClick={async () => {
+                            setLoading(true);
+                            ExampleService.GetAppInfo()
+                                .then((appInfoModel: AppInfoModel) => {
+                                    console.log("appInfoModel", appInfoModel);
+                                    setAppInfo({
+                                        name: appInfoModel.Name,
+                                        version: appInfoModel.Version,
+                                        versionCode: appInfoModel.VersionCode,
+                                        buildId: appInfoModel.BuildId,
+                                        buildTime: appInfoModel.BuildTime,
+                                    });
+                                })
+                                .finally(() => {
+                                    setTimeout(() => setLoading(false), 1000);
+                                });
+
+                        }}>
                     {t('page.example.app-info')}
                 </button>
                 <button className={UI.ui.btn} type="button"
@@ -154,7 +171,9 @@ function Example() {
             <div className={butGroupClass}>
                 <div className=''>
                     {diskImagePath ? (
-                        <img className='w-[300px] h-[300px] ' src={diskImagePath ? Value.value.diskFilePrefix + "/" + diskImagePath : ""} alt=''/>) : <p className='text-red-600'>请选择图片文件(选择后将展示本地磁盘文件)</p>}
+                            <img className='w-[300px] h-[300px] '
+                                 src={diskImagePath ? Value.value.diskFilePrefix + "/" + diskImagePath : ""} alt=''/>) :
+                        <p className='text-red-600'>请选择图片文件(选择后将展示本地磁盘文件)</p>}
                 </div>
             </div>
             <div className={butGroupClass}>

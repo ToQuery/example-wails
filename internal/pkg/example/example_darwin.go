@@ -10,5 +10,5 @@ import (
 
 // SetCmdSysProcAttr 设置命令的系统进程属性
 func SetCmdSysProcAttr(cmd *exec.Cmd) {
-	log.Printf("SetCmdSysProcAttr: %s", cmd.Path)
+	log.Printf("darwin SetCmdSysProcAttr: %s", cmd.Path)
 }

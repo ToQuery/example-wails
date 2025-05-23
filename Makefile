@@ -25,3 +25,7 @@ build:
 package:
 	wails3 package
 
+
+.PHONY: package-windows
+package-windows:
+	wails3 wails3 task windows:package

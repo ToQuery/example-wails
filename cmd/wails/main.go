@@ -1,11 +1,11 @@
 package wails
 
 import (
+	"example-wails/assets"
 	"example-wails/internal/model"
-	"example-wails/internal/pkg"
+	"example-wails/internal/pkg/example"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
-	"io/fs"
 	"log"
 	"net/http"
 	"runtime"
@@ -36,9 +36,13 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func OnStartBefore(appInfo model.AppInfoModel, assets fs.FS) {
+func OnStartBefore(appInfo model.AppInfoModel) {
 	log.Printf("OnStartBefore")
-	pkg.CopyBinAddPath("example-wails", "example-wails", appInfo, assets)
+
+	exampleWails, err := assets.AssetsBinaryExampleWails()
+	if err == nil && exampleWails != nil {
+		pkg.CopyBinAddPath("example-wails", appInfo, exampleWails)
+	}
 }
 
 func OnStart(appInfo model.AppInfoModel) {

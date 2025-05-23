@@ -1,11 +1,11 @@
 package service
 
 import (
+	"example-wails/assets"
 	"example-wails/cmd/wails"
 	"example-wails/internal/model"
-	"example-wails/internal/pkg"
+	"example-wails/internal/pkg/example"
 	"io"
-	"io/fs"
 	"log"
 	"os"
 	"os/exec"
@@ -18,11 +18,10 @@ import (
 
 type ExampleService struct {
 	AppInfo model.AppInfoModel
-	Assets  fs.FS
 }
 
-func NewExampleService(appInfo model.AppInfoModel, assets fs.FS) *ExampleService {
-	return &ExampleService{AppInfo: appInfo, Assets: assets}
+func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
+	return &ExampleService{AppInfo: appInfo}
 }
 
 /*------File Start----------------------------------------------------------------------------------------------------*/
@@ -177,7 +176,7 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 
 func (s ExampleService) AppEmbedExecBinary() {
 	// 执行二进制文件
-	cmd := exec.Command(pkg.GetBinName("example-wails"))
+	cmd := exec.Command(pkg.GetBinFileName("example-wails"))
 
 	// 设置进程属性
 	pkg.SetCmdSysProcAttr(cmd)
@@ -197,7 +196,7 @@ func (s ExampleService) AppEmbedExecBinary() {
 }
 
 func (s ExampleService) AppEmbedFile() {
-	file, err := s.Assets.Open("assets/README.md")
+	file, err := assets.Assets().Open("README.md")
 	if err != nil {
 		log.Printf("打开文件失败: %v\n", err)
 		return

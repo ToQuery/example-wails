@@ -6,7 +6,6 @@ import (
 	"io/fs"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"runtime"
 
@@ -20,7 +19,7 @@ func Ternary[T any](cond bool, a, b T) T {
 	return b
 }
 
-func GetBinName(binName string) string {
+func GetBinFileName(binName string) string {
 	if runtime.GOOS == "windows" {
 		binName += ".exe"
 	}
@@ -95,25 +94,15 @@ func CopyBin(embeddedFile io.Reader, binPath string) {
 
 }
 
-func CopyBinAddPath(binDir, binName string, appInfo model.AppInfoModel, assets fs.FS) {
-	binName = GetBinName(binName)
+func CopyBinAddPath(binName string, appInfo model.AppInfoModel, binFile fs.File) {
+	binFileName := GetBinFileName(binName)
 
 	appConfigHome := AppConfigHome(appInfo)
 	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
 	log.Printf("appConfigHomeBinPath=%s", appConfigHomeBinPath)
 
-	newBinPath := filepath.Join(appConfigHomeBinPath, binName)
+	newBinPath := filepath.Join(appConfigHomeBinPath, binFileName)
 
-	// 嵌入式文件系统 fs.FS 需要使用正斜杠 / 作为路径分隔符，无论操作系统是什么。
-	binPath := path.Join("assets", "binary", binDir, runtime.GOOS+"_"+runtime.GOARCH, binName)
-	log.Printf("binPath %s", binPath)
-
-	binFile, err := assets.Open(binPath)
-
-	if err != nil {
-		log.Printf("Failed to open embedded bin file:%s", err.Error())
-		return
-	}
 	CopyBin(binFile, newBinPath)
 
 	AddEnv(appConfigHomeBinPath)
