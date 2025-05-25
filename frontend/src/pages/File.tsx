@@ -15,7 +15,7 @@ function File() {
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
     return (
-        <div>
+        <div className='p-4'>
             <div className='flex justify-between item-center'>
                 <h1 className='w-full'>目录</h1>
 

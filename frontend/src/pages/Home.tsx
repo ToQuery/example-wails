@@ -8,7 +8,7 @@ function Home() {
     const [count, setCount] = useState(0);
 
     return (
-        <div className="space-y-6">
+        <div className="p-4 w-full he-full space-y-6">
             <div>
                 <button
                     type="button"

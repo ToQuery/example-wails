@@ -49,7 +49,7 @@ function WindowTitle(props: WindowTitleProps) {
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
         <header className={cn("flex flex-row justify-between h-12", DefaultBgClass)}
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}>
-            <div className='flex justify-start items-center px-2 text-xl font-medium text-black dark:text-gray-300 space-x-2'>
+            <div className='flex justify-start items-center px-2 text-xl font-medium text-black dark:text-white space-x-2'>
                 <Icon icon='material-symbols:side-navigation' className='text-xl hidden'/>
                 <span>{getTitle()}</span>
             </div>
