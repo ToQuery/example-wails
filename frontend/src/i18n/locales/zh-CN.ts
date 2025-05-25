@@ -46,8 +46,43 @@ const zhCN = {
         // 页面
         'page.home.title': '首页',
         'page.home.counter': '计数器：',
-        'page.user.title': '用户',
 
+        // File页面
+        'page.file.directory': '目录',
+        'page.file.dir-info': '目录信息',
+        'page.file.os_directory': 'OS 目录',
+        'page.file.path': '路径',
+        'page.file.os_temp_dir': 'OS TempDir',
+        'page.file.os_user_cache_dir': 'OS UserCacheDir',
+        'page.file.os_user_config_dir': 'OS UserConfigDir',
+        'page.file.os_user_home_dir': 'OS UserHomeDir',
+        'page.file.xdg_directory': 'XDG 目录',
+        'page.file.xdg_home': 'XDG Home',
+        'page.file.xdg_data_home': 'XDG DataHome',
+        'page.file.xdg_config_home': 'XDG ConfigHome',
+        'page.file.xdg_state_home': 'XDG StateHome',
+        'page.file.xdg_cache_home': 'XDG CacheHome',
+        'page.file.xdg_runtime_dir': 'XDG RuntimeDir',
+        'page.file.xdg_bin_home': 'XDG BinHome',
+        'page.file.xdg_directory_list': 'XDG 目录列表',
+        'page.file.xdg_data_dirs': 'XDG DataDirs',
+        'page.file.xdg_config_dirs': 'XDG ConfigDirs',
+        'page.file.xdg_font_dirs': 'XDG FontDirs',
+        'page.file.xdg_application_dirs': 'XDG ApplicationDirs',
+        'page.file.xdg_user_directory': 'XDG 用户目录',
+        'page.file.desktop': 'Desktop',
+        'page.file.download': 'Download',
+        'page.file.documents': 'Documents',
+        'page.file.music': 'Music',
+        'page.file.pictures': 'Pictures',
+        'page.file.videos': 'Videos',
+        'page.file.templates': 'Templates',
+        'page.file.public_share': 'PublicShare',
+
+        // Browser页面
+        'page.browser.invalid_url': '无效或不支持的地址',
+
+        // Example页面
         'page.example.title': '示例',
         'page.example.input': '输入',
         'page.example.app-info': '应用信息',
@@ -88,6 +123,7 @@ const zhCN = {
         'page.example.webview-window-close': '关闭网页视图窗口',
         'page.example.webview-window-show-github': '显示网页视图窗口（Github）',
 
+        // Setting页面
         'page.setting.title': '应用设置',
         'page.setting.subtitle': '自定义您的应用体验',
         'page.setting.app.title': 'Wails 应用',

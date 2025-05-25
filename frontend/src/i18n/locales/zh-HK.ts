@@ -10,7 +10,7 @@ const zhHK = {
         'app.theme.auto-label': '切換至自動模式',
         'app.theme.light-label': '切換至亮色模式',
         'app.theme.dark-label': '切換至暗色模式',
-        
+
         // 語言
         'app.language.title': '語言設置',
         'app.language.auto': '自動',
@@ -47,6 +47,43 @@ const zhHK = {
         'page.home.counter': '點擊次數：',
         'page.user.title': '用戶',
 
+
+        // File頁面
+        'page.file.directory': '目錄',
+        'page.file.dir-info': '目錄信息',
+        'page.file.os_directory': 'OS 目錄',
+        'page.file.path': '路徑',
+        'page.file.os_temp_dir': 'OS TempDir',
+        'page.file.os_user_cache_dir': 'OS UserCacheDir',
+        'page.file.os_user_config_dir': 'OS UserConfigDir',
+        'page.file.os_user_home_dir': 'OS UserHomeDir',
+        'page.file.xdg_directory': 'XDG 目錄',
+        'page.file.xdg_home': 'XDG Home',
+        'page.file.xdg_data_home': 'XDG DataHome',
+        'page.file.xdg_config_home': 'XDG ConfigHome',
+        'page.file.xdg_state_home': 'XDG StateHome',
+        'page.file.xdg_cache_home': 'XDG CacheHome',
+        'page.file.xdg_runtime_dir': 'XDG RuntimeDir',
+        'page.file.xdg_bin_home': 'XDG BinHome',
+        'page.file.xdg_directory_list': 'XDG 目錄列表',
+        'page.file.xdg_data_dirs': 'XDG DataDirs',
+        'page.file.xdg_config_dirs': 'XDG ConfigDirs',
+        'page.file.xdg_font_dirs': 'XDG FontDirs',
+        'page.file.xdg_application_dirs': 'XDG ApplicationDirs',
+        'page.file.xdg_user_directory': 'XDG 用戶目錄',
+        'page.file.desktop': 'Desktop',
+        'page.file.download': 'Download',
+        'page.file.documents': 'Documents',
+        'page.file.music': 'Music',
+        'page.file.pictures': 'Pictures',
+        'page.file.videos': 'Videos',
+        'page.file.templates': 'Templates',
+        'page.file.public_share': 'PublicShare',
+
+        // Browser頁面
+        'page.browser.invalid_url': '無效或不支持的地址',
+
+        // Example頁面
         'page.example.title': '示例',
         'page.example.input': '輸入',
         'page.example.app-info': '應用信息',
@@ -87,7 +124,7 @@ const zhHK = {
         'page.example.webview-window-close': '關閉網頁視圖窗口',
         'page.example.webview-window-show-github': '顯示網頁視圖窗口（Github）',
 
-
+        // 設置頁面
         'page.setting.title': '應用設置',
         'page.setting.subtitle': '自定義您的應用體驗',
         'page.setting.app.title': 'Wails 應用',
@@ -116,7 +153,6 @@ const zhHK = {
         'page.setting.language': '語言',
         'page.setting.official-website': '官方網站',
         'page.setting.all-rights-reserved': '保留所有權利',
-
     }
 };
 

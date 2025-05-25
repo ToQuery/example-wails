@@ -1,5 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const getUrlParam = (search: string) => {
     const params = new URLSearchParams(search);
@@ -7,6 +8,7 @@ const getUrlParam = (search: string) => {
 };
 
 const Browser: React.FC = () => {
+    const { t } = useTranslation();
     const location = useLocation();
     const url = getUrlParam(location.search);
     const isHttp = url.startsWith("http://") || url.startsWith("https://");
@@ -21,7 +23,7 @@ const Browser: React.FC = () => {
                     sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                 />
             ) : (
-                <div style={{ padding: 24, color: 'red' }}>无效或不支持的地址</div>
+                <div style={{ padding: 24, color: 'red' }}>{t('page.browser.invalid_url')}</div>
             )}
         </div>
     );

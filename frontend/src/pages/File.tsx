@@ -17,39 +17,39 @@ function File() {
     return (
         <div className='p-4'>
             <div className='flex justify-between item-center'>
-                <h1 className='w-full'>目录</h1>
+                <h1 className='w-full'>{t('page.file.directory')}</h1>
 
-                <button className={UI.ui.btn} type="button"
+                <button className={cn(UI.ui.btn, 'w-50')} type="button"
                         onClick={async () => setDirInfo(await ExampleService.GetDirInfo())}>
                     {t('page.file.dir-info')}
                 </button>
             </div>
             {separator}
             <section>
-                <h2>OS 目录</h2>
+                <h2>{t('page.file.os_directory')}</h2>
                 <div className={cn(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">OS 目录</th>
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">路径</th>
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.os_directory')}</th>
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.path')}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">OS TempDir</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.os_temp_dir')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.OSTempDir}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">OS UserCacheDir</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.os_user_cache_dir')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.OSUserCacheDir}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">OS UserConfigDir</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.os_user_config_dir')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.OSUserConfigDir}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">OS UserHomeDir</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.os_user_home_dir')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.OSUserHomeDir}</td>
                         </tr>
                         </tbody>
@@ -58,43 +58,43 @@ function File() {
             </section>
             {separator}
             <section>
-                <h2>XDG 目录</h2>
+                <h2>{t('page.file.xdg_directory')}</h2>
                 <div className={cn(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">XDG 目录
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.xdg_directory')}
                             </th>
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">路径</th>
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.path')}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG Home</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_home')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGHome}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG DataHome</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_data_home')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGDataHome}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG ConfigHome</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_config_home')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGConfigHome}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG StateHome</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_state_home')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGStateHome}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG CacheHome</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_cache_home')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGCacheHome}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG RuntimeDir</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_runtime_dir')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGRuntimeDir}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG BinHome</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_bin_home')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGBinHome}</td>
                         </tr>
                         </tbody>
@@ -103,32 +103,31 @@ function File() {
             </section>
             {separator}
             <section>
-                <h2>XDG 目录列表</h2>
+                <h2>{t('page.file.xdg_directory_list')}</h2>
                 <div className={cn(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">XDG
-                                目录列表
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.xdg_directory_list')}
                             </th>
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">路径</th>
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.path')}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG DataDirs</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_data_dirs')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGDataDirs?.join(', ')}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG ConfigDirs</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_config_dirs')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGConfigDirs?.join(', ')}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG FontDirs</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_font_dirs')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGFontDirs?.join(', ')}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">XDG ApplicationDirs
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.xdg_application_dirs')}
                             </td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGApplicationDirs?.join(', ')}</td>
                         </tr>
@@ -138,48 +137,47 @@ function File() {
             </section>
             {separator}
             <section>
-                <h2>XDG 用户目录</h2>
+                <h2>{t('page.file.xdg_user_directory')}</h2>
                 <div className={cn(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">XDG
-                                用户目录
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.xdg_user_directory')}
                             </th>
-                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">路径</th>
+                            <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">{t('page.file.path')}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Desktop</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.desktop')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.desktop}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Download</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.download')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.download}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Documents</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.documents')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.documents}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Music</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.music')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.music}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Pictures</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.pictures')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.pictures}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Videos</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.videos')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.videos}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">Templates</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.templates')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.templates}</td>
                         </tr>
                         <tr>
-                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">PublicShare</td>
+                            <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{t('page.file.public_share')}</td>
                             <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{dirInfo?.XDGUserDirs?.publicShare}</td>
                         </tr>
                         </tbody>
