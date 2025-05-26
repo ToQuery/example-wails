@@ -62,7 +62,8 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name: appInfo.Name,
+		Name:        appInfo.Name,
+		Description: appInfo.Description,
 
 		LogLevel: slog.LevelDebug,
 

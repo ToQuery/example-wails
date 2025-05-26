@@ -3,7 +3,7 @@
 #
 # The lines below are called `modelines`. See `:help modeline`
 
-name: ""
+name: "example-wails"
 arch: ${GOARCH}
 platform: "linux"
 version: "0.0.1"
@@ -17,12 +17,12 @@ license: "MIT"
 release: "1"
 
 contents:
-  - src: "./bin/"
-    dst: "/usr/local/bin/"
+  - src: "./bin/example-wails"
+    dst: "/usr/local/bin/example-wails"
   - src: "./build/appicon.png"
-    dst: "/usr/share/icons/hicolor/128x128/apps/.png"
-  - src: "./build/linux/.desktop"
-    dst: "/usr/share/applications/.desktop"
+    dst: "/usr/share/icons/hicolor/128x128/apps/example-wails.png"
+  - src: "./build/linux/example-wails.desktop"
+    dst: "/usr/share/applications/example-wails.desktop"
 
 depends:
   - gtk3

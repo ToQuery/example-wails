@@ -18,7 +18,7 @@ function Layout() {
                 </div>
 
                 {/* 路由内容 - 可滚动区域 */}
-                <main className="overflow-auto">
+                <main className="overflow-auto h-full">
                     <Outlet/>
                 </main>
             </div>

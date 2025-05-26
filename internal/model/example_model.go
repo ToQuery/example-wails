@@ -11,6 +11,8 @@ type UpdateInfoModel struct {
 
 type AppInfoModel struct {
 	Name        string
+	CnName      string
+	Description string
 	Version     string
 	VersionCode int
 	BuildId     string

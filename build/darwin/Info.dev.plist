@@ -6,7 +6,7 @@
         <key>CFBundleName</key>
         <string>Example Wails</string>
         <key>CFBundleExecutable</key>
-        <string></string>
+        <string>example-wails</string>
         <key>CFBundleIdentifier</key>
         <string>io.github.toquery.example-wails</string>
         <key>CFBundleVersion</key>

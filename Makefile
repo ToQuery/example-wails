@@ -11,7 +11,7 @@ gen-bind:
 
 .PHONY: update-build-assets
 update-build-assets:
-	wails3 update build-assets -config build/config.yml
+	wails3 task common:update:build-assets
 
 .PHONY: dev
 dev:

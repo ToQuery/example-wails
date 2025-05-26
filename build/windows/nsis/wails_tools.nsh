@@ -5,7 +5,7 @@
 !include "FileFunc.nsh"
 
 !ifndef INFO_PROJECTNAME
-    !define INFO_PROJECTNAME ""
+    !define INFO_PROJECTNAME "example-wails"
 !endif
 !ifndef INFO_COMPANYNAME
     !define INFO_COMPANYNAME "ToQuery"
