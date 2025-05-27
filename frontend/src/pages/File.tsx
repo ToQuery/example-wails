@@ -1,9 +1,10 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {cn} from "@/lib/utils";
+
 import {DirInfoModel} from "../../bindings/example-wails/internal/model";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {UI} from "@/const";
+import classNames from "classnames";
 
 function File() {
     const {t} = useTranslation();
@@ -19,7 +20,7 @@ function File() {
             <div className='flex justify-between item-center'>
                 <h1 className='w-full'>{t('page.file.directory')}</h1>
 
-                <button className={cn(UI.ui.btn, 'w-50')} type="button"
+                <button className={classNames(UI.ui.btn, 'w-50')} type="button"
                         onClick={async () => setDirInfo(await ExampleService.GetDirInfo())}>
                     {t('page.file.dir-info')}
                 </button>
@@ -27,7 +28,7 @@ function File() {
             {separator}
             <section>
                 <h2>{t('page.file.os_directory')}</h2>
-                <div className={cn(dirClass)}>
+                <div className={classNames(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
@@ -59,7 +60,7 @@ function File() {
             {separator}
             <section>
                 <h2>{t('page.file.xdg_directory')}</h2>
-                <div className={cn(dirClass)}>
+                <div className={classNames(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
@@ -104,7 +105,7 @@ function File() {
             {separator}
             <section>
                 <h2>{t('page.file.xdg_directory_list')}</h2>
-                <div className={cn(dirClass)}>
+                <div className={classNames(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">
@@ -138,7 +139,7 @@ function File() {
             {separator}
             <section>
                 <h2>{t('page.file.xdg_user_directory')}</h2>
-                <div className={cn(dirClass)}>
+                <div className={classNames(dirClass)}>
                     <table className="w-full border-collapse">
                         <thead>
                         <tr className="bg-gray-100 dark:bg-gray-700">

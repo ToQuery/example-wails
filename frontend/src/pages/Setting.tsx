@@ -4,9 +4,10 @@ import {useConfigAppInfo, useConfigLanguage, useConfigThemeModel, useConfigUpdat
 import {languages} from "@/i18n";
 import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
-import {cn} from "@/lib/utils";
+
 import {useTranslation} from "react-i18next";
 import {UI} from "@/const";
+import classNames from "classnames";
 
 // 设置页面组件
 export default function Setting() {
@@ -113,7 +114,7 @@ export default function Setting() {
                                 return <button
                                     key={item.code}
                                     onClick={() => setThemeModel(item)}
-                                    className={cn("px-4 py-2 rounded-lg  transition-colors", item.code == themeModel.code ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600')}>
+                                    className={classNames("px-4 py-2 rounded-lg  transition-colors", item.code == themeModel.code ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600')}>
                                     <div className="flex items-center">
                                         <Icon icon={item.icon} className="mr-1"/>
                                         {item.code == themeModel.code ? t(item.name) : t(item.label)}

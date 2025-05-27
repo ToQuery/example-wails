@@ -1,9 +1,3 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
-
-
 export const formatHtml = (html: string): string => {
   return html.replace(/(\r\n|\n|\r)/g, '<br />');
 };

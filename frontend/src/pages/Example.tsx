@@ -5,7 +5,8 @@ import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event, UI, Value} from "@/const";
 import {useConfigAppInfo, useConfigLoading, useConfigUpdate} from "@/provider/config";
-import {cn} from "@/lib/utils";
+import classNames from "classnames";
+
 
 function Example() {
     const {t} = useTranslation();
@@ -43,7 +44,7 @@ function Example() {
             {separator}
             <section>
                 <h2>{t('page.example.app-info')}</h2>
-                <div className={cn(butGroupClass)}>
+                <div className={classNames(butGroupClass)}>
                     <div>Version: {appInfo.version}</div>
                     <div>VersionCode: {appInfo.versionCode}</div>
                     <div>BuildId: {appInfo.buildId}</div>

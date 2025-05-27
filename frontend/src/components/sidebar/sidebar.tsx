@@ -2,9 +2,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {Icon} from "@iconify/react";
 import {useTranslation} from 'react-i18next';
 import React from "react";
-import {cn} from "@/lib/utils";
+
 import {DefaultActiveClass, DefaultBgClass, useConfigSidebarStyle} from "@/provider/config";
 import {Browser} from "@wailsio/runtime";
+import classNames from "classnames";
 
 export type SidebarStyle = {
     code: string;
@@ -99,8 +100,8 @@ function Sidebar({
         switch (sideBarStyle.code) {
             case 'icon': {
                 node = menu.render
-                    ? <li key={menu.name} className={cn(menuItemStyle, 'justify-center')}>{menu.render}</li>
-                    : <li key={menu.name} className={cn(menuItemStyle, isActive ? activeClass : '', 'justify-center')}
+                    ? <li key={menu.name} className={classNames(menuItemStyle, 'justify-center')}>{menu.render}</li>
+                    : <li key={menu.name} className={classNames(menuItemStyle, isActive ? activeClass : '', 'justify-center')}
                           onClick={() => handleMenuItemClick(menu)}>
                         {menu.icon && <Icon icon={menu.icon}/>}
                     </li>
@@ -109,9 +110,9 @@ function Sidebar({
             case 'row': {
                 node =
                     menu.render
-                        ? <li key={menu.name} className={cn(menuItemStyle, 'justify-center')}>{menu.render}</li>
+                        ? <li key={menu.name} className={classNames(menuItemStyle, 'justify-center')}>{menu.render}</li>
                         : <li key={menu.name}
-                              className={cn(menuItemStyle, isActive ? activeClass : '', 'flex-row pl-[20px]')}
+                              className={classNames(menuItemStyle, isActive ? activeClass : '', 'flex-row pl-[20px]')}
                               onClick={() => handleMenuItemClick(menu)}>
                             {menu.icon && <Icon icon={menu.icon} className='text-xl'/>}
                             <span className='text-sm ml-1.5'>{t(menu.name)}</span>
@@ -119,10 +120,10 @@ function Sidebar({
                 break;
             }
             case 'grid': {
-                const rowDoubleClass = cn(menuItemStyle, 'flex-col justify-center py-2');
+                const rowDoubleClass = classNames(menuItemStyle, 'flex-col justify-center py-2');
                 node = menu.render
                     ? <li key={menu.name} className={rowDoubleClass}>{menu.render}</li>
-                    : <li key={menu.name} className={cn(rowDoubleClass, isActive ? activeClass : '')}
+                    : <li key={menu.name} className={classNames(rowDoubleClass, isActive ? activeClass : '')}
                           onClick={() => handleMenuItemClick(menu)}>
                         {menu.icon && <Icon icon={menu.icon}/>}
                         <span className='text-sm mt-1'>{t(menu.name)}</span>
@@ -138,11 +139,11 @@ function Sidebar({
         <>
             {/* 侧边栏导航 --wails-draggable：窗口可拖动 */}
             <aside
-                className={cn("flex flex-col justify-between items-center text-center select-none z-20 text-2xl ", widthClass, bgColorClass)}
+                className={classNames("flex flex-col justify-between items-center text-center select-none z-20 text-2xl ", widthClass, bgColorClass)}
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}
             >
                 <ul
-                    className={cn("w-full overflow-y-auto mt-12", isNotMac ? '' : '')}>
+                    className={classNames("w-full overflow-y-auto mt-12", isNotMac ? '' : '')}>
                     {menus.filter(menu => !menu.hidden && !menu.footer).map((menu, index) => menuItemNode(index, menu))}
                 </ul>
                 <ul
