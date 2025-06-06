@@ -7,6 +7,7 @@ import {useLocation} from "react-router-dom";
 import {routers} from "@/../config/routes";
 import {useTranslation} from 'react-i18next';
 import {Menu} from "@/components/sidebar/sidebar";
+import classNames from "classnames";
 
 // 接收 props
 interface WindowTitleProps {
@@ -38,7 +39,7 @@ function WindowTitle(props: WindowTitleProps) {
     };
 
     // 是否非 Mac 平台
-    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+    const isNotMac = true;//navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     // 窗口最大化/还原
     const toggleMaximize = () => {

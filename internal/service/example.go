@@ -459,11 +459,14 @@ func (s ExampleService) WebviewWindowMinimize(windowName string) {
 
 func (s ExampleService) WebviewWindowMaximize(windowName string) {
 	if window := application.Get().GetWindowByName(windowName); window != nil {
-		if window.IsMaximised() {
-			window.UnMaximise()
-		} else {
-			window.EnableSizeConstraints()
-		}
+		window.ToggleMaximise()
+		/*
+			if window.IsMaximised() {
+				window.UnMaximise()
+			} else {
+				window.EnableSizeConstraints()
+			}
+		*/
 	}
 }
 
