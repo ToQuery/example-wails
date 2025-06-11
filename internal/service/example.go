@@ -139,6 +139,7 @@ func (s *ExampleService) GetAppDirInfo() model.DirInfoModel {
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) GetAppInfo() model.AppInfoModel {
+	log.Printf("获取应用信息: %v", application.Get().Environment().Debug)
 	return s.AppInfo
 }
 
@@ -372,6 +373,14 @@ func (s ExampleService) ShowAboutDialog() {
 }
 
 /*------Dialog End----------------------------------------------------------------------------------------------------*/
+
+/*------Notification Start-------------------------------------------------------------------------------------------*/
+
+func (s ExampleService) Notification() {
+
+}
+
+/*------Notification End----------------------------------------------------------------------------------------------*/
 
 /*------Multi Windows Start-------------------------------------------------------------------------------------------*/
 

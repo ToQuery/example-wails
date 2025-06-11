@@ -11,14 +11,14 @@ function Layout() {
             <Sidebar menus={routers}/>
 
             {/* 内容面板 */}
-            <div className="flex flex-col w-screen h-screen bg-white dark:bg-gray-900/90">
+            <div className="flex flex-col w-screen h-screen">
                 {/* 固定在顶部的标题栏 */}
                 <div className="sticky top-0 z-10">
                     <WindowTitle/>
                 </div>
 
                 {/* 路由内容 - 可滚动区域 */}
-                <main className="overflow-auto h-full">
+                <main className="overflow-auto h-full  bg-white dark:bg-gray-900/90">
                     <Outlet/>
                 </main>
             </div>

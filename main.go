@@ -116,9 +116,10 @@ func main() {
 		//Menu:   AppMenu, // reference the menu above
 		// MaxWidth:          1280,
 		// MaxHeight:         800,
-		DisableResize:    false,
+		// DisableResize:  false,
 		Frameless:        runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
-		BackgroundColour: application.NewRGB(27, 38, 54),
+		BackgroundType:   application.BackgroundTypeTransparent,
+		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
 		URL:              "/",
 
 		Mac: wails.MacWindow(),

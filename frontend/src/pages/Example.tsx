@@ -225,6 +225,12 @@ function Example() {
             {separator}
             <section>
                 <h2>{t('page.example.notifications')}</h2>
+                <div className={butGroupClass}>
+                    <button className={UI.ui.btn} type="button"
+                            onClick={() => ExampleService.Notification()}>
+                        Notification
+                    </button>
+                </div>
             </section>
             {separator}
             <section>

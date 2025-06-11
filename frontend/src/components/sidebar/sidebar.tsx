@@ -3,7 +3,14 @@ import {Icon} from "@iconify/react";
 import {useTranslation} from 'react-i18next';
 import React from "react";
 
-import {DefaultActiveClass, DefaultBgClass, useConfigSidebarStyle} from "@/provider/config";
+import {
+    DefaultActiveBgClass,
+    DefaultActiveTextClass,
+    DefaultBgClass,
+    DefaultHoverBgClass,
+    DefaultHoverTextClass,
+    useConfigSidebarStyle
+} from "@/provider/config";
 import {Browser} from "@wailsio/runtime";
 import classNames from "classnames";
 
@@ -57,7 +64,7 @@ function Sidebar({
                      sideBarStyle,
                      widthClass = 'min-w-[120px] w-[120px]',
                      bgColorClass = DefaultBgClass,
-                     activeClass = DefaultActiveClass
+                     activeClass = classNames(DefaultActiveBgClass, DefaultActiveTextClass),
                  }: SidebarProps) {
 
     const navigate = useNavigate()
@@ -94,7 +101,7 @@ function Sidebar({
             isActive = location.pathname == url.pathname || location.pathname == menu.path;
         }
 
-        const menuItemStyle = 'flex items-center min-h-[40px] hover:bg-gray-200 dark:hover:bg-gray-700';
+        const menuItemStyle = classNames('flex items-center min-h-[40px]', DefaultHoverBgClass, DefaultHoverTextClass);
 
         let node: React.ReactNode = <></>
         switch (sideBarStyle.code) {

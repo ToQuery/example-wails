@@ -10,11 +10,17 @@ import Loading from "@/components/biz/loading";
 import {useTranslation} from "react-i18next";
 
 
-// 侧边栏导航激活样式
-export const DefaultBgClass = 'text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-slate-900';
-export const DefaultActiveClass = 'text-blue-600 dark:text-blue-500';
+export const DefaultPrimaryColorClass = 'bg-blue-600 dark:text-blue-500';
 
-export const DefaultBg = 'bg-blue-600 dark:text-blue-500';
+// 侧边栏导航激活样式
+export const DefaultBgClass = 'dark:bg-slate-800';
+export const DefaultTextClass = 'text-gray-500 dark:text-gray-200';
+
+export const DefaultHoverBgClass = 'hover:bg-blue-400/20 dark:hover:bg-gray-600';
+export const DefaultHoverTextClass = 'hover:text-blue-600 dark:hover:text-blue-400';
+
+export const DefaultActiveBgClass = '';
+export const DefaultActiveTextClass = 'text-blue-500 dark:text-blue-400';
 
 export type AppInfo = {
     name: string;
@@ -64,7 +70,7 @@ const defaultConfig: ConfigContextType = {
         buildTime: 'unknown',
     },
     setAppInfo: function (appInfo: AppInfo): void {
-        throw new Error('Function not implemented.');
+        console.log('setAppInfo', appInfo);
     },
     setSidebarStyle(style: SidebarStyle): void {
         console.log('setSidebarStyle', style);

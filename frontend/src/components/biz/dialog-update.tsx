@@ -3,7 +3,7 @@ import classNames from "classnames";
 import {Icon} from '@iconify/react';
 import {Browser} from "@wailsio/runtime";
 
-import {DefaultBg, useConfigUpdate} from '@/provider/config';
+import {DefaultPrimaryColorClass, useConfigUpdate} from '@/provider/config';
 import {useTranslation} from "react-i18next";
 import Loading from "@/components/biz/loading";
 
@@ -34,7 +34,7 @@ const DialogUpdate = () => {
             <div
                 className="w-full max-w-md rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden transform transition-all duration-300 ease-in-out">
                 {/* 模态框头部 */}
-                <div className={classNames(DefaultBg, "p-4 text-white dark:text-white")}>
+                <div className={classNames(DefaultPrimaryColorClass, "p-4 text-white dark:text-white")}>
                     <div className="flex items-center justify-between">
                         <h3 className="text-lg font-bold flex items-center">
                             <Icon icon="mdi:update" className="mr-2 text-xl"/>
@@ -94,7 +94,7 @@ const DialogUpdate = () => {
                         )}
                         <button
                             onClick={() => Browser.OpenURL(updateInfo.downloadUrl)}
-                            className={classNames(DefaultBg, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
+                            className={classNames(DefaultPrimaryColorClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
                         >
                             <div className="flex items-center">
                                 <Icon icon="mdi:download" className="mr-1"/>
