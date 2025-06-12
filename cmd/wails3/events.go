@@ -1,4 +1,4 @@
-package wails
+package wails3
 
 const (
 	AppDatetime = "app.datetime"

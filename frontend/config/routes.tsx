@@ -20,5 +20,5 @@ export const routers: Menu[] = [
     {name: "menu.dark", render: <ThemeMode/>, footer: true, hidden: false},
     {name: "menu.language", render: <LanguageSwitcher/>, footer: true, hidden: false},
     {name: 'menu.sidebar-style', render: <SidebarStyleSwitcher/>, footer: true, hidden: true},
-    {name: 'menu.setting', path: "/setting", page: <Setting/>, icon: "material-symbols:settings", footer: true},
+    {name: 'menu.setting', path: "/setting-info", page: <Setting/>, icon: "material-symbols:settings", footer: true},
 ];

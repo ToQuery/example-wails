@@ -6,8 +6,10 @@ import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {Events} from "@wailsio/runtime";
 import {Event} from "@/const";
 import {UpdateInfoModel} from "../../bindings/example-wails/internal/model";
-import Loading from "@/components/biz/loading";
+import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
+import DialogNetworkError from "@/components/biz/dialog-network-error";
+import DialogLanguage from "@/components/biz/dialog-language";
 
 
 export const DefaultPrimaryColorClass = 'bg-blue-600 dark:text-blue-500';
@@ -44,20 +46,18 @@ interface ConfigContextType {
     themeModel: ThemeMode;
     setThemeModel: (themeModel: ThemeMode) => void;
     // 语言相关配置
-    showLanguageDialog: boolean;
-    setShowLanguageDialog: (showLanguageDialog: boolean) => void;
     language: string;
-    setLanguage: (language: string) => void;
+    handleLanguage: (language: string) => void;
+    setDialogLanguage: (loading: boolean) => void;
 
     //
-    loading: boolean;
-    setLoading: (loading: boolean) => void;
+    dialog: boolean;
+    setDialog: (loading: boolean) => void;
+    setDialogContent: (dialogContent: React.ReactNode) => void;
 
     // 更新相关配置
-    showUpdateDialog: boolean,
-    setShowUpdateDialog: (showUpdateDialog: boolean) => void;
     updateInfo: UpdateInfo;
-    setUpdateInfo: (updateInfo: UpdateInfo) => void;
+    handleDialogUpdate: (updateInfo: UpdateInfo) => void;
     checkForUpdates: () => void;
 }
 
@@ -90,23 +90,22 @@ const defaultConfig: ConfigContextType = {
     },
 
     language: 'zh-CN',
-    setLanguage: (language: string) => {
+    handleLanguage: (language: string) => {
         console.log('setLanguage', language);
     },
-    showLanguageDialog: false,
-    setShowLanguageDialog: (showLanguageDialog: boolean) => {
-        console.log('showLanguageDialog', showLanguageDialog);
+    setDialogLanguage: (loading: boolean) => {
+        console.log('setDialogLanguage', loading);
     },
 
-    loading: false,
-    setLoading: (loading: boolean) => {
+    dialog: false,
+    setDialog: (loading: boolean) => {
         console.log('setLoading', loading);
     },
-    // 更新相关默认值
-    showUpdateDialog: false,
-    setShowUpdateDialog: (showUpdateDialog: boolean) => {
-        console.log('showUpdateDialog', showUpdateDialog);
+    setDialogContent: (dialogContent: React.ReactNode) => {
+        console.log('setDialogContent', dialogContent);
     },
+
+    // 更新相关默认值
     updateInfo: {
         version: '',
         versionCode: 0,
@@ -114,7 +113,7 @@ const defaultConfig: ConfigContextType = {
         changelog: '',
         downloadUrl: '',
     },
-    setUpdateInfo: (updateInfo: UpdateInfo) => {
+    handleDialogUpdate: (updateInfo: UpdateInfo) => {
         console.log('setUpdateInfo', updateInfo);
     },
     checkForUpdates: () => {
@@ -132,11 +131,14 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
     const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
     const [themeModel, setThemeModelState] = useState<ThemeMode>(defaultConfig.themeModel);
-    const [loading, setLoading] = useState<boolean>(defaultConfig.loading);
+    const [dialog, setDialog] = useState<boolean>(defaultConfig.dialog);
+    const [diaLogContent, setDialogContent] = useState<React.ReactNode>();
+
+    // 更新相关状态
+    const [updateInfo, setUpdateInfoState] = useState<UpdateInfo>(defaultConfig.updateInfo);
 
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
-    const [showLanguageDialog, setShowLanguageDialog] = useState<boolean>(defaultConfig.showLanguageDialog);
 
     // 包装 setLanguage 函数，使其同时调用 i18n.changeLanguage
     const setThemeModel = (themeModel: ThemeMode) => {
@@ -165,20 +167,41 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     };
 
     // 包装 setLanguage 函数，使其同时调用 i18n.changeLanguage
-    const setLanguage = (lang: string) => {
+    const handleLanguage = (lang: string) => {
         i18n.changeLanguage(lang);
         setLanguageState(lang);
     };
 
-    // 更新相关状态
-    const [updateInfo, setUpdateInfo] = useState<UpdateInfo>(defaultConfig.updateInfo);
-    const [showUpdateDialog, setShowUpdateDialog] = useState<boolean>(defaultConfig.showUpdateDialog);
+    const handleDialogUpdate = (updateInfo: UpdateInfo) => {
+        setDialogContent(<DialogUpdate updateInfo={updateInfo} onClose={() => setDialog(false)}/>)
+        setUpdateInfoState(updateInfo);
+    };
+
+    const setDialogNetworkErr = () => {
+        setDialogContent(<DialogNetworkError onRetry={() => {}}/>)
+    };
+
+    const setDialogLanguage = (loading: boolean) => {
+        if (loading) {
+            setDialogContent(
+                <DialogLanguage language={language} onChangeLanguage={(lang) => {
+                    handleLanguage(lang);
+                    setDialog(false);
+                }} onClose={() => setDialog(false)}/>
+            );
+        } else {
+            setDialogContent(undefined);
+        }
+
+        setDialog(true);
+    };
+
 
     const getAppInfo = () => {
         ExampleService.GetAppInfo().then(async (appInfo) => {
             console.log('ConfigProvider GetAppInfo', appInfo);
             setAppInfo({
-                name: "example-wails",
+                name: appInfo.Name,
                 version: appInfo.Version,
                 versionCode: appInfo.VersionCode,
                 buildId: appInfo.BuildId,
@@ -191,64 +214,72 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     const checkForUpdates = () => {
         ExampleService.AppCheckUpdate().then((updateInfo) => {
             if (updateInfo) {
-                setUpdateInfo({
+                const update = {
                     version: updateInfo.Version,
                     versionCode: updateInfo.VersionCode,
                     forceUpdate: updateInfo.ForceUpdate,
                     changelog: updateInfo.Changelog,
                     downloadUrl: updateInfo.DownloadUrl,
-                });
-                setShowUpdateDialog(true);
+                };
+                handleDialogUpdate(update);
+                setDialog(true);
             }
         });
     };
 
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+        const isDark = e.matches
+        console.log('ConfigProvider handleChange isDark =', isDark);
+
+        if (isDark) {
+            setThemeModel(themeModeDark);
+            document.documentElement.classList.add('dark');
+        } else {
+            setThemeModel(themeModeLight);
+            document.documentElement.classList.remove('dark');
+        }
+    };
+
     useEffect(() => {
+        console.log('ConfigProvider useEffect');
+        // 获取应用信息
         getAppInfo();
+
+        // 主题
+        // document.documentElement.classList.add('dark');
+
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        // 监听系统主题变化
+        darkModeMediaQuery.addEventListener('change', handleThemeChange);
+        return () => darkModeMediaQuery.removeEventListener('change', handleThemeChange);
     }, []);
 
     useEffect(() => {
         console.log('ConfigProvider i18n.language', i18n.language);
-        setLanguage(i18n.language);
+        handleLanguage(i18n.language);
     }, [i18n.language]);
 
-    // 初始化时检查当前主题
     useEffect(() => {
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        // 监听系统主题变化
-        const handleChange = (e: MediaQueryListEvent) => {
-            const isDark = e.matches
-            console.log('ConfigProvider handleChange isDark =', isDark);
-
-            if (isDark) {
-                setThemeModel(themeModeDark);
-                document.documentElement.classList.add('dark');
-            } else {
-                setThemeModel(themeModeLight);
-                document.documentElement.classList.remove('dark');
-            }
-        };
-        darkModeMediaQuery.addEventListener('change', handleChange);
-
-        return () => darkModeMediaQuery.removeEventListener('change', handleChange);
-    }, []);
+        if (!dialog) {
+            setDialogContent(undefined);
+        }
+    }, [dialog]);
 
     Events.On(Event.events.AppUpdate, function (event) {
         console.log(Event.events.AppUpdate, event);
         const eventDatas: UpdateInfoModel[] = event.data;
         const eventData: UpdateInfoModel = eventDatas[0];
         console.log(Event.events.AppUpdate + " data ", eventData);
-        setUpdateInfo({
+        const update = {
             version: eventData.Version,
             versionCode: eventData.VersionCode,
             forceUpdate: eventData.ForceUpdate,
             changelog: eventData.Changelog,
             downloadUrl: eventData.DownloadUrl,
-        });
-        setShowUpdateDialog(true);
+        };
+        handleDialogUpdate(update);
+        setDialog(true);
     });
-
 
     const value = {
         appInfo,
@@ -259,27 +290,25 @@ export function ConfigProvider({children}: { children: ReactNode }) {
         setWindowTitle,
         themeModel,
         setThemeModel,
-        loading,
-        setLoading,
+        dialog,
+        setDialog,
+        setDialogContent,
 
         // 语言相关配置
-        showLanguageDialog,
-        setShowLanguageDialog,
         language,
-        setLanguage,
+        handleLanguage,
+        setDialogLanguage,
+
         // 更新相关配置
-        showUpdateDialog,
-        setShowUpdateDialog,
         updateInfo,
         checkForUpdates,
-        setUpdateInfo,
+        handleDialogUpdate,
     };
 
     return (
         <ConfigContext.Provider value={value}>
 
-            <Loading show={loading}/>
-            <DialogUpdate/>
+            <Dialog show={dialog} contentNode={diaLogContent}/>
             {children}
         </ConfigContext.Provider>
     );
@@ -323,7 +352,7 @@ export function useConfigLanguage(): [boolean, (showLanguageDialog: boolean) => 
     if (context === undefined) {
         throw new Error('useConfigLanguage must be used within a ConfigProvider');
     }
-    return [context.showLanguageDialog, context.setShowLanguageDialog, context.language, context.setLanguage];
+    return [context.dialog, context.setDialogLanguage, context.language, context.handleLanguage];
 }
 
 export function useConfigThemeModel(): [ThemeMode, (style: ThemeMode) => void] {
@@ -334,12 +363,12 @@ export function useConfigThemeModel(): [ThemeMode, (style: ThemeMode) => void] {
     return [context.themeModel, context.setThemeModel];
 }
 
-export function useConfigLoading(): [boolean, (loading: boolean) => void] {
+export function useConfigDialog(): [boolean, (dialog: boolean) => void, (dialogContent: React.ReactNode) => void] {
     const context = useContext(ConfigContext);
     if (context === undefined) {
         throw new Error('useConfigLoading must be used within a ConfigProvider');
     }
-    return [context.loading, context.setLoading];
+    return [context.dialog, context.setDialog, context.setDialogContent];
 }
 
 // 使用更新功能的Hook
@@ -348,5 +377,5 @@ export function useConfigUpdate(): [boolean, (showUpdateDialog: boolean) => void
     if (context === undefined) {
         throw new Error('useUpdate must be used within a ConfigProvider');
     }
-    return [context.showUpdateDialog, context.setShowUpdateDialog, context.updateInfo, context.setUpdateInfo, context.checkForUpdates];
+    return [context.dialog, context.setDialog, context.updateInfo, context.handleDialogUpdate, context.checkForUpdates];
 }

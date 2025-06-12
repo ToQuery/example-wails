@@ -11,8 +11,9 @@ import {
     DefaultHoverTextClass,
     useConfigSidebarStyle
 } from "@/provider/config";
-import {Browser} from "@wailsio/runtime";
+import {Browser, Window} from "@wailsio/runtime";
 import classNames from "classnames";
+import Layout from "@/components/layout";
 
 export type SidebarStyle = {
     code: string;
@@ -43,6 +44,7 @@ export interface Menu {
     name: string;
     path?: string;
     icon?: string;
+    layout?: 'layout' | 'setting';
     render?: React.ReactNode;
     page?: React.ReactNode;
     footer?: boolean;
@@ -82,12 +84,16 @@ function Sidebar({
     const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     const handleMenuItemClick = (menu: Menu) => {
-        const path = menu.path
-        if (path) {
-            if (path.startsWith("http://") || path.startsWith("https://")) {
-                Browser.OpenURL(path)
-            }else {
-                navigate(path);
+        if (menu.layout && menu.layout != Layout.name) {
+            Window.Get(menu.layout).Show();
+        } else {
+            const path = menu.path
+            if (path) {
+                if (path.startsWith("http://") || path.startsWith("https://")) {
+                    Browser.OpenURL(path)
+                }else {
+                    navigate(path);
+                }
             }
         }
     }

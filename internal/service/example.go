@@ -2,7 +2,7 @@ package service
 
 import (
 	"example-wails/assets"
-	"example-wails/cmd/wails"
+	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
 	"example-wails/internal/pkg/example"
 	"io"
@@ -158,7 +158,7 @@ func (s *ExampleService) AppUpdate(newVersion, force bool) *model.UpdateInfoMode
 
 func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
 	updateInfo := s.AppUpdate(newVersion, force)
-	application.Get().EmitEvent(wails.AppUpdate, updateInfo)
+	application.Get().EmitEvent(wails3.AppUpdate, updateInfo)
 }
 
 func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
@@ -391,7 +391,7 @@ func (s ExampleService) WebviewWindowShow(windowName string, url string) {
 			Name:      "window1",
 			Frameless: false,
 			URL:       url,
-			Mac:       wails.MacWindow(),
+			Mac:       wails3.MacWindow(),
 		})
 	}
 	webWindows.Show()

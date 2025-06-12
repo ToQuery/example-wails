@@ -1,4 +1,4 @@
-package wails
+package wails3
 
 import (
 	"example-wails/assets"
@@ -12,8 +12,6 @@ import (
 	"strings"
 )
 
-const DiskFilePrefix = "/disk_file"
-
 func MacWindow() application.MacWindow {
 	return application.MacWindow{
 		InvisibleTitleBarHeight: 50,
@@ -22,6 +20,69 @@ func MacWindow() application.MacWindow {
 		Appearance:              application.NSAppearanceNameVibrantLight,
 	}
 }
+
+func WindowsWindow() application.WindowsWindow {
+	return application.WindowsWindow{}
+}
+
+func LinuxWindow() application.LinuxWindow {
+	return application.LinuxWindow{}
+}
+
+func MainWindowOptions() application.WebviewWindowOptions {
+	return application.WebviewWindowOptions{
+		Name:      "main",
+		Title:     "Window 1",
+		Width:     1024,
+		Height:    768,
+		MinWidth:  1024,
+		MinHeight: 768,
+		// Menu:   AppMenu, // reference the menu above
+		// MaxWidth:          1280,
+		// MaxHeight:         800,
+		// DisableResize:  false,
+		Frameless:        runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
+		BackgroundType:   application.BackgroundTypeTransparent,
+		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
+		URL:              "/",
+
+		Mac: MacWindow(),
+
+		Windows: WindowsWindow(),
+
+		Linux: LinuxWindow(),
+	}
+}
+
+func SettingWindowOptions() application.WebviewWindowOptions {
+	return application.WebviewWindowOptions{
+		Name:      "SettingLayout",
+		Title:     "Setting",
+		Width:     1024,
+		Height:    768,
+		MinWidth:  1024,
+		MinHeight: 768,
+
+		Hidden: true,
+
+		// Menu:   AppMenu, // reference the menu above
+		// MaxWidth:          1280,
+		// MaxHeight:         800,
+		// DisableResize:  false,
+		//Frameless:        runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
+		BackgroundType:   application.BackgroundTypeTransparent,
+		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
+		URL:              "/setting",
+
+		Mac: MacWindow(),
+
+		Windows: WindowsWindow(),
+
+		Linux: LinuxWindow(),
+	}
+}
+
+const DiskFilePrefix = "/disk_file"
 
 func DiskFileMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {

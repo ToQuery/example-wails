@@ -4,7 +4,7 @@ import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event, UI, Value} from "@/const";
-import {useConfigAppInfo, useConfigLoading, useConfigUpdate} from "@/provider/config";
+import {useConfigAppInfo, useConfigDialog, useConfigUpdate} from "@/provider/config";
 import classNames from "classnames";
 
 
@@ -17,7 +17,7 @@ function Example() {
     const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
     const [diskImagePath, setDiskImagePath] = React.useState<string>();
 
-    const [, setLoading] = useConfigLoading();
+    const [, setDialog] = useConfigDialog();
     const [appInfo, setAppInfo] = useConfigAppInfo();
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
 
@@ -53,7 +53,7 @@ function Example() {
                 <div className={butGroupClass}>
                     <button className={UI.ui.btn} type="button"
                             onClick={async () => {
-                                setLoading(true);
+                                setDialog(true);
                                 ExampleService.GetAppInfo()
                                     .then((appInfoModel: AppInfoModel) => {
                                         console.log("appInfoModel", appInfoModel);
@@ -66,7 +66,7 @@ function Example() {
                                         });
                                     })
                                     .finally(() => {
-                                        setTimeout(() => setLoading(false), 1000);
+                                        setTimeout(() => setDialog(false), 1000);
                                     });
 
                             }}>
@@ -118,12 +118,12 @@ function Example() {
                         {t('page.example.app-embed-file')}
                     </button>
                     <button className={UI.ui.btn} type="button" onClick={() => {
-                        setLoading(true);
+                        setDialog(true);
                         ExampleService.AppEmbedExecBinary().then(() => {
                             console.log("AppEmbedExecBinary done");
                         }).catch((err) => {
                             console.log("AppEmbedExecBinary err", err);
-                        }).finally(() => setLoading(false));
+                        }).finally(() => setDialog(false));
                     }}>
                         {t('page.example.app-embed-exec-binary')}
                     </button>

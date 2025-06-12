@@ -3,7 +3,7 @@ package main
 import (
 	"embed"
 	_ "embed"
-	"example-wails/cmd/wails"
+	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
 	"example-wails/internal/service"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -11,7 +11,6 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/services/kvstore"
 	"log"
 	"log/slog"
-	"runtime"
 	"strconv"
 	"time"
 )
@@ -29,7 +28,7 @@ var (
 // See https://pkg.go.dev/embed for more information.
 
 //go:embed all:frontend/dist
-var assets embed.FS
+var frontAssets embed.FS
 
 // main function serves as the application's entry point. It initializes the application, creates a window,
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
@@ -49,7 +48,7 @@ func main() {
 		BuildTime:   BuildTime,
 	}
 
-	wails.OnStartBefore(appInfo)
+	wails3.OnStartBefore(appInfo)
 
 	config := &kvstore.Config{
 		Filename: appInfo.Name + ".db",
@@ -72,8 +71,8 @@ func main() {
 			application.NewService(service.NewExampleService(appInfo)),
 		},
 		Assets: application.AssetOptions{
-			Handler:        application.BundledAssetFileServer(assets),
-			Middleware:     wails.DiskFileMiddleware,
+			Handler:        application.BundledAssetFileServer(frontAssets),
+			Middleware:     wails3.DiskFileMiddleware,
 			DisableLogging: false,
 		},
 
@@ -88,17 +87,17 @@ func main() {
 		// Linux platform specific options
 		Linux: application.LinuxOptions{},
 
-		OnShutdown: wails.OnShutdown,
+		OnShutdown: wails3.OnShutdown,
 
-		ShouldQuit: wails.ShouldQuit,
+		ShouldQuit: wails3.ShouldQuit,
 
-		PanicHandler: wails.PanicHandler,
+		PanicHandler: wails3.PanicHandler,
 
-		WarningHandler: wails.WarningHandler,
+		WarningHandler: wails3.WarningHandler,
 
-		ErrorHandler: wails.ErrorHandler,
+		ErrorHandler: wails3.ErrorHandler,
 
-		RawMessageHandler: wails.RawMessageHandler,
+		RawMessageHandler: wails3.RawMessageHandler,
 	})
 
 	// Create a new window with the necessary options.
@@ -106,32 +105,12 @@ func main() {
 	// 'Mac' options tailor the window when running on macOS.
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
-	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
-		Name:      "main",
-		Title:     "Window 1",
-		Width:     1024,
-		Height:    768,
-		MinWidth:  1024,
-		MinHeight: 768,
-		//Menu:   AppMenu, // reference the menu above
-		// MaxWidth:          1280,
-		// MaxHeight:         800,
-		// DisableResize:  false,
-		Frameless:        runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
-		BackgroundType:   application.BackgroundTypeTransparent,
-		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
-		URL:              "/",
-
-		Mac: wails.MacWindow(),
-
-		Windows: application.WindowsWindow{},
-
-		Linux: application.LinuxWindow{},
-	})
+	app.NewWebviewWindowWithOptions(wails3.MainWindowOptions())
+	//app.NewWebviewWindowWithOptions(wails.SettingWindowOptions())
 
 	for windowEventType, event := range events.DefaultWindowEventMapping() {
 		log.Printf("app.OnApplicationEvent windowEventType=%d event=%d windowEvent=%s JSEvent=%s", windowEventType, event, events.JSEvent(uint(windowEventType)), events.JSEvent(uint(event)))
-		app.OnApplicationEvent(events.ApplicationEventType(windowEventType), wails.OnApplicationEvent)
+		app.OnApplicationEvent(events.ApplicationEventType(windowEventType), wails3.OnApplicationEvent)
 	}
 
 	// Create a goroutine that emits an event containing the current time every second.
@@ -139,12 +118,12 @@ func main() {
 	go func() {
 		for {
 			now := time.Now().Format(time.RFC1123)
-			app.EmitEvent(wails.AppDatetime, now)
+			app.EmitEvent(wails3.AppDatetime, now)
 			time.Sleep(time.Second)
 		}
 	}()
 
-	wails.OnStart(appInfo)
+	wails3.OnStart(appInfo)
 
 	// Run the application. This blocks until the application has been exited.
 	err = app.Run()

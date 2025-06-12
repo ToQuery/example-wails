@@ -5,6 +5,7 @@ import WindowTitle from "@/components/ui/window-title";
 import React from "react";
 
 function Layout() {
+
     return (
         <div className="flex min-w-screen min-h-screen overflow-hidden">
             {/* 固定在左侧的侧边栏 */}

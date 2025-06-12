@@ -144,6 +144,7 @@ export default function Setting() {
                         </div>
                         <div className="relative">
                             <select
+                                value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
                                 className="appearance-none bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white px-4 py-2 pr-8 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 {languages.map((lang) => (

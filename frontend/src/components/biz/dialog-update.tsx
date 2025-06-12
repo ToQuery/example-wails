@@ -3,9 +3,8 @@ import classNames from "classnames";
 import {Icon} from '@iconify/react';
 import {Browser} from "@wailsio/runtime";
 
-import {DefaultPrimaryColorClass, useConfigUpdate} from '@/provider/config';
+import {DefaultBgClass, DefaultPrimaryColorClass} from '@/provider/config';
 import {useTranslation} from "react-i18next";
-import Loading from "@/components/biz/loading";
 
 // 更新信息接口
 export interface UpdateInfo {
@@ -16,18 +15,18 @@ export interface UpdateInfo {
     downloadUrl: string;
 }
 
-// type DialogUpdateProps = {
-//     updateInfo: UpdateInfo;
-//     showModal: boolean;
-//     setShowModal: (showModal: boolean) => void;
-// }
+type DialogUpdateProps = {
+    updateInfo: UpdateInfo;
+    onClose: () => void;
+}
 
 // 更新弹窗组件
-const DialogUpdate = () => {
+const DialogUpdate = (props: DialogUpdateProps) => {
     const {t} = useTranslation();
-    const [showModal, setShowModal, updateInfo] = useConfigUpdate();
 
-    const contentNode = <>
+
+    // 如果是强制更新，添加模糊背景效果
+    return (<>
         {/* 模态框内容 */}
         <div
             className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-in-out">
@@ -40,9 +39,9 @@ const DialogUpdate = () => {
                             <Icon icon="mdi:update" className="mr-2 text-xl"/>
                             {t('app.update.new-version')}
                         </h3>
-                        {!updateInfo.forceUpdate && (
+                        {!props.updateInfo.forceUpdate && (
                             <button
-                                onClick={() => setShowModal(false)}
+                                onClick={() => props.onClose()}
                                 className="text-white hover:text-gray-200 transition-colors"
                             >
                                 <Icon icon="mdi:close" className="text-xl"/>
@@ -57,18 +56,18 @@ const DialogUpdate = () => {
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-gray-600 dark:text-gray-300">{t('app.update.version')}</span>
                             <span
-                                className="font-semibold text-blue-600 dark:text-blue-400">{updateInfo.version}</span>
+                                className="font-semibold text-blue-600 dark:text-blue-400">{props.updateInfo.version}</span>
                         </div>
 
                         <div className="mb-4 text-left">
                             <div className="text-gray-600 dark:text-gray-300 mb-1">{t('app.update.changelog')}</div>
                             <div
                                 className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg text-sm whitespace-pre-line">
-                                {updateInfo.changelog}
+                                {props.updateInfo.changelog}
                             </div>
                         </div>
 
-                        {updateInfo.forceUpdate && (
+                        {props.updateInfo.forceUpdate && (
                             <div
                                 className="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 p-3 mb-4 rounded-r-lg">
                                 <div className="flex items-start">
@@ -84,17 +83,17 @@ const DialogUpdate = () => {
 
                     {/* 模态框底部 */}
                     <div className="flex justify-end space-x-3">
-                        {!updateInfo.forceUpdate && (
+                        {!props.updateInfo.forceUpdate && (
                             <button
-                                onClick={() => setShowModal(false)}
+                                onClick={() => props.onClose()}
                                 className="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                             >
                                 {t('app.update.later')}
                             </button>
                         )}
                         <button
-                            onClick={() => Browser.OpenURL(updateInfo.downloadUrl)}
-                            className={classNames(DefaultPrimaryColorClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
+                            onClick={() => Browser.OpenURL(props.updateInfo.downloadUrl)}
+                            className={classNames(DefaultBgClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
                         >
                             <div className="flex items-center">
                                 <Icon icon="mdi:download" className="mr-1"/>
@@ -105,12 +104,7 @@ const DialogUpdate = () => {
                 </div>
             </div>
         </div>
-    </>
-
-    // 如果是强制更新，添加模糊背景效果
-    return (
-        <Loading show={showModal} contentNode={contentNode}/>
-    );
+    </>);
 };
 
 export default DialogUpdate;
