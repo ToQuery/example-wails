@@ -33,7 +33,7 @@ export type AppInfo = {
 }
 
 // 配置上下文
-interface ConfigContextType {
+interface GlobalContextType {
     appInfo: AppInfo;
     setAppInfo: (appInfo: AppInfo) => void;
     // 侧边栏
@@ -61,7 +61,7 @@ interface ConfigContextType {
     checkForUpdates: () => void;
 }
 
-const defaultConfig: ConfigContextType = {
+const defaultConfig: GlobalContextType = {
     appInfo: {
         name: 'example-wails',
         version: 'v0.0.0',
@@ -121,10 +121,10 @@ const defaultConfig: ConfigContextType = {
     },
 }
 
-const ConfigContext = createContext<ConfigContextType>(defaultConfig);
+const GlobalContext = createContext<GlobalContextType>(defaultConfig);
 
 // 配置提供者组件
-export function ConfigProvider({children}: { children: ReactNode }) {
+export function GlobalProvider({children}: { children: ReactNode }) {
     const {i18n} = useTranslation();
 
     const [appInfo, setAppInfo] = useState<AppInfo>(defaultConfig.appInfo);
@@ -306,65 +306,65 @@ export function ConfigProvider({children}: { children: ReactNode }) {
     };
 
     return (
-        <ConfigContext.Provider value={value}>
+        <GlobalContext.Provider value={value}>
 
             <Dialog show={dialog} contentNode={diaLogContent}/>
             {children}
-        </ConfigContext.Provider>
+        </GlobalContext.Provider>
     );
 }
 
 // 使用配置的Hook
-export function useConfig() {
-    const context = useContext(ConfigContext);
+export function useGlobal() {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfig must be used within a ConfigProvider');
     }
     return context;
 }
 
-export function useConfigAppInfo(): [AppInfo, (appInfo: AppInfo) => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalAppInfo(): [AppInfo, (appInfo: AppInfo) => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfig must be used within a ConfigProvider');
     }
     return [context.appInfo, context.setAppInfo];
 }
 
-export function useConfigSidebarStyle(): [SidebarStyle, (style: SidebarStyle) => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalSidebarStyle(): [SidebarStyle, (style: SidebarStyle) => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfigSidebarStyle must be used within a ConfigProvider');
     }
     return [context.sidebarStyle, context.setSidebarStyle];
 }
 
-export function useConfigWindowTitle(): [string, (windowTitle: string) => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalWindowTitle(): [string, (windowTitle: string) => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfigWindowTitle must be used within a ConfigProvider');
     }
     return [context.windowTitle, context.setWindowTitle];
 }
 
-export function useConfigLanguage(): [boolean, (showLanguageDialog: boolean) => void, string, (language: string) => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalLanguage(): [boolean, (showLanguageDialog: boolean) => void, string, (language: string) => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfigLanguage must be used within a ConfigProvider');
     }
     return [context.dialog, context.setDialogLanguage, context.language, context.handleLanguage];
 }
 
-export function useConfigThemeModel(): [ThemeMode, (style: ThemeMode) => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalThemeModel(): [ThemeMode, (style: ThemeMode) => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfigThemeModel must be used within a ConfigProvider');
     }
     return [context.themeModel, context.setThemeModel];
 }
 
-export function useConfigDialog(): [boolean, (dialog: boolean) => void, (dialogContent: React.ReactNode) => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalDialog(): [boolean, (dialog: boolean) => void, (dialogContent: React.ReactNode) => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfigLoading must be used within a ConfigProvider');
     }
@@ -372,8 +372,8 @@ export function useConfigDialog(): [boolean, (dialog: boolean) => void, (dialogC
 }
 
 // 使用更新功能的Hook
-export function useConfigUpdate(): [boolean, (showUpdateDialog: boolean) => void, UpdateInfo, (style: UpdateInfo) => void, () => void] {
-    const context = useContext(ConfigContext);
+export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, UpdateInfo, (style: UpdateInfo) => void, () => void] {
+    const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useUpdate must be used within a ConfigProvider');
     }

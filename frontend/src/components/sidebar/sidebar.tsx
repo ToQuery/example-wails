@@ -9,8 +9,9 @@ import {
     DefaultBgClass,
     DefaultHoverBgClass,
     DefaultHoverTextClass,
-    useConfigSidebarStyle
-} from "@/provider/config";
+    useGlobalSidebarStyle
+} from "@/provider/global-provider";
+
 import {Browser, Window} from "@wailsio/runtime";
 import classNames from "classnames";
 import Layout from "@/components/layout";
@@ -73,7 +74,7 @@ function Sidebar({
     const location = useLocation();
     const {t} = useTranslation();
 
-    const [configSidebarStyle,] = useConfigSidebarStyle();
+    const [configSidebarStyle,] = useGlobalSidebarStyle();
 
     if (!sideBarStyle) {
         sideBarStyle = configSidebarStyle;

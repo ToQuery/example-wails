@@ -4,7 +4,8 @@ import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {AppInfoModel} from "../../bindings/example-wails/internal/model";
 import {Event, UI, Value} from "@/const";
-import {useConfigAppInfo, useConfigDialog, useConfigUpdate} from "@/provider/config";
+import {useGlobalAppInfo, useGlobalDialog, useGlobalUpdate} from "@/provider/global-provider";
+
 import classNames from "classnames";
 
 
@@ -17,9 +18,9 @@ function Example() {
     const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
     const [diskImagePath, setDiskImagePath] = React.useState<string>();
 
-    const [, setDialog] = useConfigDialog();
-    const [appInfo, setAppInfo] = useConfigAppInfo();
-    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useConfigUpdate();
+    const [, setDialog] = useGlobalDialog();
+    const [appInfo, setAppInfo] = useGlobalAppInfo();
+    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useGlobalUpdate();
 
     const butGroupClass = 'flex flex-wrap gap-4 mt-4';
 

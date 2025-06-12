@@ -3,7 +3,7 @@ import classNames from "classnames";
 import {Icon} from '@iconify/react';
 import {Browser} from "@wailsio/runtime";
 
-import {DefaultBgClass, DefaultPrimaryColorClass} from '@/provider/config';
+import {DefaultBgClass, DefaultPrimaryColorClass} from '@/provider/global-provider';
 import {useTranslation} from "react-i18next";
 
 // 更新信息接口

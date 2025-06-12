@@ -1,9 +1,10 @@
 import {Icon} from '@iconify/react';
-import {useConfigLanguage} from "@/provider/config";
+import {useGlobalLanguage} from "@/provider/global-provider";
+
 import {languages} from "@/i18n";
 
 function LanguageSwitcher() {
-    const [showModal, setShowModal, language] = useConfigLanguage();
+    const [showModal, setShowModal, language] = useGlobalLanguage();
 
     return (
         <>

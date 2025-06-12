@@ -2,7 +2,7 @@ import React from 'react'
 import {createRoot} from 'react-dom/client'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
-import {ConfigProvider} from "@/provider/config";
+import {GlobalProvider} from "@/provider/global-provider";
 import Layout from "@/components/layout";
 import {Menu} from "@/components/sidebar/sidebar";
 import SettingLayout from "@/components/setting-layout";
@@ -46,7 +46,7 @@ const getLayout = (layoutName: string) => {
 
 root.render(
     <React.StrictMode>
-        <ConfigProvider>
+        <GlobalProvider>
             <BrowserRouter>
                 <Routes>
                     {Array.from(layoutMap.entries()).map(([layoutName, menu]) => {
@@ -58,6 +58,6 @@ root.render(
                     })}
                 </Routes>
             </BrowserRouter>
-        </ConfigProvider>
+        </GlobalProvider>
     </React.StrictMode>
 )

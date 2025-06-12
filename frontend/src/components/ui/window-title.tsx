@@ -2,7 +2,8 @@ import {Icon} from "@iconify/react";
 import React from "react";
 import {ExampleService} from '../../../bindings/example-wails/internal/service';
 
-import {DefaultBgClass} from "@/provider/config";
+import {DefaultBgClass} from "@/provider/global-provider";
+
 import {useLocation} from "react-router-dom";
 import {routers} from "@/../config/routes";
 import {useTranslation} from 'react-i18next';

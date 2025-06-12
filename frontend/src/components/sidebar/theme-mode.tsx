@@ -1,6 +1,7 @@
 import {Icon} from '@iconify/react';
 import {useTranslation} from 'react-i18next';
-import {useConfigThemeModel} from "@/provider/config";
+import {useGlobalThemeModel} from "@/provider/global-provider";
+
 
 type ThemeMode = {
     icon: string;
@@ -38,7 +39,7 @@ export const themeModeOptions: ThemeMode[] = [
 
 function ThemeMode() {
     const {t} = useTranslation();
-    const [themeModel, setThemeModel] = useConfigThemeModel();
+    const [themeModel, setThemeModel] = useGlobalThemeModel();
 
     // 切换暗黑模式
     const toggleDark = () => {

@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {Icon} from '@iconify/react';
-import {useTranslation} from 'react-i18next';
-import {useConfigSidebarStyle} from '@/provider/config';
+import {useGlobalSidebarStyle} from '@/provider/global-provider';
 import {SidebarStyle, SidebarStyles} from './sidebar';
 
 interface SidebarStyleSwitcherProps {
@@ -10,7 +9,7 @@ interface SidebarStyleSwitcherProps {
 
 function SidebarStyleSwitcher(props: SidebarStyleSwitcherProps) {
     const [showDropdown, setShowDropdown] = useState(false);
-    const [sidebarStyle, setSidebarStyle] = useConfigSidebarStyle();
+    const [sidebarStyle, setSidebarStyle] = useGlobalSidebarStyle();
 
     const handleChange = (style: SidebarStyle, index: number) => {
         setShowDropdown(false);

@@ -3,7 +3,8 @@ import classNames from "classnames";
 import {Icon} from '@iconify/react';
 
 import {useTranslation} from "react-i18next";
-import {DefaultBgClass} from "@/provider/config";
+import {DefaultBgClass} from "@/provider/global-provider";
+
 
 type DialogNetworkErrorProps = {
     onRetry: () => void
