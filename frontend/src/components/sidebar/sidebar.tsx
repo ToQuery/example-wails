@@ -3,18 +3,12 @@ import {Icon} from "@iconify/react";
 import {useTranslation} from 'react-i18next';
 import React from "react";
 
-import {
-    DefaultActiveBgClass,
-    DefaultActiveTextClass,
-    DefaultBgClass,
-    DefaultHoverBgClass,
-    DefaultHoverTextClass,
-    useGlobalSidebarStyle
-} from "@/provider/global-provider";
+import { useGlobalSidebarStyle } from "@/provider/global-provider";
 
 import {Browser, Window} from "@wailsio/runtime";
 import classNames from "classnames";
 import Layout from "@/components/layout";
+import {ui} from "@/const/ui";
 
 export type SidebarStyle = {
     code: string;
@@ -66,8 +60,8 @@ function Sidebar({
                      menus,
                      sideBarStyle,
                      widthClass = 'min-w-[120px] w-[120px]',
-                     bgColorClass = DefaultBgClass,
-                     activeClass = classNames(DefaultActiveBgClass, DefaultActiveTextClass),
+                     bgColorClass = ui.theme.defaultBgClass,
+                     activeClass = classNames(ui.theme.defaultActiveBgClass, ui.theme.defaultActiveTextClass),
                  }: SidebarProps) {
 
     const navigate = useNavigate()
@@ -108,7 +102,7 @@ function Sidebar({
             isActive = location.pathname == url.pathname || location.pathname == menu.path;
         }
 
-        const menuItemStyle = classNames('flex items-center min-h-[40px]', DefaultHoverBgClass, DefaultHoverTextClass);
+        const menuItemStyle = classNames('flex items-center min-h-[40px]', ui.theme.defaultHoverBgClass, ui.theme.defaultHoverTextClass);
 
         let node: React.ReactNode = <></>
         switch (sideBarStyle.code) {

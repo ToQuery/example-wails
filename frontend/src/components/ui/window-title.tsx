@@ -2,13 +2,12 @@ import {Icon} from "@iconify/react";
 import React from "react";
 import {ExampleService} from '../../../bindings/example-wails/internal/service';
 
-import {DefaultBgClass} from "@/provider/global-provider";
-
 import {useLocation} from "react-router-dom";
 import {routers} from "@/../config/routes";
 import {useTranslation} from 'react-i18next';
 import {Menu} from "@/components/sidebar/sidebar";
 import classNames from "classnames";
+import {ui} from "@/const/ui";
 
 // 接收 props
 interface WindowTitleProps {
@@ -49,7 +48,7 @@ function WindowTitle(props: WindowTitleProps) {
     };
     return (<>
         {/* 标题栏 --wails-draggable：窗口可拖动 */}
-        <header className={classNames("flex flex-row justify-between h-12", DefaultBgClass)}
+        <header className={classNames("flex flex-row justify-between h-12", ui.theme.defaultBgClass)}
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}>
             <div className='flex justify-start items-center px-2 text-xl font-medium text-black dark:text-white space-x-2'>
                 <Icon icon='material-symbols:side-navigation' className='text-xl hidden'/>
