@@ -7,6 +7,7 @@ import (
 	"embed"
 )
 
+//go:embed all:binary/example-wails/version
 //go:embed all:binary/example-wails/darwin_amd64
 var goAssetsBinary embed.FS
 

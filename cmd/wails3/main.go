@@ -100,9 +100,9 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 func OnStartBefore(appInfo model.AppInfoModel) {
 	log.Printf("OnStartBefore")
 
-	exampleWails, err := assets.AssetsBinaryExampleWails()
+	exampleWails, version, err := assets.AssetsBinaryExampleWails()
 	if err == nil && exampleWails != nil {
-		pkg.CopyBinAddPath("example-wails", appInfo, exampleWails)
+		pkg.CopyBinAddPath("example-wails", version, exampleWails, appInfo)
 	} else {
 		log.Printf("Failed to load example-wails binary: %s", err)
 	}
