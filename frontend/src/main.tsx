@@ -10,52 +10,44 @@ import SettingLayout from "@/components/setting-layout";
 // 导入i18n配置
 import './i18n';
 import './style.css'
-import {routers} from "../config/routes";
+import {MainRouters, SettingRouters} from "../config/routes";
+import SettingLeft from "@/components/setting/setting-left";
+import NotFound from "@/pages/NotFound";
 
 const container = document.getElementById('root')
 
 const root = createRoot(container!)
-
-const layoutMap = new Map<string, Menu[]>();
-
-routers.forEach((menu) => {
-    const layout = menu.layout ?? 'layout';
-
-    if (!layoutMap.has(layout)) {
-        layoutMap.set(layout, []);
-    }
-    layoutMap.get(layout)!.push(menu);
-});
-
-const getLayout = (layoutName: string) => {
-    let layout = <Layout/>;
-    switch (layoutName) {
-        case 'layout': {
-            layout = <Layout/>;
-            break;
-        }
-        case 'setting': {
-            layout = <SettingLayout/>;
-            break;
-        }
-        default:
-            layout = <Layout/>;
-    }
-    return layout;
-}
 
 root.render(
     <React.StrictMode>
         <GlobalProvider>
             <BrowserRouter>
                 <Routes>
-                    {Array.from(layoutMap.entries()).map(([layoutName, menu]) => {
-                        return (<Route element={getLayout(layoutName)}>
-                            {menu.filter(router => router.path && router.page).map((route: Menu) => (
-                                <Route key={route.name} path={route.path} element={route.page}/>
-                            ))}
-                        </Route>);
-                    })}
+                    <Route element={<Layout/>}>
+                        {MainRouters.filter(router => router.path && router.page).map((route: Menu) => (
+                            <Route key={route.name} path={route.path} element={route.page}/>
+                        ))}
+                    </Route>
+                    <Route path='/setting' element={<SettingLayout/>}>
+                        {SettingRouters.map((route: Menu) => {
+                            console.log('setting routers', route);
+                            let menuItem = <></>;
+                            if (route.children && route.children.length > 0) {
+                                console.log('setting routers children', route);
+                                menuItem = <Route key={route.name} path={route.path}
+                                                  element={<SettingLeft menus={route.children}/>}>
+                                    {route.children.map((child: Menu) => (
+                                        <Route key={child.name} path={child.path} element={child.page}/>
+                                    ))}
+                                </Route>;
+                            } else {
+                                menuItem = <Route key={route.name} path={route.path} element={route.page}/>
+                            }
+                            return menuItem;
+                        })}
+                    </Route>
+
+                    <Route path="*" element={<NotFound/>}/>
                 </Routes>
             </BrowserRouter>
         </GlobalProvider>

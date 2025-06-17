@@ -1,7 +1,6 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
 import {useGlobalAppInfo, useGlobalLanguage, useGlobalThemeModel, useGlobalUpdate} from "@/provider/global-provider";
-
 import {languages} from "@/i18n";
 import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
@@ -11,7 +10,7 @@ import {UI} from "@/const";
 import classNames from "classnames";
 
 // 设置页面组件
-export default function Setting() {
+export default function Info() {
 
     const {t} = useTranslation();
 
@@ -30,9 +29,9 @@ export default function Setting() {
             {/* 标题 */}
             <div className="mb-8 text-center">
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-blue-600 transition-all duration-500">
-                    {t('page.setting.title')}
+                    {t('page.info.title')}
                 </h1>
-                <p className="text-gray-500 dark:text-gray-400 mt-2">{t('page.setting.subtitle')}</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-2">{t('page.info.subtitle')}</p>
             </div>
 
             {/* 应用信息 */}
@@ -45,12 +44,12 @@ export default function Setting() {
                             <Icon icon="fluent:app-title-24-filled" className="text-4xl text-blue-500"/>
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">{t('page.setting.app.title')}</h2>
-                            <p className="text-gray-500 dark:text-gray-300">{t('page.setting.app.subtitle')}</p>
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">{t('page.info.app.title')}</h2>
+                            <p className="text-gray-500 dark:text-gray-300">{t('page.info.app.subtitle')}</p>
                         </div>
                     </div>
                     <div className="text-right">
-                        <div className="text-sm text-gray-500 dark:text-gray-400">{t('page.setting.current_version')}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{t('page.info.current_version')}</div>
                         <div className="text-lg font-semibold text-gray-800 dark:text-white">{appInfo?.version}</div>
                     </div>
                 </div>
@@ -62,14 +61,14 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:update" className="mr-2 text-blue-500"/>
-                        {t('page.setting.version_and_updates')}
+                        {t('page.info.version_and_updates')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="mb-4 md:mb-0">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.setting.check_updates')}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.setting.check_updates_desc')}</p>
+                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.info.check_updates')}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.info.check_updates_desc')}</p>
                         </div>
                         <button
                             onClick={checkForUpdates}
@@ -80,12 +79,12 @@ export default function Setting() {
                                 {isCheckingUpdate ? (
                                     <>
                                         <Icon icon="eos-icons:loading" className="mr-1 animate-spin"/>
-                                        {t('page.setting.checking_updates')}
+                                        {t('page.info.checking_updates')}
                                     </>
                                 ) : (
                                     <>
                                         <Icon icon="mdi:refresh" className="mr-1"/>
-                                        {t('page.setting.check_updates')}
+                                        {t('page.info.check_updates')}
                                     </>
                                 )}
                             </div>
@@ -100,14 +99,14 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:theme-light-dark" className="mr-2 text-blue-500"/>
-                        {t('page.setting.theme_settings')}
+                        {t('page.info.theme_settings')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="mb-4 md:mb-0">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.setting.dark_mode')}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.setting.theme_switch_desc')}</p>
+                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.info.dark_mode')}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.info.theme_switch_desc')}</p>
                         </div>
                         <div className="flex space-x-2">
 
@@ -134,18 +133,17 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:translate" className="mr-2 text-blue-500"/>
-                        {t('page.setting.language_settings')}
+                        {t('page.info.language_settings')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                         <div className="mb-4 md:mb-0">
-                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.setting.interface_language')}</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.setting.language_switch_desc')}</p>
+                            <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.info.interface_language')}</h3>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.info.language_switch_desc')}</p>
                         </div>
                         <div className="relative">
                             <select
-                                value={language}
                                 onChange={(e) => setLanguage(e.target.value)}
                                 className="appearance-none bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white px-4 py-2 pr-8 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 {languages.map((lang) => (
@@ -167,18 +165,18 @@ export default function Setting() {
                 <div className="p-4 border-b border-gray-100 dark:border-slate-700">
                     <h2 className="text-xl font-bold flex items-center text-gray-800 dark:text-white">
                         <Icon icon="mdi:information" className="mr-2 text-blue-500"/>
-                        {t('page.setting.about')}
+                        {t('page.info.about')}
                     </h2>
                 </div>
                 <div className="p-6">
                     <p className="text-gray-700 dark:text-gray-300 mb-4">
-                        {t('page.setting.about_description')}
+                        {t('page.info.about_description')}
                     </p>
                     <div className="flex flex-wrap gap-4">
                         <button onClick={() => Browser.OpenURL("https://wails.io")}
                                 className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="simple-icons:wails" className="mr-2"/>
-                            {t('page.setting.wails_website')}
+                            {t('page.info.wails_website')}
                         </button>
                         <button onClick={() => Browser.OpenURL("https://github.com/ToQuery/example-wails")}
                                 className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
@@ -189,7 +187,7 @@ export default function Setting() {
                             onClick={() => Browser.OpenURL("https://v3alpha.wails.io/getting-started/installation/")}
                             className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
                             <Icon icon="mdi:book-open-variant" className="mr-2"/>
-                            {t('page.setting.documentation')}
+                            {t('page.info.documentation')}
                         </button>
                     </div>
                 </div>
@@ -199,9 +197,9 @@ export default function Setting() {
             <div className="text-center text-gray-500 dark:text-gray-400 text-sm mt-12 mb-6">
                 <div className="flex items-center justify-center mb-2">
                     <Icon icon="mdi:copyright" className="mr-1"/>
-                    2023 {t('page.setting.wails_example_app')}
+                    2023 {t('page.info.wails_example_app')}
                 </div>
-                <div>{t('page.setting.built_with_wails_react')}</div>
+                <div>{t('page.info.built_with_wails_react')}</div>
             </div>
         </div>
     );

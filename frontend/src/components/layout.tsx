@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 import Sidebar from "@/components/sidebar/sidebar";
-import {routers} from "../../config/routes";
+import {MainRouters} from "../../config/routes";
 import WindowTitle from "@/components/ui/window-title";
 import React from "react";
 
@@ -9,7 +9,7 @@ function Layout() {
     return (
         <div className="flex min-w-screen min-h-screen overflow-hidden">
             {/* 固定在左侧的侧边栏 */}
-            <Sidebar menus={routers}/>
+            <Sidebar menus={MainRouters}/>
 
             {/* 内容面板 */}
             <div className="flex flex-col w-screen h-screen">

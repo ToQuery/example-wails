@@ -93,7 +93,7 @@ const DialogUpdate = (props: DialogUpdateProps) => {
                         )}
                         <button
                             onClick={() => Browser.OpenURL(props.updateInfo.downloadUrl)}
-                            className={classNames(ui.theme.defaultBgClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
+                            className={classNames(ui.theme.defaultPrimaryColorClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
                         >
                             <div className="flex items-center">
                                 <Icon icon="mdi:download" className="mr-1"/>

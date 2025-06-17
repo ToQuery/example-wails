@@ -106,7 +106,7 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.NewWebviewWindowWithOptions(wails3.MainWindowOptions())
-	//app.NewWebviewWindowWithOptions(wails.SettingWindowOptions())
+	//app.NewWebviewWindowWithOptions(wails3.SettingWindowOptions())
 
 	for windowEventType, event := range events.DefaultWindowEventMapping() {
 		log.Printf("app.OnApplicationEvent windowEventType=%d event=%d windowEvent=%s JSEvent=%s", windowEventType, event, events.JSEvent(uint(windowEventType)), events.JSEvent(uint(event)))

@@ -269,7 +269,7 @@ function Example() {
                 </div>
                 <div className={butGroupClass}>
                     <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowShow(windowName, "/setting")}>
+                            onClick={() => ExampleService.WebviewWindowShow(windowName, "/")}>
                         {t('page.example.webview-window-show')}
                     </button>
 
@@ -319,7 +319,12 @@ function Example() {
             {separator}
             <section>
                 <h2>{t('page.example.other')}</h2>
-                <div className={butGroupClass}></div>
+                <div className={butGroupClass}>
+                    <button className={UI.ui.btn} type="button"
+                            onClick={() => ExampleService.OpenSettingWindow("/setting")}>
+                        {t('page.example.open-setting-window')}
+                    </button>
+                </div>
             </section>
         </div>);
 }

@@ -392,6 +392,8 @@ func (s ExampleService) WebviewWindowShow(windowName string, url string) {
 			Frameless: false,
 			URL:       url,
 			Mac:       wails3.MacWindow(),
+			Windows:   wails3.WindowsWindow(),
+			Linux:     wails3.LinuxWindow(),
 		})
 	}
 	webWindows.Show()
@@ -482,5 +484,13 @@ func (s ExampleService) WebviewWindowMaximize(windowName string) {
 /*------Multi Windows End---------------------------------------------------------------------------------------------*/
 
 /*------Other Start---------------------------------------------------------------------------------------------------*/
+
+func (s ExampleService) OpenSettingWindow(url string) {
+	webWindows := application.Get().GetWindowByName(wails3.SettingWindowName)
+	if webWindows == nil {
+		webWindows = application.Get().NewWebviewWindowWithOptions(wails3.SettingWindowOptions(url))
+	}
+	webWindows.Show()
+}
 
 /*------Other End-----------------------------------------------------------------------------------------------------*/

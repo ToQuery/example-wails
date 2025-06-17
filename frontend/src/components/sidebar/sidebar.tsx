@@ -3,11 +3,10 @@ import {Icon} from "@iconify/react";
 import {useTranslation} from 'react-i18next';
 import React from "react";
 
-import { useGlobalSidebarStyle } from "@/provider/global-provider";
+import {useGlobalSidebarStyle} from "@/provider/global-provider";
 
-import {Browser, Window} from "@wailsio/runtime";
+import {Browser} from "@wailsio/runtime";
 import classNames from "classnames";
-import Layout from "@/components/layout";
 import {ui} from "@/const/ui";
 
 export type SidebarStyle = {
@@ -39,9 +38,9 @@ export interface Menu {
     name: string;
     path?: string;
     icon?: string;
-    layout?: 'layout' | 'setting';
     render?: React.ReactNode;
     page?: React.ReactNode;
+    children?: Menu[];
     footer?: boolean;
     hidden?: boolean;
 }
@@ -79,16 +78,12 @@ function Sidebar({
     const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     const handleMenuItemClick = (menu: Menu) => {
-        if (menu.layout && menu.layout != Layout.name) {
-            Window.Get(menu.layout).Show();
-        } else {
-            const path = menu.path
-            if (path) {
-                if (path.startsWith("http://") || path.startsWith("https://")) {
-                    Browser.OpenURL(path)
-                }else {
-                    navigate(path);
-                }
+        const path = menu.path
+        if (path) {
+            if (path.startsWith("http://") || path.startsWith("https://")) {
+                Browser.OpenURL(path)
+            } else {
+                navigate(path);
             }
         }
     }
@@ -109,7 +104,8 @@ function Sidebar({
             case 'icon': {
                 node = menu.render
                     ? <li key={menu.name} className={classNames(menuItemStyle, 'justify-center')}>{menu.render}</li>
-                    : <li key={menu.name} className={classNames(menuItemStyle, isActive ? activeClass : '', 'justify-center')}
+                    : <li key={menu.name}
+                          className={classNames(menuItemStyle, isActive ? activeClass : '', 'justify-center')}
                           onClick={() => handleMenuItemClick(menu)}>
                         {menu.icon && <Icon icon={menu.icon}/>}
                     </li>

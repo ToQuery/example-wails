@@ -54,25 +54,15 @@ func MainWindowOptions() application.WebviewWindowOptions {
 	}
 }
 
-func SettingWindowOptions() application.WebviewWindowOptions {
+const SettingWindowName = "setting"
+
+func SettingWindowOptions(url string) application.WebviewWindowOptions {
 	return application.WebviewWindowOptions{
-		Name:      "SettingLayout",
-		Title:     "Setting",
-		Width:     1024,
-		Height:    768,
-		MinWidth:  1024,
-		MinHeight: 768,
+		Name:  SettingWindowName,
+		Title: "Setting",
+		URL:   "/setting",
 
-		Hidden: true,
-
-		// Menu:   AppMenu, // reference the menu above
-		// MaxWidth:          1280,
-		// MaxHeight:         800,
-		// DisableResize:  false,
-		//Frameless:        runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
-		BackgroundType:   application.BackgroundTypeTransparent,
-		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
-		URL:              "/setting",
+		Frameless: false,
 
 		Mac: MacWindow(),
 

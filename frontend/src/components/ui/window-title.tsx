@@ -3,7 +3,7 @@ import React from "react";
 import {ExampleService} from '../../../bindings/example-wails/internal/service';
 
 import {useLocation} from "react-router-dom";
-import {routers} from "@/../config/routes";
+import {MainRouters} from "@/../config/routes";
 import {useTranslation} from 'react-i18next';
 import {Menu} from "@/components/sidebar/sidebar";
 import classNames from "classnames";
@@ -24,7 +24,7 @@ function WindowTitle(props: WindowTitleProps) {
     const getCurrentRoute = (): Menu | undefined => {
         // 移除查询参数，只保留路径部分
         const pathname = location.pathname;
-        return routers.find(route => route.path === pathname || (pathname === '/' && route.path === '/'));
+        return MainRouters.find(route => route.path === pathname || (pathname === '/' && route.path === '/'));
     };
 
     // 获取当前路由
