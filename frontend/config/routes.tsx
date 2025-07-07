@@ -37,25 +37,25 @@ export const SettingRouters: Menu[] =  [
     {
         name: 'menu.setting.advanced',
         path: "/setting/advanced",
-        icon: "material-symbols:settings",
+        icon: "material-symbols:read-more-rounded",
         children: [
             {
                 name: 'menu.setting.advanced.menu1',
                 path: "/setting/advanced/menu1",
                 page: <SettingAdvancedMenu1/>,
-                icon: "material-symbols:settings",
+                icon: "material-symbols:timer-1-rounded",
             },
             {
                 name: 'menu.setting.advanced.menu2',
                 path: "/setting/advanced/menu2",
                 page: <SettingAdvancedMenu2/>,
-                icon: "material-symbols:settings",
+                icon: "material-symbols:timer-2-rounded",
             },
         ],
     },
     {
         name: 'menu.setting.info',
-        icon: "material-symbols:settings",
+        icon: "material-symbols:info-outline",
         path: "/setting/info",
         page: <SettingInfo />,
     },

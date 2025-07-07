@@ -14,7 +14,7 @@ function SettingLeft(props: SettingLeftProps) {
     return (
         <div className="flex h-full">
             {/* 左侧导航栏 */}
-            <div className="w-48 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700">
+            <div className=" h-full w-48 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700">
                 <nav className="p-4 space-y-2">
                     {props.menus.map((menu, index) => (
                         <Link to={menu.path!}

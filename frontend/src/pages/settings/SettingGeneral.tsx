@@ -34,7 +34,7 @@ export default function SettingGeneral() {
                     <button
                         onClick={checkForUpdates}
                         disabled={isCheckingUpdate}
-                        className={UI.ui.btn}
+                        className={classNames(UI.ui.btn, 'flex flex-row items-center')}
                     >
                         <Icon icon={isCheckingUpdate ? 'eos-icons:loading' : 'mdi:refresh'} className={isCheckingUpdate ? 'animate-spin mr-2' : 'mr-2'} />
                         {t(isCheckingUpdate ? 'settings.checking' : 'settings.check_update')}

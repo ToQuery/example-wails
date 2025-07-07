@@ -139,7 +139,7 @@ func (s *ExampleService) GetAppDirInfo() model.DirInfoModel {
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) GetAppInfo() model.AppInfoModel {
-	log.Printf("获取应用信息: %v", application.Get().Environment().Debug)
+	log.Printf("获取应用信息: %v", application.Get().Env.Info())
 	return s.AppInfo
 }
 
@@ -158,7 +158,7 @@ func (s *ExampleService) AppUpdate(newVersion, force bool) *model.UpdateInfoMode
 
 func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
 	updateInfo := s.AppUpdate(newVersion, force)
-	application.Get().EmitEvent(wails3.AppUpdate, updateInfo)
+	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
 }
 
 func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
@@ -243,7 +243,7 @@ func (s ExampleService) AppOpenApplication(application string) {
 /*------App End-------------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) ClipboardGet() string {
-	text, flag := application.Get().Clipboard().Text()
+	text, flag := application.Get().Clipboard.Text()
 	if !flag {
 		dialog := application.ErrorDialog()
 		dialog.SetTitle("Error")
@@ -254,7 +254,7 @@ func (s *ExampleService) ClipboardGet() string {
 }
 
 func (s *ExampleService) ClipboardSet(text string) {
-	application.Get().Clipboard().SetText(text)
+	application.Get().Clipboard.SetText(text)
 }
 
 /*------Dialog Start--------------------------------------------------------------------------------------------------*/
@@ -318,7 +318,7 @@ func (s ExampleService) FileDialog() {
 }
 
 func (s ExampleService) FileDialogImage() string {
-	dialog := application.OpenFileDialogWithOptions(&application.OpenFileDialogOptions{
+	dialog := application.Get().Dialog.OpenFileWithOptions((&application.OpenFileDialogOptions{
 		Title:          "Select Image",
 		CanChooseFiles: true,
 		Filters: []application.FileFilter{
@@ -327,7 +327,7 @@ func (s ExampleService) FileDialogImage() string {
 				Pattern:     "*.png;*.jpg",
 			},
 		},
-	})
+	}))
 
 	path, err := dialog.PromptForSingleSelection()
 	// Single file selection
@@ -369,7 +369,8 @@ func (s *ExampleService) SaveFileDialog() {
 }
 
 func (s ExampleService) ShowAboutDialog() {
-	application.Get().ShowAboutDialog()
+	//application.Get().ShowAboutDialog()
+	application.Get().Dialog.Info().Show()
 }
 
 /*------Dialog End----------------------------------------------------------------------------------------------------*/
@@ -385,9 +386,9 @@ func (s ExampleService) Notification() {
 /*------Multi Windows Start-------------------------------------------------------------------------------------------*/
 
 func (s ExampleService) WebviewWindowShow(windowName string, url string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows == nil {
-		webWindows = application.Get().NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows == nil && exist {
+		webWindows = application.Get().Window.NewWithOptions(application.WebviewWindowOptions{
 			Name:      "window1",
 			Frameless: false,
 			URL:       url,
@@ -401,75 +402,75 @@ func (s ExampleService) WebviewWindowShow(windowName string, url string) {
 }
 
 func (s ExampleService) WebviewWindowHide(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.Hide()
 	}
 }
 
 func (s ExampleService) WebviewWindowCenter(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.Center()
 	}
 }
 
 func (s ExampleService) WebviewWindowToggleFullscreen(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.ToggleFullscreen()
 	}
 }
 
 func (s ExampleService) WebviewWindowFocus(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.Focus()
 	}
 }
 
 func (s ExampleService) WebviewWindowReload(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.Reload()
 	}
 }
 
 func (s ExampleService) WebviewWindowForceReload(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.ForceReload()
 	}
 }
 
 func (s ExampleService) WebviewWindowSetSize(windowName string, width, height int) {
-	if window := application.Get().GetWindowByName(windowName); window != nil {
+	if window, exist := application.Get().Window.Get(windowName); window != nil && exist {
 		window.SetSize(width, height)
 	}
 }
 
 // close 之后必须 new
 func (s ExampleService) WebviewWindowClose(windowName string) {
-	webWindows := application.Get().GetWindowByName(windowName)
-	if webWindows != nil {
+	webWindows, exist := application.Get().Window.Get(windowName)
+	if webWindows != nil && exist {
 		webWindows.Close()
 	}
 }
 
 func (s ExampleService) WebviewWindowSetAlwaysOnTop(windowName string, alwaysOnTop bool) {
-	if window := application.Get().GetWindowByName(windowName); window != nil {
+	if window, exist := application.Get().Window.Get(windowName); window != nil && exist {
 		window.SetAlwaysOnTop(alwaysOnTop)
 	}
 }
 
 func (s ExampleService) WebviewWindowMinimize(windowName string) {
-	if window := application.Get().GetWindowByName(windowName); window != nil {
+	if window, exist := application.Get().Window.Get(windowName); window != nil && exist {
 		window.Minimise()
 	}
 }
 
 func (s ExampleService) WebviewWindowMaximize(windowName string) {
-	if window := application.Get().GetWindowByName(windowName); window != nil {
+	if window, exist := application.Get().Window.Get(windowName); window != nil && exist {
 		window.ToggleMaximise()
 		/*
 			if window.IsMaximised() {
@@ -486,9 +487,9 @@ func (s ExampleService) WebviewWindowMaximize(windowName string) {
 /*------Other Start---------------------------------------------------------------------------------------------------*/
 
 func (s ExampleService) OpenSettingWindow(url string) {
-	webWindows := application.Get().GetWindowByName(wails3.SettingWindowName)
-	if webWindows == nil {
-		webWindows = application.Get().NewWebviewWindowWithOptions(wails3.SettingWindowOptions(url))
+	webWindows, exist := application.Get().Window.Get(wails3.SettingWindowName)
+	if webWindows == nil || !exist {
+		webWindows = application.Get().Window.NewWithOptions(wails3.SettingWindowOptions(url))
 	}
 	webWindows.Show()
 }

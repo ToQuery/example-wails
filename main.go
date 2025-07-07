@@ -67,7 +67,7 @@ func main() {
 		LogLevel: slog.LevelDebug,
 
 		Services: []application.Service{
-			application.NewService(kvstore.New(config)),
+			application.NewService(kvstore.NewWithConfig(config)),
 			application.NewService(service.NewExampleService(appInfo)),
 		},
 		Assets: application.AssetOptions{
@@ -105,12 +105,12 @@ func main() {
 	// 'Mac' options tailor the window when running on macOS.
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
-	app.NewWebviewWindowWithOptions(wails3.MainWindowOptions())
+	app.Window.NewWithOptions(wails3.MainWindowOptions())
 	//app.NewWebviewWindowWithOptions(wails3.SettingWindowOptions())
 
 	for windowEventType, event := range events.DefaultWindowEventMapping() {
 		log.Printf("app.OnApplicationEvent windowEventType=%d event=%d windowEvent=%s JSEvent=%s", windowEventType, event, events.JSEvent(uint(windowEventType)), events.JSEvent(uint(event)))
-		app.OnApplicationEvent(events.ApplicationEventType(windowEventType), wails3.OnApplicationEvent)
+		app.Event.OnApplicationEvent(events.ApplicationEventType(windowEventType), wails3.OnApplicationEvent)
 	}
 
 	// Create a goroutine that emits an event containing the current time every second.
@@ -118,7 +118,7 @@ func main() {
 	go func() {
 		for {
 			now := time.Now().Format(time.RFC1123)
-			app.EmitEvent(wails3.AppDatetime, now)
+			app.Event.Emit(wails3.AppDatetime, now)
 			time.Sleep(time.Second)
 		}
 	}()

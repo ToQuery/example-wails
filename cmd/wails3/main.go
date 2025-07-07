@@ -111,7 +111,7 @@ func ShouldQuit() bool {
 	return true
 }
 
-func PanicHandler(err interface{}) {
+func PanicHandler(err *application.PanicDetails) {
 	log.Printf("PanicHandler", err)
 }
 

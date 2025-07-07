@@ -210,6 +210,11 @@ function Example() {
                     <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ShowAboutDialog()}>
                         {t('page.example.about-dialog')}
                     </button>
+
+
+                    <button className={UI.ui.btn} type="button" onClick={() => {}}>
+                        {t('page.example.save-file-dialog')}
+                    </button>
                 </div>
             </section>
             {separator}

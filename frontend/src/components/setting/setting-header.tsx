@@ -15,10 +15,10 @@ function SettingHeader(props: SettingHeaderProps) {
     const location = useLocation();
 
     const activeClass = classNames(ui.theme.defaultActiveBgClass, ui.theme.defaultActiveTextClass);
-    const menuItemStyle = classNames('flex flex-col justify-center items-center px-2 py-1 rounded', ui.theme.defaultHoverBgClass, ui.theme.defaultHoverTextClass);
+    const menuItemStyle = classNames('flex flex-col justify-center items-center px-2 py-1 rounded min-w-10', ui.theme.defaultHoverBgClass, ui.theme.defaultHoverTextClass);
 
     return (
-        <div className="bg-gray-100 dark:bg-gray-700">
+        <div className="dark:bg-gray-700">
             <header className='text-center py-1'>
                 设置
             </header>
@@ -36,8 +36,8 @@ function SettingHeader(props: SettingHeaderProps) {
                                 isActive ? activeClass : ''
                             )}
                         >
-                            {menu.icon && <Icon icon={menu.icon} className='text-3xl'/>}
-                            <span className='text-sm mt-1'>{t(menu.name)}</span>
+                            {menu.icon && <Icon icon={menu.icon} className='text-2xl font-extralight'/>}
+                            <span className='text-sm mt-0.5'>{t(menu.name)}</span>
                         </Link>
                     );
                 })}
