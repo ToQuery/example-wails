@@ -147,7 +147,7 @@ function Sidebar({
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}
             >
                 <ul
-                    className={classNames("w-full overflow-y-auto mt-12", isNotMac ? '' : '')}>
+                    className={classNames("w-full overflow-y-auto mt-11", isNotMac ? '' : '')}>
                     {menus.filter(menu => !menu.hidden && !menu.footer).map((menu, index) => menuItemNode(index, menu))}
                 </ul>
                 <ul
