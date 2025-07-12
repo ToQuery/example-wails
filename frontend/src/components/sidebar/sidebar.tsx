@@ -58,7 +58,7 @@ interface SidebarProps {
 function Sidebar({
                      menus,
                      sideBarStyle,
-                     widthClass = 'min-w-[120px] w-[120px]',
+                     widthClass = 'min-w-[75px] w-[75px]',
                      bgColorClass = ui.theme.defaultBgClass,
                      activeClass = classNames(ui.theme.defaultActiveBgClass, ui.theme.defaultActiveTextClass),
                  }: SidebarProps) {
@@ -129,8 +129,8 @@ function Sidebar({
                     ? <li key={menu.name} className={rowDoubleClass}>{menu.render}</li>
                     : <li key={menu.name} className={classNames(rowDoubleClass, isActive ? activeClass : '')}
                           onClick={() => handleMenuItemClick(menu)}>
-                        {menu.icon && <Icon icon={menu.icon}/>}
-                        <span className='text-sm mt-1'>{t(menu.name)}</span>
+                        {menu.icon && <Icon className='text-xl' icon={menu.icon}/>}
+                        <span className='text-xs mt-1'>{t(menu.name)}</span>
                     </li>;
                 break;
             }
@@ -143,7 +143,7 @@ function Sidebar({
         <>
             {/* 侧边栏导航 --wails-draggable：窗口可拖动 */}
             <aside
-                className={classNames("flex flex-col justify-between items-center text-center select-none z-20 text-2xl ", widthClass, bgColorClass)}
+                className={classNames("flex flex-col justify-between items-center text-center select-none z-20", widthClass, bgColorClass)}
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}
             >
                 <ul
