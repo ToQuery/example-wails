@@ -67,6 +67,7 @@ func main() {
 		LogLevel: slog.LevelDebug,
 
 		Services: []application.Service{
+			//application.NewService(notifications.New()),
 			application.NewService(kvstore.NewWithConfig(config)),
 			application.NewService(service.NewExampleService(appInfo)),
 		},

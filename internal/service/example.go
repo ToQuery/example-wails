@@ -5,6 +5,7 @@ import (
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
 	"example-wails/internal/pkg/example"
+	"github.com/wailsapp/wails/v3/pkg/services/notifications"
 	"io"
 	"log"
 	"os"
@@ -378,7 +379,17 @@ func (s ExampleService) ShowAboutDialog() {
 /*------Notification Start-------------------------------------------------------------------------------------------*/
 
 func (s ExampleService) Notification() {
-
+	notificationService := notifications.NotificationService
+	authorized, err := notificationService.CheckNotificationAuthorization()
+	if err != nil {
+		// Handle authorization error
+	}
+	if authorized {
+		// Send notifications
+	} else {
+		// Request authorization
+		authorized, err = notificationService.RequestNotificationAuthorization()
+	}
 }
 
 /*------Notification End----------------------------------------------------------------------------------------------*/

@@ -8,12 +8,13 @@ require (
 	github.com/adrg/xdg v0.5.3
 	github.com/hashicorp/go-version v1.7.0
 	github.com/nicksnyder/go-i18n/v2 v2.6.0
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.10
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.12
 	golang.org/x/text v0.25.0
 )
 
 require (
 	dario.cat/mergo v1.0.1 // indirect
+	git.sr.ht/~jackmordaunt/go-toast/v2 v2.0.3 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.1.6 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
