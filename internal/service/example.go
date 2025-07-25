@@ -5,7 +5,6 @@ import (
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
 	"example-wails/internal/pkg/example"
-	"github.com/wailsapp/wails/v3/pkg/services/notifications"
 	"io"
 	"log"
 	"os"
@@ -379,17 +378,17 @@ func (s ExampleService) ShowAboutDialog() {
 /*------Notification Start-------------------------------------------------------------------------------------------*/
 
 func (s ExampleService) Notification() {
-	notificationService := notifications.NotificationService
-	authorized, err := notificationService.CheckNotificationAuthorization()
-	if err != nil {
-		// Handle authorization error
-	}
-	if authorized {
-		// Send notifications
-	} else {
-		// Request authorization
-		authorized, err = notificationService.RequestNotificationAuthorization()
-	}
+	//notificationService := notifications.NotificationService
+	//authorized, err := notificationService.CheckNotificationAuthorization()
+	//if err != nil {
+	//	// Handle authorization error
+	//}
+	//if authorized {
+	//	// Send notifications
+	//} else {
+	//	// Request authorization
+	//	authorized, err = notificationService.RequestNotificationAuthorization()
+	//}
 }
 
 /*------Notification End----------------------------------------------------------------------------------------------*/
@@ -398,7 +397,7 @@ func (s ExampleService) Notification() {
 
 func (s ExampleService) WebviewWindowShow(windowName string, url string) {
 	webWindows, exist := application.Get().Window.Get(windowName)
-	if webWindows == nil && exist {
+	if webWindows == nil || !exist {
 		webWindows = application.Get().Window.NewWithOptions(application.WebviewWindowOptions{
 			Name:      "window1",
 			Frameless: false,
@@ -409,7 +408,6 @@ func (s ExampleService) WebviewWindowShow(windowName string, url string) {
 		})
 	}
 	webWindows.Show()
-
 }
 
 func (s ExampleService) WebviewWindowHide(windowName string) {
