@@ -5,14 +5,17 @@ import (
 	_ "embed"
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
+	"example-wails/internal/pkg/pkg_example"
 	"example-wails/internal/service"
+	"log"
+	"log/slog"
+	"path/filepath"
+	"strconv"
+	"time"
+
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 	"github.com/wailsapp/wails/v3/pkg/services/kvstore"
-	"log"
-	"log/slog"
-	"strconv"
-	"time"
 )
 
 var (
@@ -51,7 +54,7 @@ func main() {
 	wails3.OnStartBefore(appInfo)
 
 	config := &kvstore.Config{
-		Filename: appInfo.Name + ".db",
+		Filename: filepath.Join(pkg_example.AppConfigHome(appInfo), appInfo.Name+".config"),
 		AutoSave: true,
 	}
 

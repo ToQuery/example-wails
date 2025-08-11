@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package pkg
+package pkg_example
 
 import (
 	"log"

@@ -3,13 +3,14 @@ package wails3
 import (
 	"example-wails/assets"
 	"example-wails/internal/model"
-	"example-wails/internal/pkg/example"
-	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/events"
+	"example-wails/internal/pkg/pkg_example"
 	"log"
 	"net/http"
 	"runtime"
 	"strings"
+
+	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
 func MacWindow() application.MacWindow {
@@ -78,7 +79,7 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		if strings.HasPrefix(req.URL.Path, DiskFilePrefix) {
 			log.Printf("Requesting URL path=%s", req.URL.Path)
-			requestedFile := strings.TrimPrefix(req.URL.Path, pkg.Ternary[string](runtime.GOOS == "windows", DiskFilePrefix+"/", DiskFilePrefix))
+			requestedFile := strings.TrimPrefix(req.URL.Path, pkg_example.Ternary[string](runtime.GOOS == "windows", DiskFilePrefix+"/", DiskFilePrefix))
 			log.Printf("Requesting requestedFile=%s", requestedFile)
 			http.ServeFile(res, req, requestedFile)
 		} else {
@@ -92,7 +93,7 @@ func OnStartBefore(appInfo model.AppInfoModel) {
 
 	exampleWails, version, err := assets.AssetsBinaryExampleWails()
 	if err == nil && exampleWails != nil {
-		pkg.CopyBinAddPath("example-wails", version, exampleWails, appInfo)
+		pkg_example.CopyBinAddPath("example-wails", version, exampleWails, appInfo)
 	} else {
 		log.Printf("Failed to load example-wails binary: %s", err)
 	}

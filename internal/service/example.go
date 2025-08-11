@@ -4,7 +4,7 @@ import (
 	"example-wails/assets"
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
-	"example-wails/internal/pkg/example"
+	"example-wails/internal/pkg/pkg_example"
 	"io"
 	"log"
 	"os"
@@ -177,10 +177,10 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 
 func (s ExampleService) AppEmbedExecBinary() {
 	// 执行二进制文件
-	cmd := exec.Command(pkg.GetBinFileName("example-wails"))
+	cmd := exec.Command(pkg_example.GetBinFileName("example-wails"))
 
 	// 设置进程属性
-	pkg.SetCmdSysProcAttr(cmd)
+	pkg_example.SetCmdSysProcAttr(cmd)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {

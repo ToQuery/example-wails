@@ -25,7 +25,7 @@
     "@types/node": "^22",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
-    "@vitejs/plugin-react": "^4.4.1",
+    "@vitejs/plugin-react": "^4.7.0",
     "@wailsio/runtime": "latest",
     "typescript": "^5.9.2",
     "vite": "^6.3.5"

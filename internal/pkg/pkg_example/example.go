@@ -1,10 +1,9 @@
-package pkg
+package pkg_example
 
 import (
 	"bufio"
 	"example-wails/internal/model"
 	"fmt"
-	"github.com/hashicorp/go-version"
 	"io"
 	"io/fs"
 	"log"
@@ -12,6 +11,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/hashicorp/go-version"
 
 	"github.com/adrg/xdg"
 )

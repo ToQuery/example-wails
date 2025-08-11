@@ -1,7 +1,7 @@
 //go:build windows
 // +build windows
 
-package pkg
+package pkg_example
 
 import (
 	"log"
