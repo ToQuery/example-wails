@@ -26,7 +26,7 @@ func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
 
 /*------File Start----------------------------------------------------------------------------------------------------*/
 
-func (s *ExampleService) GetDirInfo() model.DirInfoModel {
+func (s *ExampleService) GetDirInfo() model.BaseExchange[model.DirInfoModel] {
 	userCacheDir, err := os.UserCacheDir()
 	if err != nil {
 		log.Printf("获取用户缓存目录失败: %v", err)
@@ -40,7 +40,7 @@ func (s *ExampleService) GetDirInfo() model.DirInfoModel {
 		log.Printf("获取用户主目录失败: %v", err)
 	}
 
-	return model.DirInfoModel{
+	return model.BaseExchangeSuccess[model.DirInfoModel](model.DirInfoModel{
 		OSTempDir:       os.TempDir(),
 		OSUserCacheDir:  userCacheDir,
 		OSUserConfigDir: userConfigDir,
@@ -77,12 +77,12 @@ func (s *ExampleService) GetDirInfo() model.DirInfoModel {
 			"templates":   xdg.UserDirs.Templates,
 			"publicShare": xdg.UserDirs.PublicShare,
 		},
-	}
+	})
 }
 
 /*------File End------------------------------------------------------------------------------------------------------*/
 
-func (s *ExampleService) GetAppDirInfo() model.DirInfoModel {
+func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] {
 	userCacheDir, err := os.UserCacheDir()
 	if err != nil {
 		log.Printf("获取用户缓存目录失败: %v", err)
@@ -96,7 +96,7 @@ func (s *ExampleService) GetAppDirInfo() model.DirInfoModel {
 		log.Printf("获取用户主目录失败: %v", err)
 	}
 
-	return model.DirInfoModel{
+	return model.BaseExchangeSuccess[model.DirInfoModel](model.DirInfoModel{
 		OSTempDir:       os.TempDir(),
 		OSUserCacheDir:  userCacheDir,
 		OSUserConfigDir: userConfigDir,
@@ -133,35 +133,35 @@ func (s *ExampleService) GetAppDirInfo() model.DirInfoModel {
 			"templates":   xdg.UserDirs.Templates,
 			"publicShare": xdg.UserDirs.PublicShare,
 		},
-	}
+	})
 }
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
-func (s *ExampleService) GetAppInfo() model.AppInfoModel {
+func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
 	log.Printf("获取应用信息: %v", application.Get().Env.Info())
-	return s.AppInfo
+	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
 }
 
-func (s *ExampleService) AppUpdate(newVersion, force bool) *model.UpdateInfoModel {
+func (s *ExampleService) AppUpdate(newVersion, force bool) model.BaseExchange[*model.UpdateInfoModel] {
 	if newVersion {
-		return &model.UpdateInfoModel{
+		return model.BaseExchangeSuccess(&model.UpdateInfoModel{
 			Version:     "1.1.0",
 			VersionCode: 2,
 			ForceUpdate: force,
 			Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
 			DownloadUrl: "https://github.com/toquery/example-wails",
-		}
+		})
 	}
-	return nil
+	return model.BaseExchangeSuccess[*model.UpdateInfoModel](nil)
 }
 
 func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
-	updateInfo := s.AppUpdate(newVersion, force)
+	updateInfo := s.AppUpdate(newVersion, force).Data
 	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
 }
 
-func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
+func (s *ExampleService) AppCheckUpdate() model.BaseExchange[*model.UpdateInfoModel] {
 	updateInfo := &model.UpdateInfoModel{
 		Version:     "1.1.0",
 		VersionCode: 2,
@@ -170,9 +170,9 @@ func (s *ExampleService) AppCheckUpdate() *model.UpdateInfoModel {
 		DownloadUrl: "https://github.com/toquery/example-wails",
 	}
 	if updateInfo.VersionCode > s.AppInfo.VersionCode {
-		return updateInfo
+		return model.BaseExchangeSuccess(updateInfo)
 	}
-	return nil
+	return model.BaseExchangeSuccess[*model.UpdateInfoModel](nil)
 }
 
 func (s ExampleService) AppEmbedExecBinary() {

@@ -56,15 +56,19 @@ function Example() {
                             onClick={async () => {
                                 setDialog(true);
                                 ExampleService.GetAppInfo()
-                                    .then((appInfoModel: AppInfoModel) => {
-                                        console.log("appInfoModel", appInfoModel);
-                                        setAppInfo({
-                                            name: appInfoModel.Name,
-                                            version: appInfoModel.Version,
-                                            versionCode: appInfoModel.VersionCode,
-                                            buildId: appInfoModel.BuildId,
-                                            buildTime: appInfoModel.BuildTime,
-                                        });
+                                    .then((exchange) => {
+                                        if (exchange.success && exchange.data) {
+                                            const appInfoModel = exchange.data;
+                                            console.log("appInfoModel", appInfoModel);
+                                            setAppInfo({
+                                                name: appInfoModel.Name,
+                                                version: appInfoModel.Version,
+                                                versionCode: appInfoModel.VersionCode,
+                                                buildId: appInfoModel.BuildId,
+                                                buildTime: appInfoModel.BuildTime,
+                                            });
+                                        }
+
                                     })
                                     .finally(() => {
                                         setTimeout(() => setDialog(false), 1000);
@@ -75,9 +79,10 @@ function Example() {
                     </button>
                     <button className={UI.ui.btn} type="button"
                             onClick={async () => {
-                                const updateInfoModel = await ExampleService.AppUpdate(true, false);
-                                console.log("updateInfoModel", updateInfoModel);
-                                if (updateInfoModel) {
+                                const exchange = await ExampleService.AppUpdate(true, false);
+                                console.log("updateInfoModel", exchange);
+                                if (exchange.success && exchange.data) {
+                                    const updateInfoModel = exchange.data;
                                     setUpdateInfo({
                                         version: updateInfoModel.Version,
                                         versionCode: updateInfoModel.VersionCode,
@@ -92,9 +97,10 @@ function Example() {
                     </button>
                     <button className={UI.ui.btn} type="button"
                             onClick={async () => {
-                                const updateInfoModel = await ExampleService.AppUpdate(true, true);
-                                console.log("updateInfoModel", updateInfoModel);
-                                if (updateInfoModel) {
+                                const exchange = await ExampleService.AppUpdate(true, true);
+                                console.log("updateInfoModel", exchange);
+                                if (exchange.success && exchange.data) {
+                                    const updateInfoModel = exchange.data;
                                     setUpdateInfo({
                                         version: updateInfoModel.Version,
                                         versionCode: updateInfoModel.VersionCode,

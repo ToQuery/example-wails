@@ -21,7 +21,13 @@ function File() {
                 <h1 className='w-full'>{t('page.file.directory')}</h1>
 
                 <button className={classNames(UI.ui.btn, 'w-50')} type="button"
-                        onClick={async () => setDirInfo(await ExampleService.GetDirInfo())}>
+                        onClick={async () => {
+                            ExampleService.GetDirInfo().then(exchange => {
+                                if (exchange.success && exchange.data){
+                                    setDirInfo(exchange.data);
+                                }
+                            });
+                        }}>
                     {t('page.file.dir-info')}
                 </button>
             </div>
