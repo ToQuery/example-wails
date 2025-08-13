@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
-import { UI } from '@/const';
+import {Button} from "@/components/ui/button";
 
 
 function Home() {
@@ -10,13 +10,9 @@ function Home() {
     return (
         <div className="p-4 space-y-6">
             <div>
-                <button
-                    type="button"
-                    onClick={() => setCount(count + 1)}
-                    className={UI.ui.btn}
-                >
+                <Button onClick={() => setCount(count + 1)}>
                     {t('page.home.counter')}{count}
-                </button>
+                </Button>
             </div>
 
         </div>

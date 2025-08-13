@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useGlobalAppInfo, useGlobalThemeModel, useGlobalUpdate, useGlobalLanguage } from '@/provider/global-provider';
 import { languages } from '@/i18n';
 import { themeModeOptions } from '@/components/sidebar/theme-mode';
-import { UI } from '@/const';
 import classNames from 'classnames';
+import {Button} from "@/components/ui/button";
 
 export default function SettingGeneral() {
     const { t } = useTranslation();
@@ -31,14 +31,10 @@ export default function SettingGeneral() {
                             <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings.version')}: {appInfo?.version}</p>
                         </div>
                     </div>
-                    <button
-                        onClick={checkForUpdates}
-                        disabled={isCheckingUpdate}
-                        className={classNames(UI.ui.btn, 'flex flex-row items-center')}
-                    >
+                    <Button onClick={checkForUpdates} >
                         <Icon icon={isCheckingUpdate ? 'eos-icons:loading' : 'mdi:refresh'} className={isCheckingUpdate ? 'animate-spin mr-2' : 'mr-2'} />
                         {t(isCheckingUpdate ? 'settings.checking' : 'settings.check_update')}
-                    </button>
+                    </Button>
                 </div>
             </div>
 

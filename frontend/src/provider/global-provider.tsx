@@ -187,21 +187,26 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
 
     const getAppInfo = () => {
-        ExampleService.GetAppInfo().then(async (appInfo) => {
-            console.log('ConfigProvider GetAppInfo', appInfo);
-            setAppInfo({
-                name: appInfo.Name,
-                version: appInfo.Version,
-                versionCode: appInfo.VersionCode,
-                buildId: appInfo.BuildId,
-                buildTime: appInfo.BuildTime,
-            });
+        ExampleService.GetAppInfo().then((baseExchange) => {
+            if (baseExchange.success && baseExchange.data) {
+                const appInfo = baseExchange.data;
+                console.log('ConfigProvider GetAppInfo', appInfo);
+                setAppInfo({
+                    name: appInfo.Name,
+                    version: appInfo.Version,
+                    versionCode: appInfo.VersionCode,
+                    buildId: appInfo.BuildId,
+                    buildTime: appInfo.BuildTime,
+                });
+            }
+
         });
     };
 
     // 检查更新函数
     const checkForUpdates = () => {
-        ExampleService.AppCheckUpdate().then((updateInfo) => {
+        ExampleService.AppCheckUpdate().then((baseExchange) => {
+            const updateInfo= baseExchange.data;
             if (updateInfo) {
                 const update = {
                     version: updateInfo.Version,

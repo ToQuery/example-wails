@@ -6,8 +6,18 @@ import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
 
 import {useTranslation} from "react-i18next";
-import {UI} from "@/const";
 import classNames from "classnames";
+import {Button} from "@/components/ui/button";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select";
+import {cn} from "@/lib/utils";
 
 // 设置页面组件
 export default function Info() {
@@ -70,11 +80,7 @@ export default function Info() {
                             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.info.check_updates')}</h3>
                             <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.info.check_updates_desc')}</p>
                         </div>
-                        <button
-                            onClick={checkForUpdates}
-                            disabled={isCheckingUpdate}
-                            className={UI.ui.btn}
-                        >
+                        <Button onClick={checkForUpdates} disabled={isCheckingUpdate}>
                             <div className="flex items-center">
                                 {isCheckingUpdate ? (
                                     <>
@@ -88,7 +94,7 @@ export default function Info() {
                                     </>
                                 )}
                             </div>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -111,15 +117,10 @@ export default function Info() {
                         <div className="flex space-x-2">
 
                             {themeModeOptions.map((item) => {
-                                return <button
-                                    key={item.code}
-                                    onClick={() => setThemeModel(item)}
-                                    className={classNames("px-4 py-2 rounded-lg  transition-colors", item.code == themeModel.code ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600')}>
-                                    <div className="flex items-center">
-                                        <Icon icon={item.icon} className="mr-1"/>
-                                        {item.code == themeModel.code ? t(item.name) : t(item.label)}
-                                    </div>
-                                </button>;
+                                return <Button key={item.code} onClick={() => setThemeModel(item)} variant={item.code === themeModel.code ? "default" : "outline"}>
+                                    <Icon icon={item.icon} className="mr-1"/>
+                                    {t(item.name)}
+                                </Button>;
                             })}
 
                         </div>
@@ -142,18 +143,17 @@ export default function Info() {
                             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{t('page.info.interface_language')}</h3>
                             <p className="text-gray-500 dark:text-gray-400 text-sm">{t('page.info.language_switch_desc')}</p>
                         </div>
-                        <div className="relative">
-                            <select
-                                onChange={(e) => setLanguage(e.target.value)}
-                                className="appearance-none bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white px-4 py-2 pr-8 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                {languages.map((lang) => (
-                                    <option key={lang.code} value={lang.code}>{lang.label}</option>
-                                ))}
-                            </select>
-                            <div
-                                className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
-                                <Icon icon="mdi:chevron-down"/>
-                            </div>
+                        <div className="">
+                            <Select value={language} onValueChange={(val) => setLanguage(val)}>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Select a fruit" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {languages.map((lang) => (
+                                        <SelectItem key={lang.code} value={lang.code}>{lang.label}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 </div>
@@ -173,22 +173,18 @@ export default function Info() {
                         {t('page.info.about_description')}
                     </p>
                     <div className="flex flex-wrap gap-4">
-                        <button onClick={() => Browser.OpenURL("https://wails.io")}
-                                className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
+                        <Button onClick={() => Browser.OpenURL("https://wails.io")} >
                             <Icon icon="simple-icons:wails" className="mr-2"/>
                             {t('page.info.wails_website')}
-                        </button>
-                        <button onClick={() => Browser.OpenURL("https://github.com/ToQuery/example-wails")}
-                                className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
+                        </Button>
+                        <Button onClick={() => Browser.OpenURL("https://github.com/ToQuery/example-wails")} >
                             <Icon icon="mdi:github" className="mr-2"/>
                             GitHub
-                        </button>
-                        <button
-                            onClick={() => Browser.OpenURL("https://v3alpha.wails.io/getting-started/installation/")}
-                            className="flex items-center px-4 py-2 bg-gray-100 dark:bg-slate-700 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors text-gray-800 dark:text-white">
+                        </Button>
+                        <Button onClick={() => Browser.OpenURL("https://v3alpha.wails.io/getting-started/installation/")} >
                             <Icon icon="mdi:book-open-variant" className="mr-2"/>
                             {t('page.info.documentation')}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

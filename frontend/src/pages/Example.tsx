@@ -1,12 +1,13 @@
 import React from "react";
-import {Browser, Events, Screens} from '@wailsio/runtime'
+import {Browser, Clipboard, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
-import {AppInfoModel} from "../../bindings/example-wails/internal/model";
-import {Event, UI, Value} from "@/const";
+import {Event, Value} from "@/const";
 import {useGlobalAppInfo, useGlobalDialog, useGlobalUpdate} from "@/provider/global-provider";
 
 import classNames from "classnames";
+import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
 
 
 function Example() {
@@ -36,13 +37,6 @@ function Example() {
 
     return (
         <div className='p-4'>
-            <div>
-                <span>{t('page.example.input')}</span><input
-                className='ml-3 min-w-96 rounded-s-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 '
-                value={text}
-                onChange={event => setText(event.target.value)}/>
-            </div>
-            {separator}
             <section>
                 <h2>{t('page.example.app-info')}</h2>
                 <div className={classNames(butGroupClass)}>
@@ -52,79 +46,74 @@ function Example() {
                     <div>BuildTime: {appInfo.buildTime}</div>
                 </div>
                 <div className={butGroupClass}>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => {
-                                setDialog(true);
-                                ExampleService.GetAppInfo()
-                                    .then((exchange) => {
-                                        if (exchange.success && exchange.data) {
-                                            const appInfoModel = exchange.data;
-                                            console.log("appInfoModel", appInfoModel);
-                                            setAppInfo({
-                                                name: appInfoModel.Name,
-                                                version: appInfoModel.Version,
-                                                versionCode: appInfoModel.VersionCode,
-                                                buildId: appInfoModel.BuildId,
-                                                buildTime: appInfoModel.BuildTime,
-                                            });
-                                        }
-
-                                    })
-                                    .finally(() => {
-                                        setTimeout(() => setDialog(false), 1000);
+                    <Button onClick={async () => {
+                        setDialog(true);
+                        ExampleService.GetAppInfo()
+                            .then((exchange) => {
+                                if (exchange.success && exchange.data) {
+                                    const appInfoModel = exchange.data;
+                                    console.log("appInfoModel", appInfoModel);
+                                    setAppInfo({
+                                        name: appInfoModel.Name,
+                                        version: appInfoModel.Version,
+                                        versionCode: appInfoModel.VersionCode,
+                                        buildId: appInfoModel.BuildId,
+                                        buildTime: appInfoModel.BuildTime,
                                     });
+                                }
 
-                            }}>
+                            })
+                            .finally(() => {
+                                setTimeout(() => setDialog(false), 1000);
+                            });
+
+                    }}>
                         {t('page.example.app-info')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => {
-                                const exchange = await ExampleService.AppUpdate(true, false);
-                                console.log("updateInfoModel", exchange);
-                                if (exchange.success && exchange.data) {
-                                    const updateInfoModel = exchange.data;
-                                    setUpdateInfo({
-                                        version: updateInfoModel.Version,
-                                        versionCode: updateInfoModel.VersionCode,
-                                        forceUpdate: updateInfoModel.ForceUpdate,
-                                        changelog: updateInfoModel.Changelog,
-                                        downloadUrl: updateInfoModel.DownloadUrl
-                                    });
-                                    setShowUpdateDialog(true);
-                                }
-                            }}>
+                    </Button>
+                    <Button onClick={async () => {
+                        const exchange = await ExampleService.AppUpdate(true, false);
+                        console.log("updateInfoModel", exchange);
+                        if (exchange.success && exchange.data) {
+                            const updateInfoModel = exchange.data;
+                            setUpdateInfo({
+                                version: updateInfoModel.Version,
+                                versionCode: updateInfoModel.VersionCode,
+                                forceUpdate: updateInfoModel.ForceUpdate,
+                                changelog: updateInfoModel.Changelog,
+                                downloadUrl: updateInfoModel.DownloadUrl
+                            });
+                            setShowUpdateDialog(true);
+                        }
+                    }}>
                         {t('page.example.app-update')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => {
-                                const exchange = await ExampleService.AppUpdate(true, true);
-                                console.log("updateInfoModel", exchange);
-                                if (exchange.success && exchange.data) {
-                                    const updateInfoModel = exchange.data;
-                                    setUpdateInfo({
-                                        version: updateInfoModel.Version,
-                                        versionCode: updateInfoModel.VersionCode,
-                                        forceUpdate: updateInfoModel.ForceUpdate,
-                                        changelog: updateInfoModel.Changelog,
-                                        downloadUrl: updateInfoModel.DownloadUrl
-                                    });
-                                    setShowUpdateDialog(true);
-                                }
-                            }}>
+                    </Button>
+                    <Button onClick={async () => {
+                        const exchange = await ExampleService.AppUpdate(true, true);
+                        console.log("updateInfoModel", exchange);
+                        if (exchange.success && exchange.data) {
+                            const updateInfoModel = exchange.data;
+                            setUpdateInfo({
+                                version: updateInfoModel.Version,
+                                versionCode: updateInfoModel.VersionCode,
+                                forceUpdate: updateInfoModel.ForceUpdate,
+                                changelog: updateInfoModel.Changelog,
+                                downloadUrl: updateInfoModel.DownloadUrl
+                            });
+                            setShowUpdateDialog(true);
+                        }
+                    }}>
                         {t('page.example.app-force-update')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => await ExampleService.AppUpdateFromEvent(true, false)}>
+                    </Button>
+                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true, false)}>
                         {t('page.example.app-update-from-event')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => await ExampleService.AppUpdateFromEvent(true, true)}>
+                    </Button>
+                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true, true)}>
                         {t('page.example.app-force-update-from-event')}
-                    </button>
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.AppEmbedFile()}>
+                    </Button>
+                    <Button onClick={() => ExampleService.AppEmbedFile()}>
                         {t('page.example.app-embed-file')}
-                    </button>
-                    <button className={UI.ui.btn} type="button" onClick={() => {
+                    </Button>
+                    <Button onClick={() => {
                         setDialog(true);
                         ExampleService.AppEmbedExecBinary().then(() => {
                             console.log("AppEmbedExecBinary done");
@@ -133,33 +122,47 @@ function Example() {
                         }).finally(() => setDialog(false));
                     }}>
                         {t('page.example.app-embed-exec-binary')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.AppOpenApplication("WeChat")}>
+                    </Button>
+                    <Button onClick={() => ExampleService.AppOpenApplication("WeChat")}>
                         {t('page.example.app-open-application-wechat')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.AppOpenApplication("QQ")}>
+                    </Button>
+                    <Button onClick={() => ExampleService.AppOpenApplication("QQ")}>
                         {t('page.example.app-open-application-qq')}
-                    </button>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
+                    </Button>
+                    <Button onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
                         {t('page.example.app-open-browser')}
-                    </button>
+                    </Button>
                 </div>
             </section>
             {separator}
             <section>
                 <h2>{t('page.example.clipboard')}</h2>
+                <div className='mt-4'>
+                    <input
+                        className='min-w-96 rounded-sm border-1 px-2 py-1 border-gray-300 dark:border-gray-600 '
+                        value={text}
+                        onChange={event => setText(event.target.value)}/>
+                </div>
                 <div className={butGroupClass}>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => setText(await ExampleService.ClipboardGet())}>
-                        {t('page.example.get-clipboard')}
-                    </button>
 
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ClipboardSet(text)}>
+
+                    <Button onClick={async () => setText(await Clipboard.Text())}>
+                        {t('page.example.get-clipboard')}
+                    </Button>
+
+                    <Button onClick={() => Clipboard.SetText(text)}>
                         {t('page.example.set-clipboard')}
-                    </button>
+                    </Button>
+
+                    <Separator/>
+
+                    <Button onClick={async () => setText(await ExampleService.ClipboardGet())}>
+                        {t('page.example.get-clipboard')}
+                    </Button>
+
+                    <Button onClick={() => ExampleService.ClipboardSet(text)}>
+                        {t('page.example.set-clipboard')}
+                    </Button>
                 </div>
             </section>
             {separator}
@@ -187,40 +190,41 @@ function Example() {
                     </div>
                 </div>
                 <div className={butGroupClass}>
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.InfoDialog()}>
+                    <Button onClick={() => ExampleService.InfoDialog()}>
                         {t('page.example.info-dialog')}
-                    </button>
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.QuestionDialog()}>
+                    </Button>
+                    <Button onClick={() => ExampleService.QuestionDialog()}>
                         {t('page.example.question-dialog')}
-                    </button>
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ErrorDialog()}>
+                    </Button>
+                    <Button onClick={() => ExampleService.ErrorDialog()}>
                         {t('page.example.error-dialog')}
-                    </button>
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.FileDialog()}>
+                    </Button>
+                    <Button onClick={() => ExampleService.FileDialog()}>
                         {t('page.example.file-dialog')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button" onClick={() => {
+                    <Button onClick={() => {
                         ExampleService.FileDialogImage().then((path) => {
                             console.log("FileDialogImage", path);
                             setDiskImagePath(path);
                         });
                     }}>
                         {t('page.example.image-dialog')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.SaveFileDialog()}>
+                    <Button onClick={() => ExampleService.SaveFileDialog()}>
                         {t('page.example.save-file-dialog')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button" onClick={() => ExampleService.ShowAboutDialog()}>
+                    <Button onClick={() => ExampleService.ShowAboutDialog()}>
                         {t('page.example.about-dialog')}
-                    </button>
+                    </Button>
 
 
-                    <button className={UI.ui.btn} type="button" onClick={() => {}}>
+                    <Button onClick={() => {
+                    }}>
                         {t('page.example.save-file-dialog')}
-                    </button>
+                    </Button>
                 </div>
             </section>
             {separator}
@@ -238,10 +242,9 @@ function Example() {
             <section>
                 <h2>{t('page.example.notifications')}</h2>
                 <div className={butGroupClass}>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.Notification()}>
+                    <Button onClick={() => ExampleService.Notification()}>
                         Notification
-                    </button>
+                    </Button>
                 </div>
             </section>
             {separator}
@@ -279,62 +282,53 @@ function Example() {
                     </div>
                 </div>
                 <div className={butGroupClass}>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowShow(windowName, "/")}>
+                    <Button onClick={() => ExampleService.WebviewWindowShow(windowName, "/")}>
                         {t('page.example.webview-window-show')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowHide(windowName)}>
+                    <Button onClick={() => ExampleService.WebviewWindowHide(windowName)}>
                         {t('page.example.webview-window-hide')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowCenter(windowName)}>
+                    <Button onClick={() => ExampleService.WebviewWindowCenter(windowName)}>
                         {t('page.example.webview-window-center')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowToggleFullscreen(windowName)}>
+                    <Button onClick={() => ExampleService.WebviewWindowToggleFullscreen(windowName)}>
                         {t('page.example.webview-window-toggle-fullscreen')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={async () => {
-                                const currentScreens = await Screens.GetCurrent();
-                                ExampleService.WebviewWindowSetSize(windowName, 800, currentScreens.WorkArea.Height)
-                            }}>
+                    <Button onClick={async () => {
+                        const currentScreens = await Screens.GetCurrent();
+                        ExampleService.WebviewWindowSetSize(windowName, 800, currentScreens.WorkArea.Height)
+                    }}>
                         {t('page.example.webview-window-set-size')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => {
-                                const newVal = !alwaysOnTop;
-                                ExampleService.WebviewWindowSetAlwaysOnTop(windowName, newVal);
-                                setAlwaysOnTop(newVal);
-                            }}>
+                    <Button onClick={() => {
+                        const newVal = !alwaysOnTop;
+                        ExampleService.WebviewWindowSetAlwaysOnTop(windowName, newVal);
+                        setAlwaysOnTop(newVal);
+                    }}>
                         {alwaysOnTop ? t('page.example.webview-window-set-always-on-top-false') : t('page.example.webview-window-set-always-on-top-true')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowClose(windowName)}>
+                    <Button onClick={() => ExampleService.WebviewWindowClose(windowName)}>
                         {t('page.example.webview-window-close')}
-                    </button>
+                    </Button>
 
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.WebviewWindowShow(windowName, "https://github.com")}>
+                    <Button onClick={() => ExampleService.WebviewWindowShow(windowName, "https://github.com")}>
                         {t('page.example.webview-window-show-github')}
-                    </button>
+                    </Button>
                 </div>
             </section>
             {separator}
             <section>
                 <h2>{t('page.example.other')}</h2>
                 <div className={butGroupClass}>
-                    <button className={UI.ui.btn} type="button"
-                            onClick={() => ExampleService.OpenSettingWindow("/setting")}>
+                    <Button onClick={() => ExampleService.OpenSettingWindow("/setting")}>
                         {t('page.example.open-setting-window')}
-                    </button>
+                    </Button>
                 </div>
             </section>
         </div>);

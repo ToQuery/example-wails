@@ -3,8 +3,8 @@ import {useTranslation} from 'react-i18next';
 
 import {DirInfoModel} from "../../bindings/example-wails/internal/model";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
-import {UI} from "@/const";
 import classNames from "classnames";
+import {Button} from "@/components/ui/button";
 
 function File() {
     const {t} = useTranslation();
@@ -20,8 +20,7 @@ function File() {
             <div className='flex justify-between item-center'>
                 <h1 className='w-full'>{t('page.file.directory')}</h1>
 
-                <button className={classNames(UI.ui.btn, 'w-50')} type="button"
-                        onClick={async () => {
+                <Button onClick={async () => {
                             ExampleService.GetDirInfo().then(exchange => {
                                 if (exchange.success && exchange.data){
                                     setDirInfo(exchange.data);
@@ -29,7 +28,7 @@ function File() {
                             });
                         }}>
                     {t('page.file.dir-info')}
-                </button>
+                </Button>
             </div>
             {separator}
             <section>
