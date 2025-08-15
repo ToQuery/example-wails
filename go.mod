@@ -1,8 +1,8 @@
 module example-wails
 
-go 1.24.0
+go 1.25
 
-toolchain go1.24.4
+toolchain go1.25.0
 
 require (
 	github.com/adrg/xdg v0.5.3
