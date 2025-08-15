@@ -59,6 +59,11 @@ func CopyEmbeddedFile(embeddedFile io.Reader, binPath string) {
 
 // 复制文件
 func CopyFile(srcFile, destFile string) error {
+	srcInfo, err := os.Stat(srcFile)
+	if err != nil {
+		return err
+	}
+
 	source, err := os.Open(srcFile)
 	if err != nil {
 		return err
@@ -82,6 +87,12 @@ func CopyFile(srcFile, destFile string) error {
 	}(dest)
 
 	_, err = io.Copy(dest, source)
+
+	// 设置文件权限
+	err = os.Chmod(destFile, srcInfo.Mode())
+	if err != nil {
+		return err
+	}
 	return err
 }
 
@@ -175,4 +186,22 @@ func DeleteFile(path string) {
 		return
 	}
 	fmt.Println("文件已成功删除:", path)
+}
+
+func DeletePath(path string) {
+	err := os.RemoveAll(path)
+	if err != nil {
+		fmt.Printf("删除文件/目录失败: %v\n", err)
+		return
+	}
+	fmt.Println("已成功删除:", path)
+}
+
+func DirExists(path string) bool {
+	info, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		return false
+	}
+	// 确保是目录而不是文件
+	return info.IsDir()
 }

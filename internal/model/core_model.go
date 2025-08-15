@@ -28,3 +28,22 @@ func BaseExchangeSuccess[T any](data T) BaseExchange[T] {
 		Data:    data,
 	}
 }
+
+type WailsUpdateModel struct {
+	// Add your properties here
+	Version     string
+	VersionCode int
+	ForceUpdate bool
+	Changelog   string
+	DownloadUrl string
+}
+
+type WailsAppInfoModel struct {
+	Name        string
+	CnName      string
+	Description string
+	Version     string
+	VersionCode int
+	BuildId     string
+	BuildTime   string
+}

@@ -17,10 +17,10 @@ import (
 )
 
 type ExampleService struct {
-	AppInfo model.AppInfoModel
+	AppInfo model.WailsAppInfoModel
 }
 
-func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
+func NewExampleService(appInfo model.WailsAppInfoModel) *ExampleService {
 	return &ExampleService{AppInfo: appInfo}
 }
 
@@ -138,14 +138,14 @@ func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] 
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
-func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
+func (s *ExampleService) GetAppInfo() model.BaseExchange[model.WailsAppInfoModel] {
 	log.Printf("获取应用信息: %v", application.Get().Env.Info())
-	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
+	return model.BaseExchangeSuccess[model.WailsAppInfoModel](s.AppInfo)
 }
 
-func (s *ExampleService) AppUpdate(newVersion, force bool) model.BaseExchange[*model.UpdateInfoModel] {
+func (s *ExampleService) AppUpdate(newVersion, force bool) model.BaseExchange[*model.WailsUpdateModel] {
 	if newVersion {
-		return model.BaseExchangeSuccess(&model.UpdateInfoModel{
+		return model.BaseExchangeSuccess(&model.WailsUpdateModel{
 			Version:     "1.1.0",
 			VersionCode: 2,
 			ForceUpdate: force,
@@ -153,7 +153,7 @@ func (s *ExampleService) AppUpdate(newVersion, force bool) model.BaseExchange[*m
 			DownloadUrl: "https://github.com/toquery/example-wails",
 		})
 	}
-	return model.BaseExchangeSuccess[*model.UpdateInfoModel](nil)
+	return model.BaseExchangeSuccess[*model.WailsUpdateModel](nil)
 }
 
 func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
@@ -161,8 +161,8 @@ func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
 	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
 }
 
-func (s *ExampleService) AppCheckUpdate() model.BaseExchange[*model.UpdateInfoModel] {
-	updateInfo := &model.UpdateInfoModel{
+func (s *ExampleService) AppCheckUpdate() model.BaseExchange[*model.WailsUpdateModel] {
+	updateInfo := &model.WailsUpdateModel{
 		Version:     "1.1.0",
 		VersionCode: 2,
 		ForceUpdate: false,
@@ -172,7 +172,7 @@ func (s *ExampleService) AppCheckUpdate() model.BaseExchange[*model.UpdateInfoMo
 	if updateInfo.VersionCode > s.AppInfo.VersionCode {
 		return model.BaseExchangeSuccess(updateInfo)
 	}
-	return model.BaseExchangeSuccess[*model.UpdateInfoModel](nil)
+	return model.BaseExchangeSuccess[*model.WailsUpdateModel](nil)
 }
 
 func (s ExampleService) AppEmbedExecBinary() {

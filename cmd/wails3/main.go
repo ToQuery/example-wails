@@ -88,7 +88,7 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func OnStartBefore(appInfo model.AppInfoModel) {
+func OnStartBefore(appInfo model.WailsAppInfoModel) {
 	log.Printf("OnStartBefore")
 
 	exampleWails, version, err := assets.AssetsBinaryExampleWails()
@@ -99,7 +99,7 @@ func OnStartBefore(appInfo model.AppInfoModel) {
 	}
 }
 
-func OnStart(appInfo model.AppInfoModel) {
+func OnStart(appInfo model.WailsAppInfoModel) {
 	log.Printf("OnStart %s", appInfo.Name)
 }
 

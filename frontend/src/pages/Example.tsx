@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Browser, Clipboard, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
@@ -23,17 +23,26 @@ function Example() {
     const [appInfo, setAppInfo] = useGlobalAppInfo();
     const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useGlobalUpdate();
 
+    useEffect(() => {
+        listerEvent();
+        return () => {
+            Events.Off(Event.events.AppDatetime);
+        }
+    }, []);
+
     const butGroupClass = 'flex flex-wrap gap-4 mt-4';
 
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
-    Events.On(Event.events.AppDatetime, function (event) {
-        console.log(Event.events.AppDatetime, event);
-        const eventDatas: string[] = event.data;
-        const eventData: string = eventDatas[0];
-        console.log(Event.events.AppDatetime + " data ", eventData);
-        setDateTime(eventData);
-    });
+    const listerEvent = () => {
+        Events.On(Event.events.AppDatetime, function (event) {
+            console.log(Event.events.AppDatetime, event);
+            const eventDatas: string[] = event.data;
+            const eventData: string = eventDatas[0];
+            console.log(Event.events.AppDatetime + " data ", eventData);
+            setDateTime(eventData);
+        });
+    }
 
     return (
         <div className='p-4'>
