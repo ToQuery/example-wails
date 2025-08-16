@@ -286,7 +286,7 @@ func (s *ExampleService) ErrorDialog() {
 	dialog.Show()
 }
 
-func (s ExampleService) FileDialog() {
+func (s ExampleService) FileDialog() string {
 	//application.OpenFileDialogWithOptions()
 	dialog := application.OpenFileDialog()
 	dialog.SetOptions(&application.OpenFileDialogOptions{
@@ -309,33 +309,11 @@ func (s ExampleService) FileDialog() {
 	log.Printf("Selected file path: %s", path)
 
 	// Multiple file selection
-	paths, err := dialog.PromptForMultipleSelection()
-	if err == nil {
-		log.Panic(err)
-	}
-	// Use selected file paths
-	log.Printf("Selected file paths: %v", paths)
-}
-
-func (s ExampleService) FileDialogImage() string {
-	dialog := application.Get().Dialog.OpenFileWithOptions((&application.OpenFileDialogOptions{
-		Title:          "Select Image",
-		CanChooseFiles: true,
-		Filters: []application.FileFilter{
-			{
-				DisplayName: "Images (*.png;*.jpg)",
-				Pattern:     "*.png;*.jpg",
-			},
-		},
-	}))
-
-	path, err := dialog.PromptForSingleSelection()
-	// Single file selection
-	if err != nil {
-		log.Panic(err)
-	}
-	// Use selected file path
-	log.Printf("Selected file path: %s", path)
+	//paths, err := dialog.PromptForMultipleSelection()
+	//if err == nil {
+	//	log.Panic(err)
+	//}
+	//log.Printf("Selected file paths: %v", paths)
 
 	return path
 }

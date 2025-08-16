@@ -5,7 +5,7 @@ import DialogUpdate, {UpdateInfo} from "@/components/biz/dialog-update";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {Events} from "@wailsio/runtime";
 import {Event} from "@/const";
-import {UpdateInfoModel} from "../../bindings/example-wails/internal/model";
+import {WailsUpdateModel} from "../../bindings/example-wails/internal/model";
 import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
 import DialogNetworkError from "@/components/biz/dialog-network-error";
@@ -261,8 +261,8 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     Events.On(Event.events.AppUpdate, function (event) {
         console.log(Event.events.AppUpdate, event);
-        const eventDatas: UpdateInfoModel[] = event.data;
-        const eventData: UpdateInfoModel = eventDatas[0];
+        const eventDatas: WailsUpdateModel[] = event.data;
+        const eventData: WailsUpdateModel = eventDatas[0];
         console.log(Event.events.AppUpdate + " data ", eventData);
         const update = {
             version: eventData.Version,

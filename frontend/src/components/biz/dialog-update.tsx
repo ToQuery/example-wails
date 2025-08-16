@@ -5,6 +5,7 @@ import {Browser} from "@wailsio/runtime";
 
 import {useTranslation} from "react-i18next";
 import {ui} from "@/const/ui";
+import {Button} from "@/components/ui/button";
 
 // 更新信息接口
 export interface UpdateInfo {
@@ -56,7 +57,7 @@ const DialogUpdate = (props: DialogUpdateProps) => {
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-gray-600 dark:text-gray-300">{t('app.update.version')}</span>
                             <span
-                                className="font-semibold text-blue-600 dark:text-blue-400">{props.updateInfo.version}</span>
+                                className="font-semibold">{props.updateInfo.version}</span>
                         </div>
 
                         <div className="mb-4 text-left">
@@ -84,22 +85,14 @@ const DialogUpdate = (props: DialogUpdateProps) => {
                     {/* 模态框底部 */}
                     <div className="flex justify-end space-x-3">
                         {!props.updateInfo.forceUpdate && (
-                            <button
-                                onClick={() => props.onClose()}
-                                className="px-4 py-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-                            >
+                            <Button variant='outline' onClick={() => props.onClose()}>
                                 {t('app.update.later')}
-                            </button>
+                            </Button>
                         )}
-                        <button
-                            onClick={() => Browser.OpenURL(props.updateInfo.downloadUrl)}
-                            className={classNames(ui.theme.defaultPrimaryColorClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
-                        >
-                            <div className="flex items-center">
-                                <Icon icon="mdi:download" className="mr-1"/>
-                                {t('app.update.download-now')}
-                            </div>
-                        </button>
+                        <Button onClick={() => Browser.OpenURL(props.updateInfo.downloadUrl)} >
+                            <Icon icon="mdi:download" className="mr-1"/>
+                            {t('app.update.download-now')}
+                        </Button>
                     </div>
                 </div>
             </div>

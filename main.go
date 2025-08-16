@@ -11,7 +11,6 @@ import (
 	"log/slog"
 	"path/filepath"
 	"strconv"
-	"time"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
@@ -119,13 +118,13 @@ func main() {
 
 	// Create a goroutine that emits an event containing the current time every second.
 	// The frontend can listen to this event and update the UI accordingly.
-	go func() {
-		for {
-			now := time.Now().Format(time.RFC1123)
-			app.Event.Emit(wails3.AppDatetime, now)
-			time.Sleep(time.Second)
-		}
-	}()
+	//go func() {
+	//	for {
+	//		now := time.Now().Format(time.RFC1123)
+	//		app.Event.Emit(wails3.AppDatetime, now)
+	//		time.Sleep(time.Second)
+	//	}
+	//}()
 
 	wails3.OnStart(appInfo)
 

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Browser, Clipboard, Events, Screens} from '@wailsio/runtime'
+import {Browser, Clipboard, Dialogs, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {Event, Value} from "@/const";
@@ -7,7 +7,6 @@ import {useGlobalAppInfo, useGlobalDialog, useGlobalUpdate} from "@/provider/glo
 
 import classNames from "classnames";
 import {Button} from "@/components/ui/button";
-import {Separator} from "@/components/ui/separator";
 
 
 function Example() {
@@ -154,22 +153,11 @@ function Example() {
                 </div>
                 <div className={butGroupClass}>
 
-
                     <Button onClick={async () => setText(await Clipboard.Text())}>
                         {t('page.example.get-clipboard')}
                     </Button>
 
                     <Button onClick={() => Clipboard.SetText(text)}>
-                        {t('page.example.set-clipboard')}
-                    </Button>
-
-                    <Separator/>
-
-                    <Button onClick={async () => setText(await ExampleService.ClipboardGet())}>
-                        {t('page.example.get-clipboard')}
-                    </Button>
-
-                    <Button onClick={() => ExampleService.ClipboardSet(text)}>
                         {t('page.example.set-clipboard')}
                     </Button>
                 </div>
@@ -199,26 +187,61 @@ function Example() {
                     </div>
                 </div>
                 <div className={butGroupClass}>
-                    <Button onClick={() => ExampleService.InfoDialog()}>
+                    <Button onClick={() => Dialogs.Info({Title: "Info", Message: "Hello Wails！", Detached: true})}>
                         {t('page.example.info-dialog')}
                     </Button>
-                    <Button onClick={() => ExampleService.QuestionDialog()}>
+                    <Button onClick={() => Dialogs.Question({
+                        Title: "Question",
+                        Message: "Do you want to save your changes ?",
+                        Buttons: [{Label: "Cancel", IsCancel: true}, {Label: "Confirm", IsDefault: true}]
+                    }).then(value => {
+                        console.log("Dialogs Question Then", value);
+                    }).catch(err => {
+                        console.error("Dialogs Question Catch", err);
+                    }).finally(()=> {
+                        console.error("Dialogs Question Finally");
+                    })}>
                         {t('page.example.question-dialog')}
                     </Button>
-                    <Button onClick={() => ExampleService.ErrorDialog()}>
+                    <Button onClick={() => Dialogs.Warning({
+                        Title: "Warning",
+                        Message: "Warning Message",
+                    })}>
+                        {t('page.example.warning-dialog')}
+                    </Button>
+                    <Button onClick={() => Dialogs.Error({
+                        Title: "Error",
+                        Message: "Failed to save file",
+                    })}>
                         {t('page.example.error-dialog')}
                     </Button>
-                    <Button onClick={() => ExampleService.FileDialog()}>
+                    <Button onClick={() => Dialogs.OpenFile({
+                        Title: "Select Image",
+                        CanChooseFiles: true,
+                        Filters: [{DisplayName: "Images", Pattern: "*.png;*.jpg;*.jpeg;*.gif"}],
+                    }).then(value => {
+                        console.log("Dialogs OpenFile Then", value);
+                        setDiskImagePath(value);
+                    }).catch(err => {
+                        console.error("Dialogs OpenFile Catch", err);
+                    }).finally(()=> {
+                        console.error("Dialogs OpenFile Finally");
+                    })}>
                         {t('page.example.file-dialog')}
                     </Button>
 
-                    <Button onClick={() => {
-                        ExampleService.FileDialogImage().then((path) => {
-                            console.log("FileDialogImage", path);
-                            setDiskImagePath(path);
-                        });
-                    }}>
-                        {t('page.example.image-dialog')}
+                    <Button onClick={() => Dialogs.SaveFile({
+                        Title: "Save File",
+                        Message: "Save Document",
+                        Filename: "document.txt",
+                    }).then(value => {
+                        console.log("Dialogs SaveFile Then", value);
+                    }).catch(err => {
+                        console.error("Dialogs SaveFile Catch", err);
+                    }).finally(()=> {
+                        console.error("Dialogs SaveFile Finally");
+                    })}>
+                        {t('page.example.front-save-file-dialog')}
                     </Button>
 
                     <Button onClick={() => ExampleService.SaveFileDialog()}>
@@ -227,12 +250,6 @@ function Example() {
 
                     <Button onClick={() => ExampleService.ShowAboutDialog()}>
                         {t('page.example.about-dialog')}
-                    </Button>
-
-
-                    <Button onClick={() => {
-                    }}>
-                        {t('page.example.save-file-dialog')}
                     </Button>
                 </div>
             </section>

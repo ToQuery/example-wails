@@ -4,6 +4,7 @@ import {Icon} from '@iconify/react';
 
 import {useTranslation} from "react-i18next";
 import {ui} from "@/const/ui";
+import {Button} from "@/components/ui/button";
 
 
 type DialogNetworkErrorProps = {
@@ -43,15 +44,10 @@ const DialogNetworkError = (props: DialogNetworkErrorProps) => {
 
                     {/* 模态框底部 */}
                     <div className="flex justify-end space-x-3">
-                        <button
-                            onClick={() => props.onRetry()}
-                            className={classNames(ui.theme.defaultBgClass, "px-4 py-2 rounded-lg text-white dark:text-white font-medium hover:shadow-lg transition-all transform hover:scale-105")}
-                        >
-                            <div className="flex items-center">
-                                <Icon icon="material-symbols:refresh" className="mr-1"/>
-                                重试
-                            </div>
-                        </button>
+                        <Button onClick={() => props.onRetry()}>
+                            <Icon icon="material-symbols:refresh" className="mr-1"/>
+                            重试
+                        </Button>
                     </div>
                 </div>
             </div>

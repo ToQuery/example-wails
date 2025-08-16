@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useGlobalAppInfo, useGlobalThemeModel, useGlobalUpdate, useGlobalLanguage } from '@/provider/global-provider';
 import { languages } from '@/i18n';
 import { themeModeOptions } from '@/components/sidebar/theme-mode';
-import classNames from 'classnames';
 import {Button} from "@/components/ui/button";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 export default function SettingGeneral() {
     const { t } = useTranslation();
@@ -46,19 +46,10 @@ export default function SettingGeneral() {
                         <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('settings.theme')}</h3>
                         <div className="flex space-x-2">
                             {themeModeOptions.map((item) => (
-                                <button
-                                    key={item.code}
-                                    onClick={() => setThemeModel(item)}
-                                    className={classNames(
-                                        "px-4 py-2 rounded-lg transition-colors flex items-center",
-                                        item.code === themeModel.code
-                                            ? 'bg-blue-500 text-white hover:bg-blue-600'
-                                            : 'bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600'
-                                    )}
-                                >
+                                <Button key={item.code} onClick={() => setThemeModel(item)} variant={item.code === themeModel.code ? 'default' : 'outline'} >
                                     <Icon icon={item.icon} className="mr-2" />
-                                    {t(item.code === themeModel.code ? item.name : item.label)}
-                                </button>
+                                    {t(item.name)}
+                                </Button>
                             ))}
                         </div>
                     </div>
@@ -66,15 +57,16 @@ export default function SettingGeneral() {
                     {/* 语言设置 */}
                     <div>
                         <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('settings.language')}</h3>
-                        <select
-                            value={language}
-                            onChange={(e) => setLanguage(e.target.value)}
-                            className="mt-1 block w-48 pl-3 pr-10 py-2 text-base border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
-                        >
-                            {languages.map((lang) => (
-                                <option key={lang.code} value={lang.code}>{lang.label}</option>
-                            ))}
-                        </select>
+                        <Select value={language} onValueChange={(val) => setLanguage(val)} >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Select Language" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {languages.map((lang) => (
+                                    <SelectItem key={lang.code} value={lang.code}>{lang.label}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
             </div>

@@ -146,7 +146,7 @@ export default function Info() {
                         <div className="">
                             <Select value={language} onValueChange={(val) => setLanguage(val)}>
                                 <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Select a fruit" />
+                                    <SelectValue placeholder="Select Language" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {languages.map((lang) => (
