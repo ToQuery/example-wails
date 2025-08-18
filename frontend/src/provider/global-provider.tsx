@@ -1,11 +1,16 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import {SidebarStyle} from "@/components/sidebar/sidebar";
 import ThemeMode, {themeModeAuto, themeModeDark, themeModeLight} from "@/components/sidebar/theme-mode";
-import DialogUpdate, {UpdateInfo} from "@/components/biz/dialog-update";
+import DialogUpdate from "@/components/biz/dialog-update";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {Events} from "@wailsio/runtime";
 import {Event} from "@/const";
-import {WailsAppInfoModel, WailsUpdateModel} from "../../bindings/example-wails/internal/model";
+import {
+    BaseExchange,
+    LaunchResModel,
+    WailsAppInfoModel,
+    WailsUpdateModel
+} from "../../bindings/example-wails/internal/model";
 import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
 import DialogNetworkError from "@/components/biz/dialog-network-error";
@@ -36,8 +41,8 @@ interface GlobalContextType {
     setDialogContent: (dialogContent: React.ReactNode) => void;
 
     // 更新相关配置
-    updateInfo: UpdateInfo;
-    handleDialogUpdate: (updateInfo: UpdateInfo) => void;
+    updateInfo: WailsUpdateModel;
+    handleDialogUpdate: (updateInfo: WailsUpdateModel) => void;
     checkForUpdates: () => void;
 }
 
@@ -95,7 +100,7 @@ const defaultConfig: GlobalContextType = {
         changelog: '',
         downloadUrl: '',
     },
-    handleDialogUpdate: (updateInfo: UpdateInfo) => {
+    handleDialogUpdate: (updateInfo: WailsUpdateModel) => {
         console.log('setUpdateInfo', updateInfo);
     },
     checkForUpdates: () => {
@@ -117,7 +122,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const [diaLogContent, setDialogContent] = useState<React.ReactNode>();
 
     // 更新相关状态
-    const [updateInfo, setUpdateInfoState] = useState<UpdateInfo>(defaultConfig.updateInfo);
+    const [updateInfo, setUpdateInfoState] = useState<WailsUpdateModel>(defaultConfig.updateInfo);
 
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
@@ -154,7 +159,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setLanguageState(lang);
     };
 
-    const handleDialogUpdate = (updateInfo: UpdateInfo) => {
+    const handleDialogUpdate = (updateInfo: WailsUpdateModel) => {
         setDialogContent(<DialogUpdate updateInfo={updateInfo} onClose={() => setDialog(false)}/>)
         setUpdateInfoState(updateInfo);
     };
@@ -178,6 +183,32 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setDialog(true);
     };
 
+    const handleParseAppLaunch = (baseExchange: BaseExchange<LaunchResModel>) => {
+        console.log('handleParseAppLaunch', baseExchange);
+        if (baseExchange.success || !baseExchange.data) {
+            setDialogNetworkErr();
+            setDialog(true);
+            return;
+        }
+
+        const data = baseExchange.data;
+        // 配置信息
+
+        // 更新细腻洗
+        if (data.update) {
+            handleDialogUpdate(data.update);
+            setDialog(true);
+            return;
+        }
+        setDialog(false);
+        return;
+    };
+
+    const loadingLaunch = () => {
+        ExampleService.AppLaunch().then((baseExchange) => {
+            handleParseAppLaunch(baseExchange);
+        });
+    };
 
     const loadingAppInfo = () => {
         ExampleService.GetAppInfo().then((baseExchange) => {
@@ -195,14 +226,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         ExampleService.AppCheckUpdate().then((baseExchange) => {
             const updateInfo= baseExchange.data;
             if (updateInfo) {
-                const update = {
-                    version: updateInfo.Version,
-                    versionCode: updateInfo.VersionCode,
-                    forceUpdate: updateInfo.ForceUpdate,
-                    changelog: updateInfo.Changelog,
-                    downloadUrl: updateInfo.DownloadUrl,
-                };
-                handleDialogUpdate(update);
+                handleDialogUpdate(updateInfo);
                 setDialog(true);
             }
         });
@@ -259,14 +283,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
             const eventDatas: WailsUpdateModel[] = event.data;
             const eventData: WailsUpdateModel = eventDatas[0];
             console.log(Event.events.AppUpdate + " data ", eventData);
-            const update = {
-                version: eventData.Version,
-                versionCode: eventData.VersionCode,
-                forceUpdate: eventData.ForceUpdate,
-                changelog: eventData.Changelog,
-                downloadUrl: eventData.DownloadUrl,
-            };
-            handleDialogUpdate(update);
+            handleDialogUpdate(eventData);
             setDialog(true);
         });
     }
@@ -362,7 +379,7 @@ export function useGlobalDialog(): [boolean, (dialog: boolean) => void, (dialogC
 }
 
 // 使用更新功能的Hook
-export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, UpdateInfo, (style: UpdateInfo) => void, () => void] {
+export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, WailsUpdateModel, (style: WailsUpdateModel) => void, () => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useUpdate must be used within a ConfigProvider');

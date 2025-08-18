@@ -6,18 +6,10 @@ import {Browser} from "@wailsio/runtime";
 import {useTranslation} from "react-i18next";
 import {ui} from "@/const/ui";
 import {Button} from "@/components/ui/button";
-
-// 更新信息接口
-export interface UpdateInfo {
-    version: string;
-    versionCode: number;
-    forceUpdate: boolean;
-    changelog: string;
-    downloadUrl: string;
-}
+import {WailsUpdateModel} from "../../../bindings/example-wails/internal/model";
 
 type DialogUpdateProps = {
-    updateInfo: UpdateInfo;
+    updateInfo: WailsUpdateModel;
     onClose: () => void;
 }
 

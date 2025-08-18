@@ -30,11 +30,11 @@ func BaseExchangeSuccess[T any](data T) BaseExchange[T] {
 }
 
 type WailsUpdateModel struct {
-	Version     string
-	VersionCode int
-	ForceUpdate bool
-	Changelog   string
-	DownloadUrl string
+	Version     string `json:"version" form:"version"`
+	VersionCode int    `json:"versionCode" form:"versionCode"`
+	ForceUpdate bool   `json:"forceUpdate" form:"forceUpdate"`
+	Changelog   string `json:"changelog" form:"changelog"`
+	DownloadUrl string `json:"downloadUrl" form:"downloadUrl"`
 }
 
 type WailsAppInfoModel struct {
@@ -59,7 +59,6 @@ type LaunchReqModel struct {
 }
 
 type LaunchResModel struct {
-	NetWorkErr bool
-	Config     *map[string]interface{} `json:"config" form:"config"` // 配置信息
-	Update     *WailsUpdateModel       `json:"update" form:"update"` // 更新信息
+	Config *map[string]interface{} `json:"config" form:"config"` // 配置信息
+	Update *WailsUpdateModel       `json:"update" form:"update"` // 更新信息
 }

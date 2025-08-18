@@ -26,7 +26,7 @@ func NewExampleService(appInfo model.WailsAppInfoModel) *ExampleService {
 	return &ExampleService{AppInfo: appInfo}
 }
 
-func (s *ExampleService) AppLaunch(req model.LaunchReqModel) model.BaseExchange[model.LaunchResModel] {
+func (s *ExampleService) AppLaunch() model.BaseExchange[model.LaunchResModel] {
 	log.Printf("开始发送启动信息 !")
 
 	// 50% 概率执行模拟网络错误
