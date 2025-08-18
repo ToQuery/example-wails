@@ -61,13 +61,7 @@ function Example() {
                                 if (exchange.success && exchange.data) {
                                     const appInfoModel = exchange.data;
                                     console.log("appInfoModel", appInfoModel);
-                                    setAppInfo({
-                                        name: appInfoModel.Name,
-                                        version: appInfoModel.Version,
-                                        versionCode: appInfoModel.VersionCode,
-                                        buildId: appInfoModel.BuildId,
-                                        buildTime: appInfoModel.BuildTime,
-                                    });
+                                    setAppInfo(appInfoModel);
                                 }
 
                             })

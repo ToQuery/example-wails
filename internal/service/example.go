@@ -7,9 +7,11 @@ import (
 	"example-wails/internal/pkg/pkg_example"
 	"io"
 	"log"
+	"math/rand"
 	"os"
 	"os/exec"
 	"runtime"
+	"time"
 
 	"github.com/adrg/xdg"
 
@@ -22,6 +24,34 @@ type ExampleService struct {
 
 func NewExampleService(appInfo model.WailsAppInfoModel) *ExampleService {
 	return &ExampleService{AppInfo: appInfo}
+}
+
+func (s *ExampleService) AppLaunch(req model.LaunchReqModel) model.BaseExchange[model.LaunchResModel] {
+	log.Printf("开始发送启动信息 !")
+
+	// 50% 概率执行模拟网络错误
+	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
+		return model.BaseExchangeFail[model.LaunchResModel]("模拟网络错误")
+	}
+
+	// 50% 概率执行模拟更新
+	updateInfo := pkg_example.Ternary(rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0, &model.WailsUpdateModel{
+		Version:     "1.0.0",
+		VersionCode: 1,
+		ForceUpdate: false,
+		Changelog:   "模拟更新日志",
+	}, nil)
+
+	return model.BaseExchangeSuccess[model.LaunchResModel](model.LaunchResModel{
+		Config: &map[string]interface{}{
+			"app": map[string]interface{}{
+				"name":    s.AppInfo.Name,
+				"version": s.AppInfo.Version,
+				"buildId": s.AppInfo.BuildId,
+			},
+		},
+		Update: updateInfo,
+	})
 }
 
 /*------File Start----------------------------------------------------------------------------------------------------*/

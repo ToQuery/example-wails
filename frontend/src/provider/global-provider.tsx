@@ -5,26 +5,17 @@ import DialogUpdate, {UpdateInfo} from "@/components/biz/dialog-update";
 import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {Events} from "@wailsio/runtime";
 import {Event} from "@/const";
-import {WailsUpdateModel} from "../../bindings/example-wails/internal/model";
+import {WailsAppInfoModel, WailsUpdateModel} from "../../bindings/example-wails/internal/model";
 import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
 import DialogNetworkError from "@/components/biz/dialog-network-error";
 import DialogLanguage from "@/components/biz/dialog-language";
 
 
-
-export type AppInfo = {
-    name: string;
-    version: string;
-    versionCode: number;
-    buildId: string;
-    buildTime: string;
-}
-
 // 配置上下文
 interface GlobalContextType {
-    appInfo: AppInfo;
-    setAppInfo: (appInfo: AppInfo) => void;
+    appInfo: WailsAppInfoModel;
+    setAppInfo: (appInfo: WailsAppInfoModel) => void;
     // 侧边栏
     sidebarStyle: SidebarStyle;
     setSidebarStyle: (style: SidebarStyle) => void;
@@ -53,12 +44,14 @@ interface GlobalContextType {
 const defaultConfig: GlobalContextType = {
     appInfo: {
         name: 'example-wails',
+        cnName: 'example-wails',
+        description: 'example-wails',
         version: 'v0.0.0',
         versionCode: 0,
-        buildId: '0x000001',
+        buildId: '0x000000',
         buildTime: 'unknown',
     },
-    setAppInfo: function (appInfo: AppInfo): void {
+    setAppInfo: function (appInfo: WailsAppInfoModel): void {
         console.log('setAppInfo', appInfo);
     },
     setSidebarStyle(style: SidebarStyle): void {
@@ -116,7 +109,7 @@ const GlobalContext = createContext<GlobalContextType>(defaultConfig);
 export function GlobalProvider({children}: { children: ReactNode }) {
     const {i18n} = useTranslation();
 
-    const [appInfo, setAppInfo] = useState<AppInfo>(defaultConfig.appInfo);
+    const [appInfo, setAppInfo] = useState<WailsAppInfoModel>(defaultConfig.appInfo);
     const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
     const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
     const [themeModel, setThemeModelState] = useState<ThemeMode>(defaultConfig.themeModel);
@@ -186,18 +179,12 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     };
 
 
-    const getAppInfo = () => {
+    const loadingAppInfo = () => {
         ExampleService.GetAppInfo().then((baseExchange) => {
             if (baseExchange.success && baseExchange.data) {
                 const appInfo = baseExchange.data;
                 console.log('ConfigProvider GetAppInfo', appInfo);
-                setAppInfo({
-                    name: appInfo.Name,
-                    version: appInfo.Version,
-                    versionCode: appInfo.VersionCode,
-                    buildId: appInfo.BuildId,
-                    buildTime: appInfo.BuildTime,
-                });
+                setAppInfo(appInfo);
             }
 
         });
@@ -237,7 +224,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     useEffect(() => {
         console.log('ConfigProvider useEffect');
         // 获取应用信息
-        getAppInfo();
+        loadingAppInfo();
 
         // 主题
         // document.documentElement.classList.add('dark');
@@ -259,21 +246,30 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         }
     }, [dialog]);
 
-    Events.On(Event.events.AppUpdate, function (event) {
-        console.log(Event.events.AppUpdate, event);
-        const eventDatas: WailsUpdateModel[] = event.data;
-        const eventData: WailsUpdateModel = eventDatas[0];
-        console.log(Event.events.AppUpdate + " data ", eventData);
-        const update = {
-            version: eventData.Version,
-            versionCode: eventData.VersionCode,
-            forceUpdate: eventData.ForceUpdate,
-            changelog: eventData.Changelog,
-            downloadUrl: eventData.DownloadUrl,
-        };
-        handleDialogUpdate(update);
-        setDialog(true);
-    });
+    useEffect(() => {
+        listerEvent();
+        return () => {
+            Events.Off(Event.events.AppUpdate);
+        }
+    }, []);
+
+    const listerEvent = () => {
+        Events.On(Event.events.AppUpdate, function (event) {
+            console.log(Event.events.AppUpdate, event);
+            const eventDatas: WailsUpdateModel[] = event.data;
+            const eventData: WailsUpdateModel = eventDatas[0];
+            console.log(Event.events.AppUpdate + " data ", eventData);
+            const update = {
+                version: eventData.Version,
+                versionCode: eventData.VersionCode,
+                forceUpdate: eventData.ForceUpdate,
+                changelog: eventData.Changelog,
+                downloadUrl: eventData.DownloadUrl,
+            };
+            handleDialogUpdate(update);
+            setDialog(true);
+        });
+    }
 
     const value = {
         appInfo,
@@ -317,7 +313,7 @@ export function useGlobal() {
     return context;
 }
 
-export function useGlobalAppInfo(): [AppInfo, (appInfo: AppInfo) => void] {
+export function useGlobalAppInfo(): [WailsAppInfoModel, (appInfo: WailsAppInfoModel) => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfig must be used within a ConfigProvider');
