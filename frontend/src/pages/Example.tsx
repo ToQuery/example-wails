@@ -77,13 +77,7 @@ function Example() {
                         console.log("updateInfoModel", exchange);
                         if (exchange.success && exchange.data) {
                             const updateInfoModel = exchange.data;
-                            setUpdateInfo({
-                                version: updateInfoModel.Version,
-                                versionCode: updateInfoModel.VersionCode,
-                                forceUpdate: updateInfoModel.ForceUpdate,
-                                changelog: updateInfoModel.Changelog,
-                                downloadUrl: updateInfoModel.DownloadUrl
-                            });
+                            setUpdateInfo(updateInfoModel);
                             setShowUpdateDialog(true);
                         }
                     }}>
@@ -94,13 +88,7 @@ function Example() {
                         console.log("updateInfoModel", exchange);
                         if (exchange.success && exchange.data) {
                             const updateInfoModel = exchange.data;
-                            setUpdateInfo({
-                                version: updateInfoModel.Version,
-                                versionCode: updateInfoModel.VersionCode,
-                                forceUpdate: updateInfoModel.ForceUpdate,
-                                changelog: updateInfoModel.Changelog,
-                                downloadUrl: updateInfoModel.DownloadUrl
-                            });
+                            setUpdateInfo(updateInfoModel);
                             setShowUpdateDialog(true);
                         }
                     }}>

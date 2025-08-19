@@ -1,13 +1,20 @@
 import React from 'react';
-import classNames from "classnames";
-import {Icon} from '@iconify/react';
 
 import {useTranslation} from "react-i18next";
-import {ui} from "@/const/ui";
-import {Button} from "@/components/ui/button";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 
 type DialogNetworkErrorProps = {
+    open: boolean;
+    onOpenChange?: (open: boolean) => void;
     onRetry: () => void
 }
 
@@ -17,43 +24,20 @@ const DialogNetworkError = (props: DialogNetworkErrorProps) => {
 
     // 如果是强制更新，添加模糊背景效果
     return (<>
-        {/* 模态框内容 */}
-        <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-in-out">
-            <div
-                className="w-full max-w-md rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden transform transition-all duration-300 ease-in-out">
-                {/* 模态框头部 */}
-                <div className={classNames(ui.theme.defaultBgClass, "p-4 text-white dark:text-white")}>
-                    <div className="flex items-center justify-between">
-                        <h3 className="text-lg font-bold flex items-center">
-                            <Icon icon="material-symbols:error-outline" className="mr-2 text-xl"/>
-                            网络错误
-                        </h3>
-                    </div>
-                </div>
-
-                {/* 模态框内容 */}
-                <div className="p-5">
-                    <div className="mb-4">
-
-                        <div className="mb-4 text-left">
-                            连接服务器失败，请检查网络重试！
-                        </div>
-
-                    </div>
-
-                    {/* 模态框底部 */}
-                    <div className="flex justify-end space-x-3">
-                        <Button onClick={() => props.onRetry()}>
-                            <Icon icon="material-symbols:refresh" className="mr-1"/>
-                            重试
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <AlertDialog open={props.open} onOpenChange={props.onOpenChange}>
+            <AlertDialogContent className={'bg-white dark:bg-black'}>
+                <AlertDialogHeader>
+                    <AlertDialogTitle className='text-red-600'>网络错误!</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        连接服务器失败，请检查网络重试！
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogAction onClick={() => props.onRetry()}>重试</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     </>);
 };
 
-export default DialogNetworkError
-;
+export default DialogNetworkError;

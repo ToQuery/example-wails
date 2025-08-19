@@ -21,6 +21,9 @@ import DialogLanguage from "@/components/biz/dialog-language";
 interface GlobalContextType {
     appInfo: WailsAppInfoModel;
     setAppInfo: (appInfo: WailsAppInfoModel) => void;
+
+    config: Record<string, string>;
+    setConfig: (config: Record<string, string>) => void;
     // 侧边栏
     sidebarStyle: SidebarStyle;
     setSidebarStyle: (style: SidebarStyle) => void;
@@ -59,6 +62,12 @@ const defaultConfig: GlobalContextType = {
     setAppInfo: function (appInfo: WailsAppInfoModel): void {
         console.log('setAppInfo', appInfo);
     },
+
+    config: {},
+    setConfig: function (config: Record<string, string>): void {
+        console.log('setConfig', config);
+    },
+
     setSidebarStyle(style: SidebarStyle): void {
         console.log('setSidebarStyle', style);
     },
@@ -114,6 +123,8 @@ const GlobalContext = createContext<GlobalContextType>(defaultConfig);
 export function GlobalProvider({children}: { children: ReactNode }) {
     const {i18n} = useTranslation();
 
+    const [config, setConfig] = useState<Record<string, string>>(defaultConfig.config)
+    const [internetError, setInternetError] = useState<boolean>(false);
     const [appInfo, setAppInfo] = useState<WailsAppInfoModel>(defaultConfig.appInfo);
     const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
     const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
@@ -164,10 +175,6 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setUpdateInfoState(updateInfo);
     };
 
-    const setDialogNetworkErr = () => {
-        setDialogContent(<DialogNetworkError onRetry={() => {}}/>)
-    };
-
     const setDialogLanguage = (loading: boolean) => {
         if (loading) {
             setDialogContent(
@@ -186,8 +193,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const handleParseAppLaunch = (baseExchange: BaseExchange<LaunchResModel>) => {
         console.log('handleParseAppLaunch', baseExchange);
         if (baseExchange.success || !baseExchange.data) {
-            setDialogNetworkErr();
-            setDialog(true);
+            setInternetError(true);
             return;
         }
 
@@ -200,13 +206,19 @@ export function GlobalProvider({children}: { children: ReactNode }) {
             setDialog(true);
             return;
         }
-        setDialog(false);
+        setInternetError(false);
         return;
     };
 
     const loadingLaunch = () => {
         ExampleService.AppLaunch().then((baseExchange) => {
             handleParseAppLaunch(baseExchange);
+        }).catch((err) => {
+            console.log('ConfigProvider handleCheckLaunch AppLaunch err', err);
+            setInternetError(true);
+            return;
+        }).finally(() => {
+            console.log('ConfigProvider handleCheckLaunch AppLaunch finally');
         });
     };
 
@@ -224,7 +236,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     // 检查更新函数
     const checkForUpdates = () => {
         ExampleService.AppCheckUpdate().then((baseExchange) => {
-            const updateInfo= baseExchange.data;
+            const updateInfo = baseExchange.data;
             if (updateInfo) {
                 handleDialogUpdate(updateInfo);
                 setDialog(true);
@@ -249,6 +261,9 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         console.log('ConfigProvider useEffect');
         // 获取应用信息
         loadingAppInfo();
+
+        // 获取应用启动信息
+        loadingLaunch();
 
         // 主题
         // document.documentElement.classList.add('dark');
@@ -291,6 +306,10 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const value = {
         appInfo,
         setAppInfo,
+
+        config,
+        setConfig,
+
         sidebarStyle,
         setSidebarStyle,
         windowTitle,
@@ -315,6 +334,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     return (
         <GlobalContext.Provider value={value}>
 
+            <DialogNetworkError onRetry={() => loadingLaunch()} open={internetError}/>
             <Dialog show={dialog} contentNode={diaLogContent}/>
             {children}
         </GlobalContext.Provider>
@@ -336,6 +356,14 @@ export function useGlobalAppInfo(): [WailsAppInfoModel, (appInfo: WailsAppInfoMo
         throw new Error('useConfig must be used within a ConfigProvider');
     }
     return [context.appInfo, context.setAppInfo];
+}
+
+export function useGlobalConfig() {
+    const context = useContext(GlobalContext);
+    if (context === undefined) {
+        throw new Error('useConfig must be used within a ConfigProvider');
+    }
+    return [context.config, context.setConfig];
 }
 
 export function useGlobalSidebarStyle(): [SidebarStyle, (style: SidebarStyle) => void] {
