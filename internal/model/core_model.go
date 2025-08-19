@@ -21,6 +21,14 @@ func BaseExchangeFailData[T any](message string, data T) BaseExchange[T] {
 	}
 }
 
+func BaseExchangeSuccessMessage[T any](data T, message string) BaseExchange[T] {
+	return BaseExchange[T]{
+		Message: message,
+		Success: true,
+		Data:    data,
+	}
+}
+
 func BaseExchangeSuccess[T any](data T) BaseExchange[T] {
 	return BaseExchange[T]{
 		Message: "success",
