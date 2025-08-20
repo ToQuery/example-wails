@@ -6,14 +6,11 @@ import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
 
 import {useTranslation} from "react-i18next";
-import classNames from "classnames";
 import {Button} from "@/components/ui/button";
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";

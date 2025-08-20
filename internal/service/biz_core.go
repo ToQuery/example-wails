@@ -14,18 +14,19 @@ func NewBizCoreService(appInfo model.AppInfoModel) *BizCoreService {
 }
 
 func (s *BizCoreService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
+	log.Printf("BizCoreService GetAppInfo = %v", s.AppInfo)
 	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
 }
 
 func (s *BizCoreService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
-	log.Printf("开始发送启动信息 !")
-
+	log.Printf("BizCoreService AppLaunch")
 	return model.BaseExchangeSuccess[model.AppLaunchModel](model.AppLaunchModel{
-		Config: nil,
-		Update: nil,
+		Config:         nil,
+		VersionLastest: nil,
 	})
 }
 
-func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.AppUpdateModel] {
-	return model.BaseExchangeSuccess[*model.AppUpdateModel](nil)
+func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.AppVersionLastestModel] {
+	log.Printf("BizCoreService AppCheckUpdate")
+	return model.BaseExchangeSuccess[*model.AppVersionLastestModel](nil)
 }

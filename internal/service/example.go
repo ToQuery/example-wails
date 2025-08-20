@@ -28,8 +28,7 @@ func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
 }
 
 func (s *ExampleService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
-	log.Printf("开始发送启动信息 !")
-
+	log.Printf("AppLaunch")
 	// 50% 概率执行模拟网络错误
 	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
 		return model.BaseExchangeFail[model.AppLaunchModel]("模拟网络错误")
@@ -153,21 +152,24 @@ func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
 func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
-	log.Printf("获取应用信息: %v", application.Get().Env.Info())
+	log.Printf("GetAppInfo = %v", s.AppInfo)
+	log.Printf("GetAppInfo Env = %v", application.Get().Env.Info())
 	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
 }
 
 func (s *ExampleService) AppUpdateFromEvent(force bool) {
-	updateInfo := pkg_example.BuildAppUpdate(force)
+	log.Printf("AppUpdateFromEvent")
+	updateInfo := pkg_example.BuildAppVersionLastest(force)
 	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
 }
 
-func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.AppUpdateModel] {
-	updateInfo := pkg_example.BuildAppUpdate(forceUpdate)
+func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.AppVersionLastestModel] {
+	log.Printf("AppUpdateCheck")
+	updateInfo := pkg_example.BuildAppVersionLastest(forceUpdate)
 	if updateInfo.VersionCode > s.AppInfo.VersionCode {
 		return model.BaseExchangeSuccess(&updateInfo)
 	}
-	return model.BaseExchangeSuccess[*model.AppUpdateModel](nil)
+	return model.BaseExchangeSuccess[*model.AppVersionLastestModel](nil)
 }
 
 func (s ExampleService) AppEmbedExecBinary() {

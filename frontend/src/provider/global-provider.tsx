@@ -8,7 +8,7 @@ import {Event} from "@/const";
 import {
     BaseExchange,
     AppLaunchModel,
-    AppUpdateModel,
+    AppVersionLastestModel,
     AppInfoModel
 } from "../../bindings/example-wails/internal/model";
 import Dialog from "@/components/biz/dialog";
@@ -44,8 +44,8 @@ interface GlobalContextType {
     setDialogContent: (dialogContent: React.ReactNode) => void;
 
     // 更新相关配置
-    updateInfo: AppUpdateModel;
-    handleDialogUpdate: (updateInfo: AppUpdateModel) => void;
+    versionLastest: AppVersionLastestModel;
+    handleDialogUpdate: (versionLastest: AppVersionLastestModel) => void;
     checkForUpdates: () => void;
 }
 
@@ -102,15 +102,15 @@ const defaultConfig: GlobalContextType = {
     },
 
     // 更新相关默认值
-    updateInfo: {
+    versionLastest: {
         version: '',
         versionCode: 0,
         forceUpdate: false,
         changelog: '',
         downloadUrl: '',
     },
-    handleDialogUpdate: (updateInfo: AppUpdateModel) => {
-        console.log('setUpdateInfo', updateInfo);
+    handleDialogUpdate: (versionLastest: AppVersionLastestModel) => {
+        console.log('setUpdateInfo', versionLastest);
     },
     checkForUpdates: () => {
         console.log('checkForUpdates');
@@ -133,7 +133,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const [diaLogContent, setDialogContent] = useState<React.ReactNode>();
 
     // 更新相关状态
-    const [updateInfo, setUpdateInfoState] = useState<AppUpdateModel>(defaultConfig.updateInfo);
+    const [versionLastest, setUpdateInfoState] = useState<AppVersionLastestModel>(defaultConfig.versionLastest);
 
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
@@ -170,9 +170,9 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setLanguageState(lang);
     };
 
-    const handleDialogUpdate = (updateInfo: AppUpdateModel) => {
-        setDialogContent(<DialogUpdate updateInfo={updateInfo} onClose={() => setDialog(false)}/>)
-        setUpdateInfoState(updateInfo);
+    const handleDialogUpdate = (versionLastest: AppVersionLastestModel) => {
+        setDialogContent(<DialogUpdate versionLastest={versionLastest} onClose={() => setDialog(false)}/>)
+        setUpdateInfoState(versionLastest);
     };
 
     const setDialogLanguage = (loading: boolean) => {
@@ -192,7 +192,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     const handleParseAppLaunch = (baseExchange: BaseExchange<AppLaunchModel>) => {
         console.log('handleParseAppLaunch', baseExchange);
-        if (baseExchange.success || !baseExchange.data) {
+        if (!baseExchange.success || !baseExchange.data) {
             setInternetError(true);
             return;
         }
@@ -201,8 +201,8 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         // 配置信息
 
         // 更新细腻洗
-        if (data.update) {
-            handleDialogUpdate(data.update);
+        if (data.versionLastest) {
+            handleDialogUpdate(data.versionLastest);
             setDialog(true);
             return;
         }
@@ -216,7 +216,6 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         }).catch((err) => {
             console.log('ConfigProvider handleCheckLaunch AppLaunch err', err);
             setInternetError(true);
-            return;
         }).finally(() => {
             console.log('ConfigProvider handleCheckLaunch AppLaunch finally');
         });
@@ -236,9 +235,9 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     // 检查更新函数
     const checkForUpdates = () => {
         ExampleService.AppUpdateCheck(false).then((baseExchange) => {
-            const updateInfo = baseExchange.data;
-            if (updateInfo) {
-                handleDialogUpdate(updateInfo);
+            const versionLastest = baseExchange.data;
+            if (versionLastest) {
+                handleDialogUpdate(versionLastest);
                 setDialog(true);
             }
         });
@@ -295,8 +294,8 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const listerEvent = () => {
         Events.On(Event.events.AppUpdate, function (event) {
             console.log(Event.events.AppUpdate, event);
-            const eventDatas: AppUpdateModel[] = event.data;
-            const eventData: AppUpdateModel = eventDatas[0];
+            const eventDatas: AppVersionLastestModel[] = event.data;
+            const eventData: AppVersionLastestModel = eventDatas[0];
             console.log(Event.events.AppUpdate + " data ", eventData);
             handleDialogUpdate(eventData);
             setDialog(true);
@@ -326,7 +325,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setDialogLanguage,
 
         // 更新相关配置
-        updateInfo,
+        versionLastest,
         checkForUpdates,
         handleDialogUpdate,
     };
@@ -407,10 +406,10 @@ export function useGlobalDialog(): [boolean, (dialog: boolean) => void, (dialogC
 }
 
 // 使用更新功能的Hook
-export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, AppUpdateModel, (style: AppUpdateModel) => void, () => void] {
+export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, AppVersionLastestModel, (style: AppVersionLastestModel) => void, () => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useUpdate must be used within a ConfigProvider');
     }
-    return [context.dialog, context.setDialog, context.updateInfo, context.handleDialogUpdate, context.checkForUpdates];
+    return [context.dialog, context.setDialog, context.versionLastest, context.handleDialogUpdate, context.checkForUpdates];
 }

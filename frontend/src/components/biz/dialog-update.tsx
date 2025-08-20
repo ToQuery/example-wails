@@ -6,10 +6,10 @@ import {Browser} from "@wailsio/runtime";
 import {useTranslation} from "react-i18next";
 import {ui} from "@/const/ui";
 import {Button} from "@/components/ui/button";
-import {WailsUpdateModel} from "../../../bindings/example-wails/internal/model";
+import {AppVersionLastestModel} from "../../../bindings/example-wails/internal/model";
 
 type DialogUpdateProps = {
-    updateInfo: WailsUpdateModel;
+    versionLastest: AppVersionLastestModel;
     onClose: () => void;
 }
 
@@ -17,6 +17,7 @@ type DialogUpdateProps = {
 const DialogUpdate = (props: DialogUpdateProps) => {
     const {t} = useTranslation();
 
+    const versionLastest = props.versionLastest;
 
     // 如果是强制更新，添加模糊背景效果
     return (<>
@@ -32,7 +33,7 @@ const DialogUpdate = (props: DialogUpdateProps) => {
                             <Icon icon="mdi:update" className="mr-2 text-xl"/>
                             {t('app.update.new-version')}
                         </h3>
-                        {!props.updateInfo.forceUpdate && (
+                        {!versionLastest.forceUpdate && (
                             <button
                                 onClick={() => props.onClose()}
                                 className="text-white hover:text-gray-200 transition-colors"
@@ -49,18 +50,18 @@ const DialogUpdate = (props: DialogUpdateProps) => {
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-gray-600 dark:text-gray-300">{t('app.update.version')}</span>
                             <span
-                                className="font-semibold">{props.updateInfo.version}</span>
+                                className="font-semibold">{versionLastest.version}</span>
                         </div>
 
                         <div className="mb-4 text-left">
                             <div className="text-gray-600 dark:text-gray-300 mb-1">{t('app.update.changelog')}</div>
                             <div
                                 className="bg-gray-50 dark:bg-slate-700 p-3 rounded-lg text-sm whitespace-pre-line">
-                                {props.updateInfo.changelog}
+                                {versionLastest.changelog}
                             </div>
                         </div>
 
-                        {props.updateInfo.forceUpdate && (
+                        {versionLastest.forceUpdate && (
                             <div
                                 className="bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 p-3 mb-4 rounded-r-lg">
                                 <div className="flex items-start">
@@ -76,12 +77,12 @@ const DialogUpdate = (props: DialogUpdateProps) => {
 
                     {/* 模态框底部 */}
                     <div className="flex justify-end space-x-3">
-                        {!props.updateInfo.forceUpdate && (
+                        {!versionLastest.forceUpdate && (
                             <Button variant='outline' onClick={() => props.onClose()}>
                                 {t('app.update.later')}
                             </Button>
                         )}
-                        <Button onClick={() => Browser.OpenURL(props.updateInfo.downloadUrl)} >
+                        <Button onClick={() => Browser.OpenURL(versionLastest.downloadUrl)} >
                             <Icon icon="mdi:download" className="mr-1"/>
                             {t('app.update.download-now')}
                         </Button>
