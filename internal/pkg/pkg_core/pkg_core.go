@@ -1,4 +1,4 @@
-package pkg_example
+package pkg_core
 
 import (
 	"bufio"

@@ -1,7 +1,7 @@
 //go:build darwin
 // +build darwin
 
-package pkg_example
+package pkg_core
 
 import (
 	"log"

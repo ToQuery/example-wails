@@ -21,7 +21,7 @@ import DialogLanguage from "@/components/biz/dialog-language";
 interface GlobalContextType {
     appInfo: WailsAppInfoModel;
     setAppInfo: (appInfo: WailsAppInfoModel) => void;
-
+    // 全局配置
     config: Record<string, string>;
     setConfig: (config: Record<string, string>) => void;
     // 侧边栏
@@ -235,7 +235,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     // 检查更新函数
     const checkForUpdates = () => {
-        ExampleService.AppCheckUpdate().then((baseExchange) => {
+        ExampleService.AppUpdateCheck(false).then((baseExchange) => {
             const updateInfo = baseExchange.data;
             if (updateInfo) {
                 handleDialogUpdate(updateInfo);

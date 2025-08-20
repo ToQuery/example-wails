@@ -3,7 +3,7 @@ package wails3
 import (
 	"example-wails/assets"
 	"example-wails/internal/model"
-	"example-wails/internal/pkg/pkg_example"
+	"example-wails/internal/pkg/pkg_core"
 	"log"
 	"net/http"
 	"runtime"
@@ -79,7 +79,7 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		if strings.HasPrefix(req.URL.Path, DiskFilePrefix) {
 			log.Printf("Requesting URL path=%s", req.URL.Path)
-			requestedFile := strings.TrimPrefix(req.URL.Path, pkg_example.Ternary[string](runtime.GOOS == "windows", DiskFilePrefix+"/", DiskFilePrefix))
+			requestedFile := strings.TrimPrefix(req.URL.Path, pkg_core.Ternary[string](runtime.GOOS == "windows", DiskFilePrefix+"/", DiskFilePrefix))
 			log.Printf("Requesting requestedFile=%s", requestedFile)
 			http.ServeFile(res, req, requestedFile)
 		} else {
@@ -93,7 +93,7 @@ func OnStartBefore(appInfo model.WailsAppInfoModel) {
 
 	exampleWails, version, err := assets.AssetsBinaryExampleWails()
 	if err == nil && exampleWails != nil {
-		pkg_example.CopyBinAddPath("example-wails", version, exampleWails, appInfo)
+		pkg_core.CopyBinAddPath("example-wails", version, exampleWails, appInfo)
 	} else {
 		log.Printf("Failed to load example-wails binary: %s", err)
 	}

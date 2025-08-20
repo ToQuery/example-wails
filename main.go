@@ -5,7 +5,7 @@ import (
 	_ "embed"
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
-	"example-wails/internal/pkg/pkg_example"
+	"example-wails/internal/pkg/pkg_core"
 	"example-wails/internal/service"
 	"log"
 	"log/slog"
@@ -53,7 +53,7 @@ func main() {
 	wails3.OnStartBefore(appInfo)
 
 	config := &kvstore.Config{
-		Filename: filepath.Join(pkg_example.AppConfigHome(appInfo), appInfo.Name+".config"),
+		Filename: filepath.Join(pkg_core.AppConfigHome(appInfo), appInfo.Name+".config"),
 		AutoSave: true,
 	}
 
@@ -72,6 +72,7 @@ func main() {
 			//application.NewService(notifications.New()),
 			application.NewService(kvstore.NewWithConfig(config)),
 			application.NewService(service.NewExampleService(appInfo)),
+			application.NewService(service.NewBizCoreService(appInfo)),
 		},
 		Assets: application.AssetOptions{
 			Handler:        application.BundledAssetFileServer(frontAssets),

@@ -4,6 +4,7 @@ import (
 	"example-wails/assets"
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
+	"example-wails/internal/pkg/pkg_core"
 	"example-wails/internal/pkg/pkg_example"
 	"io"
 	"log"
@@ -34,24 +35,7 @@ func (s *ExampleService) AppLaunch() model.BaseExchange[model.LaunchResModel] {
 		return model.BaseExchangeFail[model.LaunchResModel]("模拟网络错误")
 	}
 
-	// 50% 概率执行模拟更新
-	updateInfo := pkg_example.Ternary(rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0, &model.WailsUpdateModel{
-		Version:     "1.0.0",
-		VersionCode: 1,
-		ForceUpdate: false,
-		Changelog:   "模拟更新日志",
-	}, nil)
-
-	return model.BaseExchangeSuccess[model.LaunchResModel](model.LaunchResModel{
-		Config: &map[string]interface{}{
-			"app": map[string]interface{}{
-				"name":    s.AppInfo.Name,
-				"version": s.AppInfo.Version,
-				"buildId": s.AppInfo.BuildId,
-			},
-		},
-		Update: updateInfo,
-	})
+	return model.BaseExchangeSuccess[model.LaunchResModel](pkg_example.BuildAppLaunch())
 }
 
 /*------File Start----------------------------------------------------------------------------------------------------*/
@@ -173,44 +157,25 @@ func (s *ExampleService) GetAppInfo() model.BaseExchange[model.WailsAppInfoModel
 	return model.BaseExchangeSuccess[model.WailsAppInfoModel](s.AppInfo)
 }
 
-func (s *ExampleService) AppUpdate(newVersion, force bool) model.BaseExchange[*model.WailsUpdateModel] {
-	if newVersion {
-		return model.BaseExchangeSuccess(&model.WailsUpdateModel{
-			Version:     "1.1.0",
-			VersionCode: 2,
-			ForceUpdate: force,
-			Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
-			DownloadUrl: "https://github.com/toquery/example-wails",
-		})
-	}
-	return model.BaseExchangeSuccess[*model.WailsUpdateModel](nil)
-}
-
-func (s *ExampleService) AppUpdateFromEvent(newVersion, force bool) {
-	updateInfo := s.AppUpdate(newVersion, force).Data
+func (s *ExampleService) AppUpdateFromEvent(force bool) {
+	updateInfo := pkg_example.BuildAppUpdate(force)
 	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
 }
 
-func (s *ExampleService) AppCheckUpdate() model.BaseExchange[*model.WailsUpdateModel] {
-	updateInfo := &model.WailsUpdateModel{
-		Version:     "1.1.0",
-		VersionCode: 2,
-		ForceUpdate: false,
-		Changelog:   "1. 修复了一些已知问题\n2. 优化了应用性能\n3. 新增了一些功能",
-		DownloadUrl: "https://github.com/toquery/example-wails",
-	}
+func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.WailsUpdateModel] {
+	updateInfo := pkg_example.BuildAppUpdate(forceUpdate)
 	if updateInfo.VersionCode > s.AppInfo.VersionCode {
-		return model.BaseExchangeSuccess(updateInfo)
+		return model.BaseExchangeSuccess(&updateInfo)
 	}
 	return model.BaseExchangeSuccess[*model.WailsUpdateModel](nil)
 }
 
 func (s ExampleService) AppEmbedExecBinary() {
 	// 执行二进制文件
-	cmd := exec.Command(pkg_example.GetBinFileName("example-wails"))
+	cmd := exec.Command(pkg_core.GetBinFileName("example-wails"))
 
 	// 设置进程属性
-	pkg_example.SetCmdSysProcAttr(cmd)
+	pkg_core.SetCmdSysProcAttr(cmd)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {

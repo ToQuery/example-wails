@@ -73,7 +73,7 @@ function Example() {
                         {t('page.example.app-info')}
                     </Button>
                     <Button onClick={async () => {
-                        const exchange = await ExampleService.AppUpdate(true, false);
+                        const exchange = await ExampleService.AppUpdateCheck(false);
                         console.log("updateInfoModel", exchange);
                         if (exchange.success && exchange.data) {
                             const updateInfoModel = exchange.data;
@@ -84,7 +84,7 @@ function Example() {
                         {t('page.example.app-update')}
                     </Button>
                     <Button onClick={async () => {
-                        const exchange = await ExampleService.AppUpdate(true, true);
+                        const exchange = await ExampleService.AppUpdateCheck(true);
                         console.log("updateInfoModel", exchange);
                         if (exchange.success && exchange.data) {
                             const updateInfoModel = exchange.data;
@@ -94,10 +94,10 @@ function Example() {
                     }}>
                         {t('page.example.app-force-update')}
                     </Button>
-                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true, false)}>
+                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(false)}>
                         {t('page.example.app-update-from-event')}
                     </Button>
-                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true, true)}>
+                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true)}>
                         {t('page.example.app-force-update-from-event')}
                     </Button>
                     <Button onClick={() => ExampleService.AppEmbedFile()}>
