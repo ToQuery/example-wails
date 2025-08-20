@@ -24,8 +24,8 @@ var (
 	BuildTime   = "unknown"
 )
 
-// Wails uses Go's `embed` package to embed the frontend files into the bin.
-// Any files in the frontend/dist folder will be embedded into the bin and
+// Wails uses Go's `embed` package to embed the frontend files into the binary.
+// Any files in the frontend/dist folder will be embedded into the binary and
 // made available to the frontend.
 // See https://pkg.go.dev/embed for more information.
 
