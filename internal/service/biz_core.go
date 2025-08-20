@@ -3,8 +3,6 @@ package service
 import (
 	"example-wails/internal/model"
 	"log"
-
-	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 type BizCoreService struct {
@@ -16,7 +14,6 @@ func NewBizCoreService(appInfo model.AppInfoModel) *BizCoreService {
 }
 
 func (s *BizCoreService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
-	log.Printf("获取应用信息: %v", application.Get().Env.Info())
 	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
 }
 
