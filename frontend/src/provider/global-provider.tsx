@@ -7,9 +7,9 @@ import {Events} from "@wailsio/runtime";
 import {Event} from "@/const";
 import {
     BaseExchange,
-    LaunchResModel,
-    WailsAppInfoModel,
-    WailsUpdateModel
+    AppLaunchModel,
+    AppUpdateModel,
+    AppInfoModel
 } from "../../bindings/example-wails/internal/model";
 import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
@@ -19,8 +19,8 @@ import DialogLanguage from "@/components/biz/dialog-language";
 
 // 配置上下文
 interface GlobalContextType {
-    appInfo: WailsAppInfoModel;
-    setAppInfo: (appInfo: WailsAppInfoModel) => void;
+    appInfo: AppInfoModel;
+    setAppInfo: (appInfo: AppInfoModel) => void;
     // 全局配置
     config: Record<string, string>;
     setConfig: (config: Record<string, string>) => void;
@@ -44,8 +44,8 @@ interface GlobalContextType {
     setDialogContent: (dialogContent: React.ReactNode) => void;
 
     // 更新相关配置
-    updateInfo: WailsUpdateModel;
-    handleDialogUpdate: (updateInfo: WailsUpdateModel) => void;
+    updateInfo: AppUpdateModel;
+    handleDialogUpdate: (updateInfo: AppUpdateModel) => void;
     checkForUpdates: () => void;
 }
 
@@ -59,7 +59,7 @@ const defaultConfig: GlobalContextType = {
         buildId: '0x000000',
         buildTime: 'unknown',
     },
-    setAppInfo: function (appInfo: WailsAppInfoModel): void {
+    setAppInfo: function (appInfo: AppInfoModel): void {
         console.log('setAppInfo', appInfo);
     },
 
@@ -109,7 +109,7 @@ const defaultConfig: GlobalContextType = {
         changelog: '',
         downloadUrl: '',
     },
-    handleDialogUpdate: (updateInfo: WailsUpdateModel) => {
+    handleDialogUpdate: (updateInfo: AppUpdateModel) => {
         console.log('setUpdateInfo', updateInfo);
     },
     checkForUpdates: () => {
@@ -125,7 +125,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     const [config, setConfig] = useState<Record<string, string>>(defaultConfig.config)
     const [internetError, setInternetError] = useState<boolean>(false);
-    const [appInfo, setAppInfo] = useState<WailsAppInfoModel>(defaultConfig.appInfo);
+    const [appInfo, setAppInfo] = useState<AppInfoModel>(defaultConfig.appInfo);
     const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
     const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
     const [themeModel, setThemeModelState] = useState<ThemeMode>(defaultConfig.themeModel);
@@ -133,7 +133,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const [diaLogContent, setDialogContent] = useState<React.ReactNode>();
 
     // 更新相关状态
-    const [updateInfo, setUpdateInfoState] = useState<WailsUpdateModel>(defaultConfig.updateInfo);
+    const [updateInfo, setUpdateInfoState] = useState<AppUpdateModel>(defaultConfig.updateInfo);
 
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
@@ -170,7 +170,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setLanguageState(lang);
     };
 
-    const handleDialogUpdate = (updateInfo: WailsUpdateModel) => {
+    const handleDialogUpdate = (updateInfo: AppUpdateModel) => {
         setDialogContent(<DialogUpdate updateInfo={updateInfo} onClose={() => setDialog(false)}/>)
         setUpdateInfoState(updateInfo);
     };
@@ -190,7 +190,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setDialog(true);
     };
 
-    const handleParseAppLaunch = (baseExchange: BaseExchange<LaunchResModel>) => {
+    const handleParseAppLaunch = (baseExchange: BaseExchange<AppLaunchModel>) => {
         console.log('handleParseAppLaunch', baseExchange);
         if (baseExchange.success || !baseExchange.data) {
             setInternetError(true);
@@ -295,8 +295,8 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const listerEvent = () => {
         Events.On(Event.events.AppUpdate, function (event) {
             console.log(Event.events.AppUpdate, event);
-            const eventDatas: WailsUpdateModel[] = event.data;
-            const eventData: WailsUpdateModel = eventDatas[0];
+            const eventDatas: AppUpdateModel[] = event.data;
+            const eventData: AppUpdateModel = eventDatas[0];
             console.log(Event.events.AppUpdate + " data ", eventData);
             handleDialogUpdate(eventData);
             setDialog(true);
@@ -350,7 +350,7 @@ export function useGlobal() {
     return context;
 }
 
-export function useGlobalAppInfo(): [WailsAppInfoModel, (appInfo: WailsAppInfoModel) => void] {
+export function useGlobalAppInfo(): [AppInfoModel, (appInfo: AppInfoModel) => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfig must be used within a ConfigProvider');
@@ -407,7 +407,7 @@ export function useGlobalDialog(): [boolean, (dialog: boolean) => void, (dialogC
 }
 
 // 使用更新功能的Hook
-export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, WailsUpdateModel, (style: WailsUpdateModel) => void, () => void] {
+export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, AppUpdateModel, (style: AppUpdateModel) => void, () => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useUpdate must be used within a ConfigProvider');

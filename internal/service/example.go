@@ -20,22 +20,22 @@ import (
 )
 
 type ExampleService struct {
-	AppInfo model.WailsAppInfoModel
+	AppInfo model.AppInfoModel
 }
 
-func NewExampleService(appInfo model.WailsAppInfoModel) *ExampleService {
+func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
 	return &ExampleService{AppInfo: appInfo}
 }
 
-func (s *ExampleService) AppLaunch() model.BaseExchange[model.LaunchResModel] {
+func (s *ExampleService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
 	log.Printf("开始发送启动信息 !")
 
 	// 50% 概率执行模拟网络错误
 	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
-		return model.BaseExchangeFail[model.LaunchResModel]("模拟网络错误")
+		return model.BaseExchangeFail[model.AppLaunchModel]("模拟网络错误")
 	}
 
-	return model.BaseExchangeSuccess[model.LaunchResModel](pkg_example.BuildAppLaunch())
+	return model.BaseExchangeSuccess[model.AppLaunchModel](pkg_example.BuildAppLaunch())
 }
 
 /*------File Start----------------------------------------------------------------------------------------------------*/
@@ -152,9 +152,9 @@ func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] 
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
-func (s *ExampleService) GetAppInfo() model.BaseExchange[model.WailsAppInfoModel] {
+func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
 	log.Printf("获取应用信息: %v", application.Get().Env.Info())
-	return model.BaseExchangeSuccess[model.WailsAppInfoModel](s.AppInfo)
+	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
 }
 
 func (s *ExampleService) AppUpdateFromEvent(force bool) {
@@ -162,12 +162,12 @@ func (s *ExampleService) AppUpdateFromEvent(force bool) {
 	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
 }
 
-func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.WailsUpdateModel] {
+func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.AppUpdateModel] {
 	updateInfo := pkg_example.BuildAppUpdate(forceUpdate)
 	if updateInfo.VersionCode > s.AppInfo.VersionCode {
 		return model.BaseExchangeSuccess(&updateInfo)
 	}
-	return model.BaseExchangeSuccess[*model.WailsUpdateModel](nil)
+	return model.BaseExchangeSuccess[*model.AppUpdateModel](nil)
 }
 
 func (s ExampleService) AppEmbedExecBinary() {

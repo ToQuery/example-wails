@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func BuildAppUpdate(forceUpdate bool) model.WailsUpdateModel {
-	return model.WailsUpdateModel{
+func BuildAppUpdate(forceUpdate bool) model.AppUpdateModel {
+	return model.AppUpdateModel{
 		Version:     "1.1.0",
 		VersionCode: 2,
 		ForceUpdate: forceUpdate,
@@ -16,16 +16,16 @@ func BuildAppUpdate(forceUpdate bool) model.WailsUpdateModel {
 	}
 }
 
-func BuildAppLaunch() model.LaunchResModel {
+func BuildAppLaunch() model.AppLaunchModel {
 
 	// 50% 概率执行模拟更新
-	var updateInfo *model.WailsUpdateModel
+	var updateInfo *model.AppUpdateModel
 	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
 		update := BuildAppUpdate(false)
 		updateInfo = &update
 	}
 
-	return model.LaunchResModel{
+	return model.AppLaunchModel{
 		Config: &map[string]interface{}{
 			"now": time.Now().Format("2006-01-02 15:04:05"),
 		},

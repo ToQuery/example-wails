@@ -21,14 +21,6 @@ func BaseExchangeFailData[T any](message string, data T) BaseExchange[T] {
 	}
 }
 
-func BaseExchangeSuccessMessage[T any](data T, message string) BaseExchange[T] {
-	return BaseExchange[T]{
-		Message: message,
-		Success: true,
-		Data:    data,
-	}
-}
-
 func BaseExchangeSuccess[T any](data T) BaseExchange[T] {
 	return BaseExchange[T]{
 		Message: "success",
@@ -37,7 +29,15 @@ func BaseExchangeSuccess[T any](data T) BaseExchange[T] {
 	}
 }
 
-type WailsUpdateModel struct {
+func BaseExchangeSuccessMessage[T any](data T, message string) BaseExchange[T] {
+	return BaseExchange[T]{
+		Message: message,
+		Success: true,
+		Data:    data,
+	}
+}
+
+type AppUpdateModel struct {
 	Version     string `json:"version" form:"version"`
 	VersionCode int    `json:"versionCode" form:"versionCode"`
 	ForceUpdate bool   `json:"forceUpdate" form:"forceUpdate"`
@@ -45,7 +45,7 @@ type WailsUpdateModel struct {
 	DownloadUrl string `json:"downloadUrl" form:"downloadUrl"`
 }
 
-type WailsAppInfoModel struct {
+type AppInfoModel struct {
 	Name        string `json:"name" form:"name"`
 	CnName      string `json:"cnName" form:"cnName"`
 	Description string `json:"description" form:"description"`
@@ -55,7 +55,7 @@ type WailsAppInfoModel struct {
 	BuildTime   string `json:"buildTime" form:"buildTime"`
 }
 
-type LaunchReqModel struct {
+type AppLaunchReq struct {
 	Version             string `json:"version" form:"version"`         // 客户端版本号
 	VersionCode         int    `json:"versionCode" form:"versionCode"` // 客户端版本号数值
 	HostName            string `json:"hostName" form:"hostName"`
@@ -66,7 +66,7 @@ type LaunchReqModel struct {
 	DeviceProtectedCode string `json:"deviceProtectedCode" form:"deviceProtectedCode"` // 设备唯一标识
 }
 
-type LaunchResModel struct {
+type AppLaunchModel struct {
 	Config *map[string]interface{} `json:"config" form:"config"` // 配置信息
-	Update *WailsUpdateModel       `json:"update" form:"update"` // 更新信息
+	Update *AppUpdateModel         `json:"update" form:"update"` // 更新信息
 }

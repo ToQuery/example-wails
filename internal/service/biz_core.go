@@ -6,22 +6,22 @@ import (
 )
 
 type BizCoreService struct {
-	AppInfo model.WailsAppInfoModel
+	AppInfo model.AppInfoModel
 }
 
-func NewBizCoreService(appInfo model.WailsAppInfoModel) *BizCoreService {
+func NewBizCoreService(appInfo model.AppInfoModel) *BizCoreService {
 	return &BizCoreService{AppInfo: appInfo}
 }
 
-func (s *BizCoreService) AppLaunch() model.BaseExchange[model.LaunchResModel] {
+func (s *BizCoreService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
 	log.Printf("开始发送启动信息 !")
 
-	return model.BaseExchangeSuccess[model.LaunchResModel](model.LaunchResModel{
+	return model.BaseExchangeSuccess[model.AppLaunchModel](model.AppLaunchModel{
 		Config: nil,
 		Update: nil,
 	})
 }
 
-func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.WailsUpdateModel] {
-	return model.BaseExchangeSuccess[*model.WailsUpdateModel](nil)
+func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.AppUpdateModel] {
+	return model.BaseExchangeSuccess[*model.AppUpdateModel](nil)
 }

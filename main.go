@@ -42,7 +42,7 @@ func main() {
 		versionCodeNum = 0
 	}
 
-	appInfo := model.WailsAppInfoModel{
+	appInfo := model.AppInfoModel{
 		Name:        "example-wails",
 		Version:     Version,
 		VersionCode: versionCodeNum,

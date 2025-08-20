@@ -101,7 +101,7 @@ func CopyBin(embeddedFile io.Reader, binPath string) {
 }
 
 // CopyBinAddPath 复制二进制文件到指定目录，并更新版本信息
-func CopyBinAddPath(binName, binVersion string, binFile fs.File, appInfo model.WailsAppInfoModel) {
+func CopyBinAddPath(binName, binVersion string, binFile fs.File, appInfo model.AppInfoModel) {
 
 	appConfigHome := AppConfigHome(appInfo)
 	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
@@ -151,11 +151,11 @@ func CopyBinAddPath(binName, binVersion string, binFile fs.File, appInfo model.W
 	AddEnv(appConfigHomeBinPath)
 }
 
-func AppConfigHome(appInfo model.WailsAppInfoModel) string {
+func AppConfigHome(appInfo model.AppInfoModel) string {
 	return filepath.Join(xdg.ConfigHome, appInfo.Name)
 }
 
-func AppCacheHome(appInfo model.WailsAppInfoModel) string {
+func AppCacheHome(appInfo model.AppInfoModel) string {
 	userCacheDir, err := os.UserCacheDir()
 	if err != nil || userCacheDir == "" {
 		userCacheDir = filepath.Join(xdg.CacheHome, appInfo.Name, appInfo.Version)
