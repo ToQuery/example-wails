@@ -15,6 +15,7 @@ import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
 import DialogNetworkError from "@/components/biz/dialog-network-error";
 import DialogLanguage from "@/components/biz/dialog-language";
+import {Toaster} from "sonner";
 
 
 // 配置上下文
@@ -204,7 +205,6 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         if (data.versionLastest) {
             handleDialogUpdate(data.versionLastest);
             setDialog(true);
-            return;
         }
         setInternetError(false);
         return;
@@ -332,6 +332,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     return (
         <GlobalContext.Provider value={value}>
+            <Toaster />
 
             <DialogNetworkError onRetry={() => loadingLaunch()} open={internetError}/>
             <Dialog show={dialog} contentNode={diaLogContent}/>
