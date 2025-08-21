@@ -63,12 +63,18 @@ func (c *Client) Get(rawURL string, appInfo model.AppInfoModel) ([]byte, error) 
 // PostJSON 发送 POST 请求，数据为 JSON
 func (c *Client) PostJSON(rawURL string, appInfo model.AppInfoModel, data interface{}) ([]byte, error) {
 
-	bodyBytes, err := json.Marshal(data)
-	if err != nil {
-		return nil, err
+	var body io.Reader
+	if data == nil {
+		body = nil
+	} else {
+		bodyBytes, err := json.Marshal(data)
+		if err != nil {
+			return nil, err
+		}
+		body = bytes.NewBuffer(bodyBytes)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, rawURL, bytes.NewBuffer(bodyBytes))
+	req, err := http.NewRequest(http.MethodPost, rawURL, body)
 	if err != nil {
 		return nil, err
 	}
