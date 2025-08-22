@@ -15,15 +15,25 @@ import (
 
 func MacWindow() application.MacWindow {
 	return application.MacWindow{
+		// Backdrop: macOS 窗口的背景类型
+		// MacBackdropNormal: 默认值。窗口背景是 普通不透明，和常规窗口一样
+		// MacBackdropTransparent: 窗口背景 完全透明，可以看到窗口下面的内容
+		// MacBackdropTranslucent: 窗口背景 半透明，可以看到下面内容，但会有 模糊/毛玻璃效果
+		Backdrop: application.MacBackdropTransparent,
+
 		InvisibleTitleBarHeight: 50,
-		Backdrop:                application.MacBackdropTranslucent,
-		TitleBar:                application.MacTitleBarHiddenInset,
-		Appearance:              application.NSAppearanceNameVibrantLight,
+
+		TitleBar:   application.MacTitleBarHiddenInset,
+		Appearance: application.NSAppearanceNameVibrantLight,
+
+		WindowLevel: application.MacWindowLevelMainMenu,
 	}
 }
 
 func WindowsWindow() application.WindowsWindow {
-	return application.WindowsWindow{}
+	return application.WindowsWindow{
+		BackdropType: application.Auto,
+	}
 }
 
 func LinuxWindow() application.LinuxWindow {
@@ -42,11 +52,18 @@ func MainWindowOptions() application.WebviewWindowOptions {
 		// MaxWidth:          1280,
 		// MaxHeight:         800,
 		// DisableResize:  false,
-		Frameless:        runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
-		BackgroundType:   application.BackgroundTypeTransparent,
+		Frameless: runtime.GOOS != "darwin", // 保留 Mac 的三个操作按钮
+
+		// BackgroundType: 窗口所使用的背景类型
+		// BackgroundTypeSolid: 实心背景（不透明，默认情况）
+		// BackgroundTypeTransparent:透明背景（完全透明，可以看到后面的内容）
+		// BackgroundTypeTranslucent: 半透明背景（磨砂玻璃效果或部分透明）
+		BackgroundType: application.BackgroundTypeTransparent,
+		//
 		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
 		URL:              "/",
 
+		// 如果为true，则将可用窗口的DevTool（默认为builds中，而无需“生产”构建标签）
 		DevToolsEnabled: false,
 
 		Mac: MacWindow(),

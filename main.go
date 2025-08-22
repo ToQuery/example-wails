@@ -82,6 +82,12 @@ func main() {
 
 		// Mac platform specific options
 		Mac: application.MacOptions{
+			// ActivationPolicy: 应用程序的激活策略
+			// ActivationPolicyRegular: 表示常规的应用程序，会在 Dock 中显示图标、可以有主窗口，典型的 GUI 应用就是这种。
+			// ActivationPolicyAccessory: 表示“附件”应用，不会在 Dock 中显示图标，也不会成为前台 app，一般用在菜单栏小图标、后台守护进程等。
+			// ActivationPolicyProhibited: 禁止激活，既不在 Dock 里显示，也不响应前台切换，常见于完全后台运行的进程。
+			ActivationPolicy: application.ActivationPolicyRegular,
+
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
 		},
 
@@ -89,7 +95,9 @@ func main() {
 		Windows: application.WindowsOptions{},
 
 		// Linux platform specific options
-		Linux: application.LinuxOptions{},
+		Linux: application.LinuxOptions{
+			DisableQuitOnLastWindowClosed: false,
+		},
 
 		OnShutdown: wails3.OnShutdown,
 
