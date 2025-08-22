@@ -47,6 +47,8 @@ func MainWindowOptions() application.WebviewWindowOptions {
 		BackgroundColour: application.NewRGBA(1.0, 1.0, 1.0, 0.0),
 		URL:              "/",
 
+		DevToolsEnabled: false,
+
 		Mac: MacWindow(),
 
 		Windows: WindowsWindow(),

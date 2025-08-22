@@ -11,14 +11,14 @@ import (
 	"time"
 )
 
-// Client 是封装的 HTTP 客户端
-type Client struct {
+// HttpClient 是封装的 HTTP 客户端
+type HttpClient struct {
 	httpClient *http.Client
 }
 
-// NewClient 创建一个新的 Client 实例
-func NewClient(timeout time.Duration, basePath string) *Client {
-	return &Client{
+// NewHttpClient 创建一个新的 HttpClient 实例
+func NewHttpClient(timeout time.Duration) *HttpClient {
+	return &HttpClient{
 		httpClient: &http.Client{
 			Timeout: timeout,
 		},
@@ -26,11 +26,11 @@ func NewClient(timeout time.Duration, basePath string) *Client {
 }
 
 // DefaultUserAgent 返回一个标准格式的 User-Agent
-func (c *Client) DefaultUserAgent(appInfo model.AppInfoModel) string {
+func (c *HttpClient) DefaultUserAgent(appInfo model.AppInfoModel) string {
 	return appInfo.Name + "/" + appInfo.Version
 }
 
-func (c *Client) SetHttpHeader(req *http.Request, appInfo model.AppInfoModel) {
+func (c *HttpClient) SetHttpHeader(req *http.Request, appInfo model.AppInfoModel) {
 	req.Header.Set("X-Version", appInfo.Version)
 	req.Header.Set("X-Version-Code", strconv.Itoa(appInfo.VersionCode))
 	req.Header.Set("X-Arch", runtime.GOARCH)
@@ -39,7 +39,7 @@ func (c *Client) SetHttpHeader(req *http.Request, appInfo model.AppInfoModel) {
 }
 
 // Get 发送 GET 请求
-func (c *Client) Get(rawURL string, appInfo model.AppInfoModel) ([]byte, error) {
+func (c *HttpClient) Get(rawURL string, appInfo model.AppInfoModel) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodGet, rawURL, nil)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (c *Client) Get(rawURL string, appInfo model.AppInfoModel) ([]byte, error) 
 }
 
 // PostJSON 发送 POST 请求，数据为 JSON
-func (c *Client) PostJSON(rawURL string, appInfo model.AppInfoModel, data interface{}) ([]byte, error) {
+func (c *HttpClient) PostJSON(rawURL string, appInfo model.AppInfoModel, data interface{}) ([]byte, error) {
 
 	var body io.Reader
 	if data == nil {
