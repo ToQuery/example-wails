@@ -27,6 +27,10 @@ func MacWindow() application.MacWindow {
 		Appearance: application.NSAppearanceNameVibrantLight,
 
 		WindowLevel: application.MacWindowLevelMainMenu,
+
+		LiquidGlass: application.MacLiquidGlass{
+			Style: application.LiquidGlassStyleAutomatic,
+		},
 	}
 }
 
