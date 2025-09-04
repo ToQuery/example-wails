@@ -358,12 +358,20 @@ export function useGlobalAppInfo(): [AppInfoModel, (appInfo: AppInfoModel) => vo
     return [context.appInfo, context.setAppInfo];
 }
 
-export function useGlobalConfig() {
+export function useGlobalConfigs() {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfig must be used within a ConfigProvider');
     }
     return [context.config, context.setConfig];
+}
+
+export function useGlobalConfig(configKey: string) {
+    const context = useContext(GlobalContext);
+    if (context === undefined) {
+        throw new Error('useConfig must be used within a ConfigProvider');
+    }
+    return context.config[configKey];
 }
 
 export function useGlobalSidebarStyle(): [SidebarStyle, (style: SidebarStyle) => void] {
