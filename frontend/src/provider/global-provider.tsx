@@ -200,6 +200,9 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
         const data = baseExchange.data;
         // 配置信息
+        if (data.config) {
+            setConfig(data.config);
+        }
 
         // 更新细腻洗
         if (data.versionLastest) {
