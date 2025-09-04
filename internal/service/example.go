@@ -172,7 +172,7 @@ func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*mo
 	return model.BaseExchangeSuccess[*model.AppVersionLastestModel](nil)
 }
 
-func (s ExampleService) AppEmbedExecBinary() {
+func (s ExampleService) EmbedExecBinary() {
 	// 执行二进制文件
 	cmd := exec.Command(pkg_core.GetBinFileName("example-wails"))
 
@@ -193,7 +193,7 @@ func (s ExampleService) AppEmbedExecBinary() {
 	dialog.Show()
 }
 
-func (s ExampleService) AppEmbedFile() {
+func (s ExampleService) EmbedFile() {
 	file, err := assets.Assets().Open("README.md")
 	if err != nil {
 		log.Printf("打开文件失败: %v\n", err)
@@ -214,7 +214,7 @@ func (s ExampleService) AppEmbedFile() {
 
 }
 
-func (s ExampleService) AppOpenApplication(application string) {
+func (s ExampleService) OpenApplication(application string) {
 	// 根据不同操作系统打开应用程序
 	var cmd *exec.Cmd
 

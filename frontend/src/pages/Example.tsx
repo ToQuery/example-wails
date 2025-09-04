@@ -100,12 +100,12 @@ function Example() {
                     <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true)}>
                         {t('page.example.app-force-update-from-event')}
                     </Button>
-                    <Button onClick={() => ExampleService.AppEmbedFile()}>
+                    <Button onClick={() => ExampleService.EmbedFile()}>
                         {t('page.example.app-embed-file')}
                     </Button>
                     <Button onClick={() => {
                         setDialog(true);
-                        ExampleService.AppEmbedExecBinary().then(() => {
+                        ExampleService.EmbedExecBinary().then(() => {
                             console.log("AppEmbedExecBinary done");
                         }).catch((err) => {
                             console.log("AppEmbedExecBinary err", err);
@@ -113,10 +113,10 @@ function Example() {
                     }}>
                         {t('page.example.app-embed-exec-binary')}
                     </Button>
-                    <Button onClick={() => ExampleService.AppOpenApplication("WeChat")}>
+                    <Button onClick={() => ExampleService.OpenApplication("WeChat")}>
                         {t('page.example.app-open-application-wechat')}
                     </Button>
-                    <Button onClick={() => ExampleService.AppOpenApplication("QQ")}>
+                    <Button onClick={() => ExampleService.OpenApplication("QQ")}>
                         {t('page.example.app-open-application-qq')}
                     </Button>
                     <Button onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
