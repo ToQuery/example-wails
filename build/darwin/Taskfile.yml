@@ -11,8 +11,9 @@ tasks:
       - task: common:build:frontend
       - task: common:generate:icons
     cmds:
-      - go build {{.BUILD_FLAGS}} -o {{.OUTPUT}}
+      - '{{.BUILD_OBFUSCATE}} build {{.BUILD_FLAGS}} -o {{.OUTPUT}}'
     vars:
+      BUILD_OBFUSCATE: '{{if eq .OBFUSCATE "true"}}garble -literals -tiny{{else}}go{{end}}'
       BUILD_FLAGS: '{{if eq .PRODUCTION "true"}}-tags production -trimpath -buildvcs=false -ldflags="-w -s"{{else}}-buildvcs=false -gcflags=all="-l"{{end}}'
       DEFAULT_OUTPUT: '{{.BIN_DIR}}/{{.APP_NAME}}'
       OUTPUT: '{{ .OUTPUT | default .DEFAULT_OUTPUT }}'
@@ -24,6 +25,7 @@ tasks:
       CGO_LDFLAGS: "-mmacosx-version-min=10.15"
       MACOSX_DEPLOYMENT_TARGET: "10.15"
       PRODUCTION: '{{.PRODUCTION | default "false"}}'
+      OBFUSCATE: '{{.OBFUSCATE | default "false"}}'
 
   build:universal:
     summary: Builds darwin universal binary (arm64 + amd64)
@@ -46,6 +48,7 @@ tasks:
       - task: build
         vars:
           PRODUCTION: "true"
+          OBFUSCATE: "true"
     cmds:
       - task: create:app:bundle
 
