@@ -10,7 +10,7 @@ require (
 	github.com/hashicorp/go-version v1.7.0
 	github.com/nicksnyder/go-i18n/v2 v2.6.0
 	github.com/shirou/gopsutil/v3 v3.24.5
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.26
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.28
 	golang.org/x/text v0.28.0
 )
 

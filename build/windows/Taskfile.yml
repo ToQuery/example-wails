@@ -14,7 +14,7 @@ tasks:
       - task: common:generate:icons
     cmds:
       - task: generate:syso
-      - ‘{{.BUILD_OBFUSCATE}} build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/{{.APP_NAME}}.exe’
+      - '{{.BUILD_OBFUSCATE}} build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/{{.APP_NAME}}.exe'
       - cmd: powershell Remove-item *.syso
         platforms: [windows]
       - cmd: rm -f *.syso
