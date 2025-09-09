@@ -6,6 +6,7 @@ import (
 	"example-wails/internal/model"
 	"example-wails/internal/pkg/pkg_core"
 	"example-wails/internal/pkg/pkg_example"
+	"example-wails/internal/pkg/pkg_http_api"
 	"io"
 	"log"
 	"math/rand"
@@ -35,6 +36,14 @@ func (s *ExampleService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
 	}
 
 	return model.BaseExchangeSuccess[model.AppLaunchModel](pkg_example.BuildAppLaunch())
+}
+
+func (s *ExampleService) HttpBinUUID() model.BaseExchange[model.HttpBinUUID] {
+	httpBinUUID, err := pkg_http_api.HttpBinUUID(s.AppInfo)
+	if err != nil {
+		return model.BaseExchangeFail[model.HttpBinUUID](err.Error())
+	}
+	return model.BaseExchangeSuccess[model.HttpBinUUID](*httpBinUUID)
 }
 
 /*------File Start----------------------------------------------------------------------------------------------------*/

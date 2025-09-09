@@ -45,7 +45,7 @@ const zhHK = {
         // 頁面
         'page.home.title': '首頁',
         'page.home.counter': '點擊次數：',
-        'page.user.title': '用戶',
+        'page.home.httpbin-uuid': "Http Bin UUID",
 
 
         // File頁面

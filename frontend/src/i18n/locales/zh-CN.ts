@@ -51,6 +51,7 @@ const zhCN = {
         // 页面
         'page.home.title': '首页',
         'page.home.counter': '计数器：',
+        'page.home.httpbin-uuid': "Http Bin UUID",
 
         // File页面
         'page.file.directory': '目录',

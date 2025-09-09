@@ -45,6 +45,7 @@ const enUS = {
         // Page
         'page.home.title': 'Home',
         'page.home.counter': 'Counter: ',
+        'page.home.httpbin-uuid': "Http Bin UUID",
 
         // File page
         'page.file.directory': 'Directory',

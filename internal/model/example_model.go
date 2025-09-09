@@ -20,3 +20,7 @@ type DirInfoModel struct {
 	XDGApplicationDirs []string
 	XDGUserDirectories map[string]string
 }
+
+type HttpBinUUID struct {
+	UUID string `json:"uuid" form:"uuid"`
+}
