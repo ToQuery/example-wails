@@ -32,6 +32,26 @@ update-build-assets:
 package:
 	wails3 package
 
+.PHONY: package-darwin-arm64
+package-darwin-arm64:
+	GOARCH=arm64 wails3 package
+
+.PHONY: package-darwin-amd64
+package-darwin-amd64:
+	GOARCH=amd64 wails3 package
+
+.PHONY: package-darwin-universal
+package-darwin-universal:
+	wails3 task darwin:package:universal
+
+.PHONY: package-windows-amd64
+package-windows:
+	GOARCH=amd64 wails3 task windows:package
+
+.PHONY: package-windows-arm64
+package-windows:
+	GOARCH=arm64 wails3 task windows:package
+
 # 打包 dmg
 .PHONY: package-dmg
 package-dmg:
@@ -46,7 +66,3 @@ package-dmg:
 	  --app-drop-link 500 185 \
 	  "bin/Example Wails Installer.dmg" \
 	  "bin/example-wails.app"
-
-.PHONY: package-windows
-package-windows:
-	wails3 task windows:package

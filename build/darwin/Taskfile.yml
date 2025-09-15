@@ -49,12 +49,6 @@ tasks:
     cmds:
       - task: create:app:bundle
 
-  package:dmg:
-    summary: Packages a production build of the application into a `.dmg` bundle
-    deps:
-      - task: package
-    cmds:
-      - task: create:dmg:bundle
 
   package:universal:
     summary: Packages darwin universal binary (arm64 + amd64)
