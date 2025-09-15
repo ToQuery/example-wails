@@ -7,8 +7,6 @@
             <string>Example Wails</string>
         <key>CFBundleDisplayName</key>
             <string>$(PRODUCT_NAME)</string>
-         <key>LSHasLocalizedDisplayName</key>
-            <true>
         <key>CFBundleExecutable</key>
             <string>example-wails</string>
         <key>CFBundleIdentifier</key>
