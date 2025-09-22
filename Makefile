@@ -28,7 +28,7 @@ update-build-assets:
 .PHONY: update-build-version
 update-build-version:
 	@echo ">>> Updating YAML version to $(VERSION)"
-	sed -i '' "s/^\([[:space:]]*version:[[:space:]]*\)\".*\"/\1\"v$(VERSION)\"/" build/config.yml
+	sed -i '' "s/^\([[:space:]]*version:[[:space:]]*\)\".*\"/\1\"$(VERSION)\"/" build/config.yml
 
 	@echo ">>> Updating wails3 App Info"
 	wails3 task common:update:build-assets
