@@ -7,6 +7,7 @@ import {useGlobalAppInfo, useGlobalDialog, useGlobalUpdate} from "@/provider/glo
 
 import classNames from "classnames";
 import {Button} from "@/components/ui/button";
+import {PlatformInfoModel} from "../../bindings/example-wails/internal/model";
 
 
 function Example() {
@@ -17,6 +18,7 @@ function Example() {
     const [windowName, setWindowName] = React.useState<string>("main");
     const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
     const [diskImagePath, setDiskImagePath] = React.useState<string>();
+    const [platformInfo, setPlatformInfo] = React.useState<PlatformInfoModel>();
 
     const [, setDialog] = useGlobalDialog();
     const [appInfo, setAppInfo] = useGlobalAppInfo();
@@ -45,6 +47,34 @@ function Example() {
 
     return (
         <div className='p-4'>
+            <section>
+                <h2>{t('page.example.platform-info')}</h2>
+                <div className={classNames(butGroupClass)}>
+                    <div>OSName: {platformInfo?.osName}</div>
+                    <div>OSArch: {platformInfo?.osArch}</div>
+                </div>
+                <div className={butGroupClass}>
+                    <Button onClick={async () => {
+                        setDialog(true);
+                        ExampleService.GetPlatformInfo()
+                            .then((exchange) => {
+                                if (exchange.success && exchange.data) {
+                                    const platformInfo = exchange.data;
+                                    console.log("platformInfo", platformInfo);
+                                    setPlatformInfo(platformInfo);
+                                }
+
+                            })
+                            .finally(() => {
+                                setTimeout(() => setDialog(false), 1000);
+                            });
+
+                    }}>
+                        {t('page.example.platform-info')}
+                    </Button>
+                </div>
+            </section>
+            {separator}
             <section>
                 <h2>{t('page.example.app-info')}</h2>
                 <div className={classNames(butGroupClass)}>

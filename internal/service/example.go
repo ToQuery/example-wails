@@ -160,6 +160,13 @@ func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] 
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
+func (s *ExampleService) GetPlatformInfo() model.BaseExchange[model.PlatformInfoModel] {
+	return model.BaseExchangeSuccess[model.PlatformInfoModel](model.PlatformInfoModel{
+		OSName: runtime.GOOS,
+		OSArch: runtime.GOARCH,
+	})
+}
+
 func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
 	log.Printf("GetAppInfo = %v", s.AppInfo)
 	log.Printf("GetAppInfo Env = %v", application.Get().Env.Info())

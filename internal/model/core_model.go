@@ -45,6 +45,11 @@ type AppVersionLastestModel struct {
 	DownloadUrl string `json:"downloadUrl" form:"downloadUrl"`
 }
 
+type PlatformInfoModel struct {
+	OSName string `json:"osName" form:"osName"`
+	OSArch string `json:"osArch" form:"osArch"`
+}
+
 type AppInfoModel struct {
 	Name        string `json:"name" form:"name"`
 	CnName      string `json:"cnName" form:"cnName"`
