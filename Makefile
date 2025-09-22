@@ -2,7 +2,7 @@
 APP_NAME ?= example-wails
 APP_PACKAGE_NAME ?= Wails示例
 
-VERSION ?= v0.0.1
+VERSION ?= 0.0.1
 VERSION_CODE ?= 1
 
 COMMIT_ID   := $(shell git rev-parse --short HEAD)
@@ -28,7 +28,7 @@ update-build-assets:
 .PHONY: update-build-version
 update-build-version:
 	@echo ">>> Updating YAML version to $(VERSION)"
-	sed -i '' "s/^\([[:space:]]*version:[[:space:]]*\)\".*\"/\1\"$(VERSION)\" # The application version/" build/config.yml
+	sed -i '' "s/^\([[:space:]]*version:[[:space:]]*\)\".*\"/\1\"v$(VERSION)\"/" build/config.yml
 
 	@echo ">>> Updating wails3 App Info"
 	wails3 task common:update:build-assets
@@ -68,14 +68,14 @@ build-windows-multiple:
 	@echo ">>> [1/2] 构建 Windows arm64 版本 (v$(VERSION))"
 	rm -rf bin/$(APP_NAME).exe
 	ARCH=arm64 wails3 task windows:build
-	mv bin/$(APP_NAME).exe bin/$(APP_PACKAGE_NAME)-$(VERSION)_windows_arm64.exe
+	mv bin/$(APP_NAME).exe bin/$(APP_PACKAGE_NAME)-v$(VERSION)_windows_arm64.exe
 
 	@echo ">>> [2/2] 构建 Windows amd64 版本 (v$(VERSION))"
 	rm -rf bin/$(APP_NAME).exe
 	ARCH=amd64 wails3 task windows:build
-	mv bin/$(APP_NAME).exe bin/$(APP_PACKAGE_NAME)-$(VERSION)_windows_x64.exe
+	mv bin/$(APP_NAME).exe bin/$(APP_PACKAGE_NAME)-v$(VERSION)_windows_x64.exe
 
-	@echo "✅ 所有 Windows exe 已生成 [$(APP_PACKAGE_NAME)]: intel / arm64 (版本 $(VERSION))"
+	@echo "✅ 所有 Windows exe 已生成 [$(APP_PACKAGE_NAME)]: intel / arm64 (版本 v$(VERSION))"
 
 # 打包
 .PHONY: package
@@ -106,7 +106,7 @@ package-windows-arm64:
 .PHONY: package-dmg
 package-dmg:
 	create-dmg \
-	  --volname "$(APP_PACKAGE_NAME) $(VERSION)" \
+	  --volname "$(APP_PACKAGE_NAME) v$(VERSION)" \
 	  --background "build/darwin/installer_background.svg" \
 	  --window-pos 400 200 \
 	  --window-size 660 400 \
@@ -114,7 +114,7 @@ package-dmg:
 	  --icon $(APP_PACKAGE_NAME).app 160 185 \
 	  --hide-extension $(APP_PACKAGE_NAME).app \
 	  --app-drop-link 500 185 \
-	  "bin/$(APP_PACKAGE_NAME)-$(VERSION)_mac_$(PACKAGE_ARCH).dmg" \
+	  "bin/$(APP_PACKAGE_NAME)-v$(VERSION)_mac_$(PACKAGE_ARCH).dmg" \
 	  "bin/$(APP_PACKAGE_NAME).app"
 
 .PHONY: package-darwin-multiple
@@ -140,6 +140,6 @@ package-darwin-multiple:
 	@echo ">>> 生成 DMG (universal)"
 	$(MAKE) package-dmg PACKAGE_ARCH=universal
 
-	@echo "✅ 所有 macOS 包已生成 [$(APP_PACKAGE_NAME)]: arm64 / intel / universal (版本 $(VERSION))"
+	@echo "✅ 所有 macOS 包已生成 [$(APP_PACKAGE_NAME)]: arm64 / intel / universal (版本 v$(VERSION))"
 
 
