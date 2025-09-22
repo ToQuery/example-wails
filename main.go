@@ -18,10 +18,10 @@ import (
 )
 
 var (
-	Version     = "dev"
-	VersionCode = "0"
-	BuildId     = "0x0001"
-	BuildTime   = "unknown"
+	Version     = "v0.0.1"
+	VersionCode = "1"
+	BuildId     = "340df99"
+	BuildTime   = "2025-09-22 14:57:59"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.

@@ -5,18 +5,16 @@
             <string>APPL</string>
         <key>CFBundleName</key>
             <string>Example Wails</string>
-        <key>CFBundleDisplayName</key>
-            <string>$(PRODUCT_NAME)</string>
         <key>CFBundleExecutable</key>
             <string>example-wails</string>
         <key>CFBundleIdentifier</key>
             <string>io.github.toquery.example-wails</string>
         <key>CFBundleVersion</key>
-            <string>0.0.1</string>
+            <string>v0.0.1</string>
         <key>CFBundleGetInfoString</key>
             <string>Some Product Comments</string>
         <key>CFBundleShortVersionString</key>
-            <string>0.0.1</string>
+            <string>v0.0.1</string>
         <key>CFBundleIconFile</key>
             <string>icons</string>
         <key>LSMinimumSystemVersion</key>

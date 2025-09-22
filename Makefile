@@ -1,5 +1,13 @@
 # 从环境变量获取版本号
+APP_NAME ?= example-wails
+APP_PACKAGE_NAME ?= Wails示例
+
 VERSION ?= v0.0.1
+VERSION_CODE ?= 1
+
+COMMIT_ID   := $(shell git rev-parse --short HEAD)
+BUILD_TIME  := $(shell date '+%Y-%m-%d %H:%M:%S')
+
 
 # 清空所有的编译依赖文件
 .PHONY: clean
@@ -25,6 +33,23 @@ build:
 .PHONY: update-build-assets
 update-build-assets:
 	wails3 task common:update:build-assets
+
+# 命令行生成构建版本信息
+.PHONY: update-build-version
+update-build-version:
+	@echo ">>> Updating YAML version to $(VERSION)"
+	sed -i '' "s/^\([[:space:]]*version:[[:space:]]*\)\".*\"/\1\"$(VERSION)\" # The application version/" build/config.yml
+
+	@echo ">>> Updating wails3 App Info"
+	wails3 task common:update:build-assets
+
+	@echo ">>> Updating Go Code version info"
+	sed -i '' "s/^\(.*Version[[:space:]]*=[[:space:]]*\)\".*\"/\1\"$(VERSION)\"/" main.go
+	sed -i '' "s/^\(.*VersionCode[[:space:]]*=[[:space:]]*\)\".*\"/\1\"$(VERSION_CODE)\"/" main.go
+	sed -i '' "s/^\(.*BuildId[[:space:]]*=[[:space:]]*\)\".*\"/\1\"$(COMMIT_ID)\"/" main.go
+	sed -i '' "s/^\(.*BuildTime[[:space:]]*=[[:space:]]*\)\".*\"/\1\"$(BUILD_TIME)\"/" main.go
+
+	@echo ">>> Done! Version=$(VERSION), Code=$(VERSION_CODE), Commit=$(COMMIT_ID), Time=$(BUILD_TIME)"
 
 
 # 打包
@@ -56,13 +81,40 @@ package-windows-arm64:
 .PHONY: package-dmg
 package-dmg:
 	create-dmg \
-	  --volname "Example Wails" \
+	  --volname "$(APP_PACKAGE_NAME) $(VERSION)" \
 	  --background "build/darwin/installer_background.svg" \
 	  --window-pos 400 200 \
 	  --window-size 660 400 \
 	  --icon-size 100 \
-	  --icon "example-wails.app" 160 185 \
-	  --hide-extension "example-wails.app" \
+	  --icon $(APP_PACKAGE_NAME).app 160 185 \
+	  --hide-extension $(APP_PACKAGE_NAME).app \
 	  --app-drop-link 500 185 \
-	  "bin/Example Wails Installer.dmg" \
-	  "bin/example-wails.app"
+	  "bin/$(APP_PACKAGE_NAME)-$(VERSION)_mac_$(PACKAGE_ARCH).dmg" \
+	  "bin/$(APP_PACKAGE_NAME).app"
+
+.PHONY: package-darwin-multiple
+package-darwin-multiple:
+	@echo ">>> [1/3] 构建 arm64 版本 (v$(VERSION))"
+	rm -rf bin/$(APP_PACKAGE_NAME).app bin/$(APP_NAME).app
+	ARCH=arm64 wails3 package
+	mv bin/$(APP_NAME).app bin/$(APP_PACKAGE_NAME).app
+	@echo ">>> 生成 DMG (arm64)"
+	$(MAKE) package-dmg PACKAGE_ARCH=arm64
+
+	@echo ">>> [2/3] 构建 amd64 版本 (v$(VERSION))"
+	rm -rf bin/$(APP_PACKAGE_NAME).app bin/$(APP_NAME).app
+	ARCH=amd64 wails3 package
+	mv bin/$(APP_NAME).app bin/$(APP_PACKAGE_NAME).app
+	@echo ">>> 生成 DMG (intel)"
+	$(MAKE) package-dmg PACKAGE_ARCH=intel
+
+	@echo ">>> [3/3] 合并通用二进制 (universal)"
+	rm -rf bin/$(APP_PACKAGE_NAME).app bin/$(APP_NAME).app
+	wails3 task darwin:package:universal
+	mv bin/$(APP_NAME).app bin/$(APP_PACKAGE_NAME).app
+	@echo ">>> 生成 DMG (universal)"
+	$(MAKE) package-dmg PACKAGE_ARCH=universal
+
+	@echo "✅ 所有 macOS 包已生成 [$(APP_PACKAGE_NAME)]: arm64 / intel / universal (版本 $(VERSION))"
+
+
