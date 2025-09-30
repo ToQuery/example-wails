@@ -73,7 +73,6 @@ func main() {
 			application.NewService(kvstore.NewWithConfig(config)),
 			application.NewService(service.NewClientService(clientBuild)),
 			application.NewService(service.NewExampleService(clientBuild)),
-			application.NewService(service.NewBizCoreService(clientBuild)),
 		},
 		Assets: application.AssetOptions{
 			Handler:        application.BundledAssetFileServer(frontAssets),

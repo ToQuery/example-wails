@@ -5,15 +5,12 @@ import (
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
 	"example-wails/internal/pkg/pkg_core"
-	"example-wails/internal/pkg/pkg_example"
 	"example-wails/internal/pkg/pkg_http_api"
 	"io"
 	"log"
-	"math/rand"
 	"os"
 	"os/exec"
 	"runtime"
-	"time"
 
 	"github.com/adrg/xdg"
 
@@ -26,16 +23,6 @@ type ExampleService struct {
 
 func NewExampleService(clientBuild model.ClientBuildModel) *ExampleService {
 	return &ExampleService{ClientBuild: clientBuild}
-}
-
-func (s *ExampleService) ClientLaunch() model.BaseExchange[model.ClientLaunchModel] {
-	log.Printf("AppLaunch")
-	// 50% 概率执行模拟网络错误
-	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
-		return model.BaseExchangeFail[model.ClientLaunchModel]("模拟网络错误")
-	}
-
-	return model.BaseExchangeSuccess[model.ClientLaunchModel](pkg_example.BuildClientLaunch())
 }
 
 func (s *ExampleService) HttpBinUUID() model.BaseExchange[model.HttpBinUUID] {
