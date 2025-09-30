@@ -101,14 +101,14 @@ func CopyBin(embeddedFile io.Reader, binPath string) {
 }
 
 // CopyBinAddPath 复制二进制文件到指定目录，并更新版本信息
-func CopyBinAddPath(binName, binVersion string, binFile fs.File, appInfo model.AppInfoModel) {
+func CopyBinAddPath(binName, binVersion string, binFile fs.File, clientBuild model.ClientBuildModel) {
 
-	appConfigHome := AppConfigHome(appInfo)
-	appConfigHomeBinPath := filepath.Join(appConfigHome, "bin")
-	appConfigHomeBinVersionPath := filepath.Join(appConfigHomeBinPath, "version")
-	log.Printf("appConfigHomeBinPath=%s", appConfigHomeBinPath)
+	clientConfigHome := ClientConfigHome(clientBuild)
+	clientConfigHomeBinPath := filepath.Join(clientConfigHome, "bin")
+	clientConfigHomeBinVersionPath := filepath.Join(clientConfigHomeBinPath, "version")
+	log.Printf("clientConfigHomeBinPath=%s", clientConfigHomeBinPath)
 
-	versionMap, err := ParseVersionToMap(appConfigHomeBinVersionPath)
+	versionMap, err := ParseVersionToMap(clientConfigHomeBinVersionPath)
 	if err != nil {
 		log.Printf("Failed to parse version file: %s", err)
 	}
@@ -133,34 +133,34 @@ func CopyBinAddPath(binName, binVersion string, binFile fs.File, appInfo model.A
 		versionMap[binName] = binVersion
 
 		binFileName := GetBinFileName(binName)
-		err := os.Remove(filepath.Join(appConfigHomeBinPath, binFileName))
+		err := os.Remove(filepath.Join(clientConfigHomeBinPath, binFileName))
 		if err != nil {
 			log.Printf("Failed to remove old bin file: %s", binFileName)
 		}
 
-		newBinPath := filepath.Join(appConfigHomeBinPath, binFileName)
+		newBinPath := filepath.Join(clientConfigHomeBinPath, binFileName)
 
 		CopyBin(binFile, newBinPath)
 
-		err = WriteMapToFile(appConfigHomeBinVersionPath, versionMap)
+		err = WriteMapToFile(clientConfigHomeBinVersionPath, versionMap)
 		if err != nil {
-			log.Printf("Failed to write version file: %s", appConfigHomeBinVersionPath)
+			log.Printf("Failed to write version file: %s", clientConfigHomeBinVersionPath)
 		}
 	}
 
-	AddEnv(appConfigHomeBinPath)
+	AddEnv(clientConfigHomeBinPath)
 }
 
-func AppConfigHome(appInfo model.AppInfoModel) string {
-	return filepath.Join(xdg.ConfigHome, appInfo.Name)
+func ClientConfigHome(clientBuild model.ClientBuildModel) string {
+	return filepath.Join(xdg.ConfigHome, clientBuild.Name)
 }
 
-func AppCacheHome(appInfo model.AppInfoModel) string {
+func ClientCacheHome(clientBuild model.ClientBuildModel) string {
 	userCacheDir, err := os.UserCacheDir()
 	if err != nil || userCacheDir == "" {
-		userCacheDir = filepath.Join(xdg.CacheHome, appInfo.Name, appInfo.Version)
+		userCacheDir = filepath.Join(xdg.CacheHome, clientBuild.Name, clientBuild.Version)
 	} else {
-		userCacheDir = filepath.Join(userCacheDir, appInfo.Name, appInfo.Version)
+		userCacheDir = filepath.Join(userCacheDir, clientBuild.Name, clientBuild.Version)
 	}
 	return userCacheDir
 }

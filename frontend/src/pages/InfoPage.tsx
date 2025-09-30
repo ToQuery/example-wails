@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
-import {useGlobalAppInfo, useGlobalLanguage, useGlobalThemeModel, useGlobalUpdate} from "@/provider/global-provider";
+import {useGlobalClientBuild, useGlobalLanguage, useGlobalThemeModel, useGlobalUpdate} from "@/provider/global-provider";
 import {languages} from "@/i18n";
 import {Browser} from "@wailsio/runtime";
 import {themeModeOptions} from "@/components/sidebar/theme-mode";
@@ -17,11 +17,11 @@ import {
 import {cn} from "@/lib/utils";
 
 // 设置页面组件
-export default function Info() {
+export default function InfoPage() {
 
     const {t} = useTranslation();
 
-    const [appInfo, ] = useGlobalAppInfo();
+    const [clientBuild, ] = useGlobalClientBuild();
 
     const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
     const [themeModel, setThemeModel] = useGlobalThemeModel();
@@ -57,7 +57,7 @@ export default function Info() {
                     </div>
                     <div className="text-right">
                         <div className="text-sm text-gray-500 dark:text-gray-400">{t('page.info.current_version')}</div>
-                        <div className="text-lg font-semibold text-gray-800 dark:text-white">{appInfo?.version}</div>
+                        <div className="text-lg font-semibold text-gray-800 dark:text-white">{clientBuild?.version}</div>
                     </div>
                 </div>
             </div>

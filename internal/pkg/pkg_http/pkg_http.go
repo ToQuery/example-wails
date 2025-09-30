@@ -26,25 +26,25 @@ func NewHttpClient(timeout time.Duration) *HttpClient {
 }
 
 // DefaultUserAgent 返回一个标准格式的 User-Agent
-func (c *HttpClient) DefaultUserAgent(appInfo model.AppInfoModel) string {
-	return appInfo.Name + "/" + appInfo.Version
+func (c *HttpClient) DefaultUserAgent(clientBuild model.ClientBuildModel) string {
+	return clientBuild.Name + "/" + clientBuild.Version
 }
 
-func (c *HttpClient) SetHttpHeader(req *http.Request, appInfo model.AppInfoModel) {
-	req.Header.Set("X-Version", appInfo.Version)
-	req.Header.Set("X-Version-Code", strconv.Itoa(appInfo.VersionCode))
+func (c *HttpClient) SetHttpHeader(req *http.Request, clientBuild model.ClientBuildModel) {
+	req.Header.Set("X-Version", clientBuild.Version)
+	req.Header.Set("X-Version-Code", strconv.Itoa(clientBuild.VersionCode))
 	req.Header.Set("X-Arch", runtime.GOARCH)
 	req.Header.Set("X-OS", runtime.GOOS)
-	req.Header.Set("User-Agent", c.DefaultUserAgent(appInfo))
+	req.Header.Set("User-Agent", c.DefaultUserAgent(clientBuild))
 }
 
 // Get 发送 GET 请求
-func (c *HttpClient) Get(rawURL string, appInfo model.AppInfoModel) ([]byte, error) {
+func (c *HttpClient) Get(rawURL string, clientBuild model.ClientBuildModel) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodGet, rawURL, nil)
 	if err != nil {
 		return nil, err
 	}
-	c.SetHttpHeader(req, appInfo)
+	c.SetHttpHeader(req, clientBuild)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -61,7 +61,7 @@ func (c *HttpClient) Get(rawURL string, appInfo model.AppInfoModel) ([]byte, err
 }
 
 // PostJSON 发送 POST 请求，数据为 JSON
-func (c *HttpClient) PostJSON(rawURL string, appInfo model.AppInfoModel, data interface{}) ([]byte, error) {
+func (c *HttpClient) PostJSON(rawURL string, clientBuild model.ClientBuildModel, data interface{}) ([]byte, error) {
 
 	var body io.Reader
 	if data == nil {
@@ -81,7 +81,7 @@ func (c *HttpClient) PostJSON(rawURL string, appInfo model.AppInfoModel, data in
 
 	req.Header.Set("Content-Type", "application/json")
 
-	c.SetHttpHeader(req, appInfo)
+	c.SetHttpHeader(req, clientBuild)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {

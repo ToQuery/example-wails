@@ -2,14 +2,14 @@ import React, {createContext, ReactNode, useContext, useEffect, useState} from '
 import {SidebarStyle} from "@/components/sidebar/sidebar";
 import ThemeMode, {themeModeAuto, themeModeDark, themeModeLight} from "@/components/sidebar/theme-mode";
 import DialogUpdate from "@/components/biz/dialog-update";
-import {ExampleService} from "../../bindings/example-wails/internal/service";
+import {ClientService} from "../../bindings/example-wails/internal/service";
 import {Events} from "@wailsio/runtime";
 import {Event} from "@/const";
 import {
     BaseExchange,
-    AppLaunchModel,
-    AppVersionLastestModel,
-    AppInfoModel
+    ClientLaunchModel,
+    ClientVersionLastestModel,
+    ClientBuildModel
 } from "../../bindings/example-wails/internal/model";
 import Dialog from "@/components/biz/dialog";
 import {useTranslation} from "react-i18next";
@@ -20,8 +20,8 @@ import {Toaster} from "sonner";
 
 // 配置上下文
 interface GlobalContextType {
-    appInfo: AppInfoModel;
-    setAppInfo: (appInfo: AppInfoModel) => void;
+    clientBuild: ClientBuildModel;
+    setClientBuild: (clientBuild: ClientBuildModel) => void;
     // 全局配置
     config: Record<string, string>;
     setConfig: (config: Record<string, string>) => void;
@@ -45,13 +45,13 @@ interface GlobalContextType {
     setDialogContent: (dialogContent: React.ReactNode) => void;
 
     // 更新相关配置
-    versionLastest: AppVersionLastestModel;
-    handleDialogUpdate: (versionLastest: AppVersionLastestModel) => void;
+    versionLastest: ClientVersionLastestModel;
+    handleDialogUpdate: (versionLastest: ClientVersionLastestModel) => void;
     checkForUpdates: () => void;
 }
 
 const defaultConfig: GlobalContextType = {
-    appInfo: {
+    clientBuild: {
         name: 'example-wails',
         cnName: 'example-wails',
         description: 'example-wails',
@@ -60,8 +60,8 @@ const defaultConfig: GlobalContextType = {
         buildId: '0x000000',
         buildTime: 'unknown',
     },
-    setAppInfo: function (appInfo: AppInfoModel): void {
-        console.log('setAppInfo', appInfo);
+    setClientBuild: function (clientBuild: ClientBuildModel): void {
+        console.log('setClientBuild', clientBuild);
     },
 
     config: {},
@@ -110,7 +110,7 @@ const defaultConfig: GlobalContextType = {
         changelog: '',
         downloadUrl: '',
     },
-    handleDialogUpdate: (versionLastest: AppVersionLastestModel) => {
+    handleDialogUpdate: (versionLastest: ClientVersionLastestModel) => {
         console.log('setUpdateInfo', versionLastest);
     },
     checkForUpdates: () => {
@@ -126,7 +126,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     const [config, setConfig] = useState<Record<string, string>>(defaultConfig.config)
     const [internetError, setInternetError] = useState<boolean>(false);
-    const [appInfo, setAppInfo] = useState<AppInfoModel>(defaultConfig.appInfo);
+    const [clientBuild, setClientBuild] = useState<ClientBuildModel>(defaultConfig.clientBuild);
     const [sidebarStyle, setSidebarStyle] = useState<SidebarStyle>(defaultConfig.sidebarStyle);
     const [windowTitle, setWindowTitle] = useState<string>(defaultConfig.windowTitle);
     const [themeModel, setThemeModelState] = useState<ThemeMode>(defaultConfig.themeModel);
@@ -134,7 +134,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     const [diaLogContent, setDialogContent] = useState<React.ReactNode>();
 
     // 更新相关状态
-    const [versionLastest, setUpdateInfoState] = useState<AppVersionLastestModel>(defaultConfig.versionLastest);
+    const [versionLastest, setUpdateInfoState] = useState<ClientVersionLastestModel>(defaultConfig.versionLastest);
 
     // 更新相关状态
     const [language, setLanguageState] = useState<string>(defaultConfig.language);
@@ -171,7 +171,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setLanguageState(lang);
     };
 
-    const handleDialogUpdate = (versionLastest: AppVersionLastestModel) => {
+    const handleDialogUpdate = (versionLastest: ClientVersionLastestModel) => {
         setDialogContent(<DialogUpdate versionLastest={versionLastest} onClose={() => setDialog(false)}/>)
         setUpdateInfoState(versionLastest);
     };
@@ -191,8 +191,8 @@ export function GlobalProvider({children}: { children: ReactNode }) {
         setDialog(true);
     };
 
-    const handleParseAppLaunch = (baseExchange: BaseExchange<AppLaunchModel>) => {
-        console.log('handleParseAppLaunch', baseExchange);
+    const handleParseClientLaunch = (baseExchange: BaseExchange<ClientLaunchModel>) => {
+        console.log('handleParseClientLaunch', baseExchange);
         if (!baseExchange.success || !baseExchange.data) {
             setInternetError(true);
             return;
@@ -214,22 +214,22 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     };
 
     const loadingLaunch = () => {
-        ExampleService.AppLaunch().then((baseExchange) => {
-            handleParseAppLaunch(baseExchange);
+        ClientService.ClientLaunch().then((baseExchange) => {
+            handleParseClientLaunch(baseExchange);
         }).catch((err) => {
-            console.log('ConfigProvider handleCheckLaunch AppLaunch err', err);
+            console.log('ConfigProvider handleCheckLaunch ClientLaunch err', err);
             setInternetError(true);
         }).finally(() => {
-            console.log('ConfigProvider handleCheckLaunch AppLaunch finally');
+            console.log('ConfigProvider handleCheckLaunch ClientLaunch finally');
         });
     };
 
-    const loadingAppInfo = () => {
-        ExampleService.GetAppInfo().then((baseExchange) => {
+    const loadingClientBuild = () => {
+        ClientService.GetClientBuild().then((baseExchange) => {
             if (baseExchange.success && baseExchange.data) {
-                const appInfo = baseExchange.data;
-                console.log('ConfigProvider GetAppInfo', appInfo);
-                setAppInfo(appInfo);
+                const clientBuild = baseExchange.data;
+                console.log('ConfigProvider GetClientBuild', clientBuild);
+                setClientBuild(clientBuild);
             }
 
         });
@@ -237,7 +237,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
 
     // 检查更新函数
     const checkForUpdates = () => {
-        ExampleService.AppUpdateCheck(false).then((baseExchange) => {
+        ClientService.ClientUpdateCheck(false).then((baseExchange) => {
             const versionLastest = baseExchange.data;
             if (versionLastest) {
                 handleDialogUpdate(versionLastest);
@@ -262,7 +262,7 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     useEffect(() => {
         console.log('ConfigProvider useEffect');
         // 获取应用信息
-        loadingAppInfo();
+        loadingClientBuild();
 
         // 获取应用启动信息
         loadingLaunch();
@@ -290,24 +290,24 @@ export function GlobalProvider({children}: { children: ReactNode }) {
     useEffect(() => {
         listerEvent();
         return () => {
-            Events.Off(Event.events.AppUpdate);
+            Events.Off(Event.events.ClientUpdate);
         }
     }, []);
 
     const listerEvent = () => {
-        Events.On(Event.events.AppUpdate, function (event) {
-            console.log(Event.events.AppUpdate, event);
-            const eventDatas: AppVersionLastestModel[] = event.data;
-            const eventData: AppVersionLastestModel = eventDatas[0];
-            console.log(Event.events.AppUpdate + " data ", eventData);
+        Events.On(Event.events.ClientUpdate, function (event) {
+            console.log(Event.events.ClientUpdate, event);
+            const eventDatas: ClientVersionLastestModel[] = event.data;
+            const eventData: ClientVersionLastestModel = eventDatas[0];
+            console.log(Event.events.ClientUpdate + " data ", eventData);
             handleDialogUpdate(eventData);
             setDialog(true);
         });
     }
 
     const value = {
-        appInfo,
-        setAppInfo,
+        clientBuild,
+        setClientBuild,
 
         config,
         setConfig,
@@ -353,12 +353,12 @@ export function useGlobal() {
     return context;
 }
 
-export function useGlobalAppInfo(): [AppInfoModel, (appInfo: AppInfoModel) => void] {
+export function useGlobalClientBuild(): [ClientBuildModel, (clientBuild: ClientBuildModel) => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useConfig must be used within a ConfigProvider');
     }
-    return [context.appInfo, context.setAppInfo];
+    return [context.clientBuild, context.setClientBuild];
 }
 
 export function useGlobalConfigs() {
@@ -418,7 +418,7 @@ export function useGlobalDialog(): [boolean, (dialog: boolean) => void, (dialogC
 }
 
 // 使用更新功能的Hook
-export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, AppVersionLastestModel, (style: AppVersionLastestModel) => void, () => void] {
+export function useGlobalUpdate(): [boolean, (showUpdateDialog: boolean) => void, ClientVersionLastestModel, (style: ClientVersionLastestModel) => void, () => void] {
     const context = useContext(GlobalContext);
     if (context === undefined) {
         throw new Error('useUpdate must be used within a ConfigProvider');

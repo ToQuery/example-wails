@@ -3,14 +3,14 @@ import {Browser, Clipboard, Dialogs, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {Event, Value} from "@/const";
-import {useGlobalAppInfo, useGlobalDialog, useGlobalUpdate} from "@/provider/global-provider";
+import {useGlobalClientBuild, useGlobalDialog, useGlobalUpdate} from "@/provider/global-provider";
 
 import classNames from "classnames";
 import {Button} from "@/components/ui/button";
-import {PlatformInfoModel} from "../../bindings/example-wails/internal/model";
+import {ClientPlatformModel} from "../../bindings/example-wails/internal/model";
 
 
-function Example() {
+function ExamplePage() {
     const {t} = useTranslation();
 
     const [text, setText] = React.useState<string>("Hello Wails！");
@@ -18,16 +18,13 @@ function Example() {
     const [windowName, setWindowName] = React.useState<string>("main");
     const [alwaysOnTop, setAlwaysOnTop] = React.useState<boolean>(false);
     const [diskImagePath, setDiskImagePath] = React.useState<string>();
-    const [platformInfo, setPlatformInfo] = React.useState<PlatformInfoModel>();
 
     const [, setDialog] = useGlobalDialog();
-    const [appInfo, setAppInfo] = useGlobalAppInfo();
-    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useGlobalUpdate();
 
     useEffect(() => {
         listerEvent();
         return () => {
-            Events.Off(Event.events.AppDatetime);
+            Events.Off(Event.events.ClientDatetime);
         }
     }, []);
 
@@ -36,11 +33,11 @@ function Example() {
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
     const listerEvent = () => {
-        Events.On(Event.events.AppDatetime, function (event) {
-            console.log(Event.events.AppDatetime, event);
+        Events.On(Event.events.ClientDatetime, function (event) {
+            console.log(Event.events.ClientDatetime, event);
             const eventDatas: string[] = event.data;
             const eventData: string = eventDatas[0];
-            console.log(Event.events.AppDatetime + " data ", eventData);
+            console.log(Event.events.ClientDatetime + " data ", eventData);
             setDateTime(eventData);
         });
     }
@@ -48,90 +45,10 @@ function Example() {
     return (
         <div className='p-4'>
             <section>
-                <h2>{t('page.example.platform-info')}</h2>
-                <div className={classNames(butGroupClass)}>
-                    <div>OSName: {platformInfo?.osName}</div>
-                    <div>OSArch: {platformInfo?.osArch}</div>
-                </div>
+                <h2>{t('page.example.client-info')}</h2>
                 <div className={butGroupClass}>
-                    <Button onClick={async () => {
-                        setDialog(true);
-                        ExampleService.GetPlatformInfo()
-                            .then((exchange) => {
-                                if (exchange.success && exchange.data) {
-                                    const platformInfo = exchange.data;
-                                    console.log("platformInfo", platformInfo);
-                                    setPlatformInfo(platformInfo);
-                                }
-
-                            })
-                            .finally(() => {
-                                setTimeout(() => setDialog(false), 1000);
-                            });
-
-                    }}>
-                        {t('page.example.platform-info')}
-                    </Button>
-                </div>
-            </section>
-            {separator}
-            <section>
-                <h2>{t('page.example.app-info')}</h2>
-                <div className={classNames(butGroupClass)}>
-                    <div>Version: {appInfo.version}</div>
-                    <div>VersionCode: {appInfo.versionCode}</div>
-                    <div>BuildId: {appInfo.buildId}</div>
-                    <div>BuildTime: {appInfo.buildTime}</div>
-                </div>
-                <div className={butGroupClass}>
-                    <Button onClick={async () => {
-                        setDialog(true);
-                        ExampleService.GetAppInfo()
-                            .then((exchange) => {
-                                if (exchange.success && exchange.data) {
-                                    const appInfoModel = exchange.data;
-                                    console.log("appInfoModel", appInfoModel);
-                                    setAppInfo(appInfoModel);
-                                }
-
-                            })
-                            .finally(() => {
-                                setTimeout(() => setDialog(false), 1000);
-                            });
-
-                    }}>
-                        {t('page.example.app-info')}
-                    </Button>
-                    <Button onClick={async () => {
-                        const exchange = await ExampleService.AppUpdateCheck(false);
-                        console.log("updateInfoModel", exchange);
-                        if (exchange.success && exchange.data) {
-                            const updateInfoModel = exchange.data;
-                            setUpdateInfo(updateInfoModel);
-                            setShowUpdateDialog(true);
-                        }
-                    }}>
-                        {t('page.example.app-update')}
-                    </Button>
-                    <Button onClick={async () => {
-                        const exchange = await ExampleService.AppUpdateCheck(true);
-                        console.log("updateInfoModel", exchange);
-                        if (exchange.success && exchange.data) {
-                            const updateInfoModel = exchange.data;
-                            setUpdateInfo(updateInfoModel);
-                            setShowUpdateDialog(true);
-                        }
-                    }}>
-                        {t('page.example.app-force-update')}
-                    </Button>
-                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(false)}>
-                        {t('page.example.app-update-from-event')}
-                    </Button>
-                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true)}>
-                        {t('page.example.app-force-update-from-event')}
-                    </Button>
                     <Button onClick={() => ExampleService.EmbedFile()}>
-                        {t('page.example.app-embed-file')}
+                        {t('page.example.client-embed-file')}
                     </Button>
                     <Button onClick={() => {
                         setDialog(true);
@@ -141,16 +58,16 @@ function Example() {
                             console.log("AppEmbedExecBinary err", err);
                         }).finally(() => setDialog(false));
                     }}>
-                        {t('page.example.app-embed-exec-binary')}
+                        {t('page.example.client-embed-exec-binary')}
                     </Button>
                     <Button onClick={() => ExampleService.OpenApplication("WeChat")}>
-                        {t('page.example.app-open-application-wechat')}
+                        {t('page.example.client-open-application-wechat')}
                     </Button>
                     <Button onClick={() => ExampleService.OpenApplication("QQ")}>
-                        {t('page.example.app-open-application-qq')}
+                        {t('page.example.client-open-application-qq')}
                     </Button>
                     <Button onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
-                        {t('page.example.app-open-browser')}
+                        {t('page.example.client-open-browser')}
                     </Button>
                 </div>
             </section>
@@ -372,4 +289,4 @@ function Example() {
         </div>);
 }
 
-export default Example;
+export default ExamplePage;

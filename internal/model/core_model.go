@@ -36,31 +36,3 @@ func BaseExchangeSuccessMessage[T any](data T, message string) BaseExchange[T] {
 		Data:    data,
 	}
 }
-
-type AppVersionLastestModel struct {
-	Version     string `json:"version" form:"version"`
-	VersionCode int    `json:"versionCode" form:"versionCode"`
-	ForceUpdate bool   `json:"forceUpdate" form:"forceUpdate"`
-	Changelog   string `json:"changelog" form:"changelog"`
-	DownloadUrl string `json:"downloadUrl" form:"downloadUrl"`
-}
-
-type PlatformInfoModel struct {
-	OSName string `json:"osName" form:"osName"`
-	OSArch string `json:"osArch" form:"osArch"`
-}
-
-type AppInfoModel struct {
-	Name        string `json:"name" form:"name"`
-	CnName      string `json:"cnName" form:"cnName"`
-	Description string `json:"description" form:"description"`
-	Version     string `json:"version" form:"version"`
-	VersionCode int    `json:"versionCode" form:"versionCode"`
-	BuildId     string `json:"buildId" form:"buildId"`
-	BuildTime   string `json:"buildTime" form:"buildTime"`
-}
-
-type AppLaunchModel struct {
-	Config         *map[string]interface{} `json:"config" form:"config"`                 // 配置信息
-	VersionLastest *AppVersionLastestModel `json:"versionLastest" form:"versionLastest"` // 更新信息
-}

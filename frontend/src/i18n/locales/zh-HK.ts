@@ -27,6 +27,7 @@ const zhHK = {
 
         // 導航選單
         'menu.home': '首頁',
+        'menu.client': '客户端',
         'menu.file': '文件',
         'menu.example': '示例',
         'menu.info': '信息',
@@ -47,6 +48,13 @@ const zhHK = {
         'page.home.counter': '點擊次數：',
         'page.home.httpbin-uuid': "Http Bin UUID",
 
+        // Client 页面
+        'page.client.title': '示例',
+        'page.client.client-build': '构建信息',
+        'page.client.client-update': '应用更新',
+        'page.client.client-force-update': '强制应用更新',
+        'page.client.client-update-from-event': '从事件更新应用',
+        'page.client.client-force-update-from-event': '从事件强制更新应用',
 
         // File頁面
         'page.file.directory': '目錄',
@@ -86,16 +94,16 @@ const zhHK = {
         // Example頁面
         'page.example.title': '示例',
         'page.example.input': '輸入',
-        'page.example.app-info': '應用信息',
-        'page.example.app-update': '應用更新',
-        'page.example.app-force-update': '強制應用更新',
-        'page.example.app-update-from-event': '從事件更新應用',
-        'page.example.app-force-update-from-event': '從事件強制更新應用',
-        'page.example.app-embed-exec-binary': '嵌入執行二進制文件',
-        'page.example.app-embed-file': '嵌入文件',
-        'page.example.app-open-application-wechat': '打開應用程序(Wechat)',
-        'page.example.app-open-application-qq': '打开应用程序(QQ)',
-        'page.example.app-open-browser': '打開瀏覽器',
+        'page.example.client-info': '應用信息',
+        'page.example.client-update': '應用更新',
+        'page.example.client-force-update': '強制應用更新',
+        'page.example.client-update-from-event': '從事件更新應用',
+        'page.example.client-force-update-from-event': '從事件強制更新應用',
+        'page.example.client-embed-exec-binary': '嵌入執行二進制文件',
+        'page.example.client-embed-file': '嵌入文件',
+        'page.example.client-open-application-wechat': '打開應用程序(Wechat)',
+        'page.example.client-open-application-qq': '打开应用程序(QQ)',
+        'page.example.client-open-browser': '打開瀏覽器',
         'page.example.clipboard': '剪貼板',
         'page.example.get-clipboard': '獲取剪貼板',
         'page.example.set-clipboard': '設置剪貼板',

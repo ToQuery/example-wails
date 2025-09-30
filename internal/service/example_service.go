@@ -21,25 +21,25 @@ import (
 )
 
 type ExampleService struct {
-	AppInfo model.AppInfoModel
+	ClientBuild model.ClientBuildModel
 }
 
-func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
-	return &ExampleService{AppInfo: appInfo}
+func NewExampleService(clientBuild model.ClientBuildModel) *ExampleService {
+	return &ExampleService{ClientBuild: clientBuild}
 }
 
-func (s *ExampleService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
+func (s *ExampleService) ClientLaunch() model.BaseExchange[model.ClientLaunchModel] {
 	log.Printf("AppLaunch")
 	// 50% 概率执行模拟网络错误
 	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
-		return model.BaseExchangeFail[model.AppLaunchModel]("模拟网络错误")
+		return model.BaseExchangeFail[model.ClientLaunchModel]("模拟网络错误")
 	}
 
-	return model.BaseExchangeSuccess[model.AppLaunchModel](pkg_example.BuildAppLaunch())
+	return model.BaseExchangeSuccess[model.ClientLaunchModel](pkg_example.BuildClientLaunch())
 }
 
 func (s *ExampleService) HttpBinUUID() model.BaseExchange[model.HttpBinUUID] {
-	httpBinUUID, err := pkg_http_api.HttpBinUUID(s.AppInfo)
+	httpBinUUID, err := pkg_http_api.HttpBinUUID(s.ClientBuild)
 	if err != nil {
 		return model.BaseExchangeFail[model.HttpBinUUID](err.Error())
 	}
@@ -159,34 +159,6 @@ func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] 
 }
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
-
-func (s *ExampleService) GetPlatformInfo() model.BaseExchange[model.PlatformInfoModel] {
-	return model.BaseExchangeSuccess[model.PlatformInfoModel](model.PlatformInfoModel{
-		OSName: runtime.GOOS,
-		OSArch: runtime.GOARCH,
-	})
-}
-
-func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
-	log.Printf("GetAppInfo = %v", s.AppInfo)
-	log.Printf("GetAppInfo Env = %v", application.Get().Env.Info())
-	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
-}
-
-func (s *ExampleService) AppUpdateFromEvent(force bool) {
-	log.Printf("AppUpdateFromEvent")
-	updateInfo := pkg_example.BuildAppVersionLastest(force)
-	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
-}
-
-func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.AppVersionLastestModel] {
-	log.Printf("AppUpdateCheck")
-	updateInfo := pkg_example.BuildAppVersionLastest(forceUpdate)
-	if updateInfo.VersionCode > s.AppInfo.VersionCode {
-		return model.BaseExchangeSuccess(&updateInfo)
-	}
-	return model.BaseExchangeSuccess[*model.AppVersionLastestModel](nil)
-}
 
 func (s ExampleService) EmbedExecBinary() {
 	// 执行二进制文件

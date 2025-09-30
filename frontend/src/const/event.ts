@@ -1,10 +1,9 @@
 
 
-const appDatetime = 'app.datetime';
-
-const appUpdate = 'app.update';
+const clientDatetime = 'client.datetime';
+const clientUpdate = 'client.update';
 
 export const events = {
-    AppDatetime: appDatetime,
-    AppUpdate: appUpdate,
+    ClientDatetime: clientDatetime,
+    ClientUpdate: clientUpdate,
 }

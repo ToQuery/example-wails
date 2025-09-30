@@ -1,14 +1,17 @@
 import React from "react";
+
+import {Menu} from "@/components/sidebar/sidebar";
 import ThemeMode from "@/components/sidebar/theme-mode";
 import LanguageSwitcher from "@/components/sidebar/language-switcher";
-import Home from "@/pages/Home";
-import File from "@/pages/File";
-import Browser from "@/pages/Browser";
-import Info from "@/pages/Info";
-import Example from "@/pages/Example";
 import SidebarStyleSwitcher from "@/components/sidebar/sidebar-style-switcher";
-import {Menu} from "@/components/sidebar/sidebar";
-import SettingGeneral from "@/pages/settings/SettingGeneral";
+
+import HomePage from "@/pages/HomePage";
+import ClientPage from "@/pages/ClientPage";
+import FilePage from "@/pages/FilePage";
+import BrowserPage from "@/pages/BrowserPage";
+import InfoPage from "@/pages/InfoPage";
+import ExamplePage from "@/pages/ExamplePage";
+import SettingGeneralPage from "@/pages/settings/SettingGeneralPage";
 import SettingAdvancedMenu1 from "@/pages/settings/SettingAdvancedMenu1";
 import SettingInfo from "@/pages/settings/SettingInfo";
 import SettingAdvancedMenu2 from "@/pages/settings/SettingAdvancedMenu2";
@@ -16,22 +19,23 @@ import SettingAdvancedMenu2 from "@/pages/settings/SettingAdvancedMenu2";
 
 // 侧边栏导航
 export const MainRouters: Menu[] = [
-    {name: 'menu.home', path: "/", page: <Home/>, icon: "material-symbols:home-app-logo"},
-    {name: 'menu.file', path: "/file", page: <File/>, icon: "material-symbols:files"},
-    {name: 'menu.example', path: "/example", page: <Example/>, icon: "material-symbols:featured-play-list-outline"},
+    {name: 'menu.home', path: "/", page: <HomePage/>, icon: "material-symbols:home-app-logo"},
+    {name: 'menu.client', path: "/client", page: <ClientPage/>, icon: "uil:desktop"},
+    {name: 'menu.file', path: "/file", page: <FilePage/>, icon: "material-symbols:files"},
+    {name: 'menu.example', path: "/example", page: <ExamplePage/>, icon: "material-symbols:featured-play-list-outline"},
     {name: 'menu.browser', path: "https://github.com/toquery/example-wails", icon: "simple-icons:firefoxbrowser"},
-    {name: 'menu.url', path: "/browser?url=https://github.com/toquery/example-wails", page: <Browser/>, icon: "simple-icons:curl", hidden: true},
+    {name: 'menu.url', path: "/browser?url=https://github.com/toquery/example-wails", page: <BrowserPage/>, icon: "simple-icons:curl", hidden: true},
     {name: "menu.dark", render: <ThemeMode/>, footer: true, hidden: false},
     {name: "menu.language", render: <LanguageSwitcher/>, footer: true, hidden: false},
     {name: 'menu.sidebar-style', render: <SidebarStyleSwitcher/>, footer: true, hidden: true},
-    {name: 'menu.info', path: "/info", page: <Info/>, icon: "material-symbols:info-outline", footer: true},
+    {name: 'menu.info', path: "/info", page: <InfoPage/>, icon: "material-symbols:info-outline", footer: true},
 ];
 
 export const SettingRouters: Menu[] =  [
     {
         name: 'menu.setting.general',
         path: "/setting/general",
-        page: <SettingGeneral/>,
+        page: <SettingGeneralPage/>,
         icon: "material-symbols:settings",
     },
     {

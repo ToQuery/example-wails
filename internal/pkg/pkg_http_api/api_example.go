@@ -12,11 +12,11 @@ import (
 
 var httpClient = pkg_http.NewHttpClient(10 * time.Second)
 
-func HttpBinUUID(appInfo model.AppInfoModel) (*model.HttpBinUUID, error) {
+func HttpBinUUID(clientBuild model.ClientBuildModel) (*model.HttpBinUUID, error) {
 	// 请求地址
 	urlPath := "https://httpbin.org/uuid"
 
-	body, err := httpClient.Get(urlPath, appInfo)
+	body, err := httpClient.Get(urlPath, clientBuild)
 	if err != nil {
 		return nil, err
 	}

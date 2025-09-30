@@ -6,27 +6,27 @@ import (
 )
 
 type BizCoreService struct {
-	AppInfo model.AppInfoModel
+	ClientBuild model.ClientBuildModel
 }
 
-func NewBizCoreService(appInfo model.AppInfoModel) *BizCoreService {
-	return &BizCoreService{AppInfo: appInfo}
+func NewBizCoreService(clientBuild model.ClientBuildModel) *BizCoreService {
+	return &BizCoreService{ClientBuild: clientBuild}
 }
 
-func (s *BizCoreService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
-	log.Printf("BizCoreService GetAppInfo = %v", s.AppInfo)
-	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
+func (s *BizCoreService) GetClientBuild() model.BaseExchange[model.ClientBuildModel] {
+	log.Printf("BizCoreService GetClientBuild = %v", s.ClientBuild)
+	return model.BaseExchangeSuccess[model.ClientBuildModel](s.ClientBuild)
 }
 
-func (s *BizCoreService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
+func (s *BizCoreService) AppLaunch() model.BaseExchange[model.ClientLaunchModel] {
 	log.Printf("BizCoreService AppLaunch")
-	return model.BaseExchangeSuccess[model.AppLaunchModel](model.AppLaunchModel{
+	return model.BaseExchangeSuccess[model.ClientLaunchModel](model.ClientLaunchModel{
 		Config:         nil,
 		VersionLastest: nil,
 	})
 }
 
-func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.AppVersionLastestModel] {
+func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.ClientVersionLastestModel] {
 	log.Printf("BizCoreService AppCheckUpdate")
-	return model.BaseExchangeSuccess[*model.AppVersionLastestModel](nil)
+	return model.BaseExchangeSuccess[*model.ClientVersionLastestModel](nil)
 }

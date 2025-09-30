@@ -1,6 +1,6 @@
 package pkg_http_api
 
-type AppLaunchReq struct {
+type ClientLaunchReq struct {
 	Version             string `json:"version" form:"version"`                         // 客户端版本号
 	VersionCode         int    `json:"versionCode" form:"versionCode"`                 // 客户端版本号数值
 	HostName            string `json:"hostName" form:"hostName"`                       // 客户端名称

@@ -1,15 +1,15 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import { useTranslation } from 'react-i18next';
-import { useGlobalAppInfo, useGlobalThemeModel, useGlobalUpdate, useGlobalLanguage } from '@/provider/global-provider';
+import { useGlobalClientBuild, useGlobalThemeModel, useGlobalUpdate, useGlobalLanguage } from '@/provider/global-provider';
 import { languages } from '@/i18n';
 import { themeModeOptions } from '@/components/sidebar/theme-mode';
 import {Button} from "@/components/ui/button";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
-export default function SettingGeneral() {
+export default function SettingGeneralPage() {
     const { t } = useTranslation();
-    const [appInfo] = useGlobalAppInfo();
+    const [clientBuild] = useGlobalClientBuild();
     const [isCheckingUpdate, setIsCheckingUpdate] = React.useState(false);
     const [themeModel, setThemeModel] = useGlobalThemeModel();
     const [, , , , checkForUpdates] = useGlobalUpdate();
@@ -28,7 +28,7 @@ export default function SettingGeneral() {
                         </div>
                         <div>
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{t('settings.app_info')}</h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings.version')}: {appInfo?.version}</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings.version')}: {clientBuild?.version}</p>
                         </div>
                     </div>
                     <Button onClick={checkForUpdates} >

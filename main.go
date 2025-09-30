@@ -20,8 +20,8 @@ import (
 var (
 	Version     = "0.0.1"
 	VersionCode = "1"
-	BuildId     = "0b42e59"
-	BuildTime   = "2025-09-22 16:09:09"
+	BuildId     = "9f54fc3"
+	BuildTime   = "2025-09-30 20:45:36"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.
@@ -42,7 +42,7 @@ func main() {
 		versionCodeNum = 0
 	}
 
-	appInfo := model.AppInfoModel{
+	clientBuild := model.ClientBuildModel{
 		Name:        "example-wails",
 		Version:     Version,
 		VersionCode: versionCodeNum,
@@ -50,10 +50,10 @@ func main() {
 		BuildTime:   BuildTime,
 	}
 
-	wails3.OnStartBefore(appInfo)
+	wails3.OnStartBefore(clientBuild)
 
 	config := &kvstore.Config{
-		Filename: filepath.Join(pkg_core.AppConfigHome(appInfo), appInfo.Name+".config"),
+		Filename: filepath.Join(pkg_core.ClientConfigHome(clientBuild), clientBuild.Name+".config"),
 		AutoSave: true,
 	}
 
@@ -63,16 +63,17 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name:        appInfo.Name,
-		Description: appInfo.Description,
+		Name:        clientBuild.Name,
+		Description: clientBuild.Description,
 
 		LogLevel: slog.LevelDebug,
 
 		Services: []application.Service{
 			//application.NewService(notifications.New()),
 			application.NewService(kvstore.NewWithConfig(config)),
-			application.NewService(service.NewExampleService(appInfo)),
-			application.NewService(service.NewBizCoreService(appInfo)),
+			application.NewService(service.NewClientService(clientBuild)),
+			application.NewService(service.NewExampleService(clientBuild)),
+			application.NewService(service.NewBizCoreService(clientBuild)),
 		},
 		Assets: application.AssetOptions{
 			Handler:        application.BundledAssetFileServer(frontAssets),
@@ -130,12 +131,12 @@ func main() {
 	//go func() {
 	//	for {
 	//		now := time.Now().Format(time.RFC1123)
-	//		app.Event.Emit(wails3.AppDatetime, now)
+	//		app.Event.Emit(wails3.ClientDatetime, now)
 	//		time.Sleep(time.Second)
 	//	}
 	//}()
 
-	wails3.OnStart(appInfo)
+	wails3.OnStart(clientBuild)
 
 	// Run the application. This blocks until the application has been exited.
 	err = app.Run()

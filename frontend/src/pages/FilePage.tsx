@@ -6,7 +6,7 @@ import {ExampleService} from "../../bindings/example-wails/internal/service";
 import classNames from "classnames";
 import {Button} from "@/components/ui/button";
 
-function File() {
+function FilePage() {
     const {t} = useTranslation();
 
     const [dirInfo, setDirInfo] = React.useState<DirInfoModel>();
@@ -195,4 +195,4 @@ function File() {
     );
 }
 
-export default File;
+export default FilePage;

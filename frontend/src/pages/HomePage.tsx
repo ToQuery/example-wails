@@ -5,7 +5,7 @@ import {ExampleService} from "../../bindings/example-wails/internal/service";
 import {toast} from "sonner";
 
 
-function Home() {
+function HomePage() {
     const {t} = useTranslation();
     const [count, setCount] = useState(0);
 
@@ -31,4 +31,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default HomePage;
