@@ -18,7 +18,7 @@ func (s *BizCoreService) GetClientBuild() model.BaseExchange[model.ClientBuildMo
 	return model.BaseExchangeSuccess[model.ClientBuildModel](s.ClientBuild)
 }
 
-func (s *BizCoreService) AppLaunch() model.BaseExchange[model.ClientLaunchModel] {
+func (s *BizCoreService) ClientLaunch() model.BaseExchange[model.ClientLaunchModel] {
 	log.Printf("BizCoreService AppLaunch")
 	return model.BaseExchangeSuccess[model.ClientLaunchModel](model.ClientLaunchModel{
 		Config:         nil,
@@ -26,7 +26,7 @@ func (s *BizCoreService) AppLaunch() model.BaseExchange[model.ClientLaunchModel]
 	})
 }
 
-func (s *BizCoreService) AppCheckUpdate() model.BaseExchange[*model.ClientVersionLastestModel] {
+func (s *BizCoreService) ClientChecAppCheckUpdatekUpdate() model.BaseExchange[*model.ClientVersionLastestModel] {
 	log.Printf("BizCoreService AppCheckUpdate")
 	return model.BaseExchangeSuccess[*model.ClientVersionLastestModel](nil)
 }
