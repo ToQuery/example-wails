@@ -103,13 +103,21 @@ func main() {
 
 		ShouldQuit: wails3.ShouldQuit,
 
-		PanicHandler: wails3.PanicHandler,
+		PanicHandler: func(err *application.PanicDetails) {
+			wails3.PanicHandler(clientBuild, err)
+		},
 
-		WarningHandler: wails3.WarningHandler,
+		WarningHandler: func(text string) {
+			wails3.WarningHandler(clientBuild, text)
+		},
 
-		ErrorHandler: wails3.ErrorHandler,
+		ErrorHandler: func(err error) {
+			wails3.ErrorHandler(clientBuild, err)
+		},
 
-		RawMessageHandler: wails3.RawMessageHandler,
+		RawMessageHandler: func(window application.Window, message string) {
+			wails3.RawMessageHandler(clientBuild, window, message)
+		},
 	})
 
 	// Create a new window with the necessary options.

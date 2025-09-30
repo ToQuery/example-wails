@@ -135,19 +135,19 @@ func ShouldQuit() bool {
 	return true
 }
 
-func PanicHandler(err *application.PanicDetails) {
+func PanicHandler(clientBuild model.ClientBuildModel, err *application.PanicDetails) {
 	log.Printf("PanicHandler", err)
 }
 
-func WarningHandler(text string) {
+func WarningHandler(clientBuild model.ClientBuildModel, text string) {
 	log.Printf("WarningHandler %s", text)
 }
 
-func ErrorHandler(err error) {
+func ErrorHandler(clientBuild model.ClientBuildModel, err error) {
 	log.Printf("ErrorHandler  %s \n%+v", err.Error(), err)
 }
 
-func RawMessageHandler(window application.Window, message string) {
+func RawMessageHandler(clientBuild model.ClientBuildModel, window application.Window, message string) {
 	log.Printf("Window [%s] Raw message: \n %s", window.Name(), message)
 }
 
