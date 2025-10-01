@@ -21,7 +21,7 @@ var (
 	Version     = "0.0.1"
 	VersionCode = "1"
 	BuildId     = "9f54fc3"
-	BuildTime   = "2025-09-30 20:45:36"
+	BuildAt     = "2025-09-30 20:45:36"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.
@@ -47,7 +47,7 @@ func main() {
 		Version:     Version,
 		VersionCode: versionCodeNum,
 		BuildId:     BuildId,
-		BuildTime:   BuildTime,
+		BuildAt:     BuildAt,
 	}
 
 	wails3.OnStartBefore(clientBuild)

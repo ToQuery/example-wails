@@ -7,5 +7,5 @@ type ClientBuildModel struct {
 	Version     string `json:"version" form:"version"`
 	VersionCode int    `json:"versionCode" form:"versionCode"`
 	BuildId     string `json:"buildId" form:"buildId"`
-	BuildTime   string `json:"buildTime" form:"buildTime"`
+	BuildAt     string `json:"buildAt" form:"buildAt"`
 }
