@@ -8,7 +8,7 @@ require (
 	github.com/adrg/xdg v0.5.3
 	github.com/hashicorp/go-version v1.7.0
 	github.com/nicksnyder/go-i18n/v2 v2.6.0
-	github.com/wailsapp/wails/v3 v3.0.0-alpha.33
+	github.com/wailsapp/wails/v3 v3.0.0-alpha.35
 	golang.org/x/text v0.28.0
 )
 
