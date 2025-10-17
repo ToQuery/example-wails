@@ -43,6 +43,7 @@ function ThemeMode() {
 
     // 切换暗黑模式
     const toggleDark = () => {
+        console.log('toggleDark');
         const isDark = document.documentElement.classList.contains('dark');
 
         if (isDark) {

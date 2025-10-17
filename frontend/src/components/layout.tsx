@@ -1,26 +1,25 @@
-import {Outlet} from "react-router-dom";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "@/components/sidebar/sidebar";
 import {MainRouters} from "../../config/routes";
 import WindowTitle from "@/components/ui/window-title";
-import React from "react";
 
 function Layout() {
-
     return (
-        <div className="flex min-w-screen min-h-screen overflow-hidden">
-            {/* 固定在左侧的侧边栏 */}
-            <Sidebar menus={MainRouters}/>
+        <div className="flex h-screen w-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+            {/* 左侧固定导航栏 */}
+            <Sidebar menus={MainRouters} />
 
-            {/* 内容面板 */}
-            <div className="flex flex-col w-screen h-screen">
-                {/* 固定在顶部的标题栏 */}
-                <div className="sticky top-0 z-10">
-                    <WindowTitle/>
-                </div>
+            {/* 主体区域 */}
+            <div className="flex flex-col flex-1 min-w-0">
+                {/* 顶部标题栏 */}
+                <header className="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+                    <WindowTitle />
+                </header>
 
-                {/* 路由内容 - 可滚动区域 */}
-                <main className="overflow-auto h-full  bg-white dark:bg-gray-900/90">
-                    <Outlet/>
+                {/* 内容区域 */}
+                <main className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
+                    <Outlet />
                 </main>
             </div>
         </div>
