@@ -115,13 +115,15 @@ function Sidebar({
             ui.theme.defaultHoverTextClass
         );
 
+        if (menu.render) {
+            return <li key={menu.name} className={classNames(menuItemBase, 'justify-center')}>{menu.render}</li>
+        }
+
         let node: React.ReactNode;
 
         switch (sideBarStyle.code) {
             case "icon":
-                node = menu.render
-                    ? <li key={menu.name} className={classNames(menuItemBase, 'justify-center')}>{menu.render}</li>
-                    : <li
+                node = <li
                         key={menu.name}
                         className={classNames(
                             menuItemBase,
@@ -135,9 +137,7 @@ function Sidebar({
                 break;
 
             case "row":
-                node = menu.render
-                    ? <li key={menu.name} className={classNames(menuItemBase, 'justify-center')}>{menu.render}</li>
-                    : <li
+                node = <li
                         key={menu.name}
                         className={classNames(
                             menuItemBase,
@@ -152,9 +152,7 @@ function Sidebar({
                 break;
 
             case "grid":
-                node = menu.render
-                    ? <li key={menu.name} className={classNames(menuItemBase, 'justify-center')}>{menu.render}</li>
-                    : <li
+                node = <li
                         key={menu.name}
                         className={classNames(
                             menuItemBase,
