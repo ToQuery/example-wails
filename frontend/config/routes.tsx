@@ -5,7 +5,7 @@ import ThemeMode from "@/components/sidebar/theme-mode";
 import LanguageSwitcher from "@/components/sidebar/language-switcher";
 import SidebarStyleSwitcher from "@/components/sidebar/sidebar-style-switcher";
 
-import HomePage from "@/pages/HomePage";
+import IndexPage from "@/pages/IndexPage";
 import ClientPage from "@/pages/ClientPage";
 import FilePage from "@/pages/FilePage";
 import BrowserPage from "@/pages/BrowserPage";
@@ -19,7 +19,7 @@ import SettingAdvancedMenu2 from "@/pages/settings/SettingAdvancedMenu2";
 
 // 侧边栏导航
 export const MainRouters: Menu[] = [
-    {name: 'menu.home', path: "/", page: <HomePage/>, icon: "material-symbols:home-app-logo"},
+    {name: 'menu.home', path: "/", page: <IndexPage/>, icon: "material-symbols:home-app-logo"},
     {name: 'menu.client', path: "/client", page: <ClientPage/>, icon: "uil:desktop"},
     {name: 'menu.file', path: "/file", page: <FilePage/>, icon: "material-symbols:files"},
     {name: 'menu.example', path: "/example", page: <ExamplePage/>, icon: "material-symbols:featured-play-list-outline"},

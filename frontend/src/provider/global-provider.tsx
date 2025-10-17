@@ -58,7 +58,7 @@ const defaultConfig: GlobalContextType = {
         version: 'v0.0.0',
         versionCode: 0,
         buildId: '0x000000',
-        buildTime: 'unknown',
+        buildAt: 'unknown',
     },
     setClientBuild: function (clientBuild: ClientBuildModel): void {
         console.log('setClientBuild', clientBuild);

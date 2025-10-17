@@ -60,7 +60,7 @@ function ClientPage() {
                     <div>Version: {clientBuild.version}</div>
                     <div>VersionCode: {clientBuild.versionCode}</div>
                     <div>BuildId: {clientBuild.buildId}</div>
-                    <div>BuildTime: {clientBuild.buildTime}</div>
+                    <div>BuildAt: {clientBuild.buildAt}</div>
                 </div>
                 <div className={butGroupClass}>
                     <Button onClick={async () => {
