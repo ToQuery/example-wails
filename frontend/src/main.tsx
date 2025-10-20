@@ -4,7 +4,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
 import {GlobalProvider} from "@/provider/global-provider";
 import Layout from "@/components/layout";
-import SettingLayout from "@/components/setting-layout";
+import SettingTopLayout from "@/components/setting-top-layout";
 
 // 导入i18n配置
 import './i18n';
@@ -26,7 +26,7 @@ root.render(
                     <Route element={<Layout/>}>
                         {renderMainRoutes(MainRouters)}
                     </Route>
-                    <Route path='/setting' element={<SettingLayout/>}>
+                    <Route path='/setting' element={<SettingTopLayout/>}>
                         {renderSettingRoutes(SettingRouters)}
                     </Route>
 

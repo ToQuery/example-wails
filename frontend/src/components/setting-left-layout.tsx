@@ -2,13 +2,13 @@ import {Link, Outlet} from "react-router-dom";
 import React from "react";
 import {Icon} from "@iconify/react";
 import {useTranslation} from "react-i18next";
-import {Menu} from "@/components/sidebar/sidebar";
+import {Menu} from "@/lib/route";
 
 type SettingLeftProps = {
     menus: Menu[];
 }
 
-function SettingLeft(props: SettingLeftProps) {
+function SettingLeftLayout(props: SettingLeftProps) {
     const {t} = useTranslation();
 
     return (
@@ -35,4 +35,4 @@ function SettingLeft(props: SettingLeftProps) {
     );
 }
 
-export default SettingLeft;
+export default SettingLeftLayout;

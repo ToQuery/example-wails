@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Menu} from "@/components/sidebar/sidebar";
+import {Menu} from "@/lib/route";
 import ThemeMode from "@/components/sidebar/theme-mode";
 import LanguageSwitcher from "@/components/sidebar/language-switcher";
 import SidebarStyleSwitcher from "@/components/sidebar/sidebar-style-switcher";

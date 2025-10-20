@@ -6,7 +6,7 @@ import {Browser, System} from "@wailsio/runtime";
 import classNames from "classnames";
 import {useGlobalSidebarStyle} from "@/provider/global-provider";
 import {ui} from "@/const/ui";
-import {joinPaths} from "@/lib/route";
+import {isMenuActive, joinPaths, Menu} from "@/lib/route";
 
 // ======================
 // Sidebar 样式模式定义
@@ -40,20 +40,6 @@ export const SidebarStyles: SidebarStyle[] = [
     sidebarStyleRow,
     sidebarStyleGrid,
 ];
-
-// ======================
-// Menu 类型定义
-// ======================
-export interface Menu {
-    name: string;
-    path?: string;
-    icon?: string;
-    render?: React.ReactNode;
-    page?: React.ReactNode;
-    children?: Menu[];
-    footer?: boolean;
-    hidden?: boolean;
-}
 
 // ======================
 // Sidebar 组件
@@ -97,40 +83,12 @@ function Sidebar({
         }
     };
 
-    /**
-     * 判断菜单是否选中
-     * @param menu Menu 对象
-     * @param currentPath 当前 location.pathname
-     * @param parentPath
-     */
-    function isMenuActive(menu: Menu, currentPath: string, parentPath = ""): boolean {
-        if (!menu.path) return false;
-
-        // 过滤外部链接
-        if (menu.path.startsWith("http://") || menu.path.startsWith("https://")) return false;
-
-        const fullPath = joinPaths(parentPath, menu.path);
-
-        if (currentPath === fullPath) return true;
-        // 当前路径和菜单 path 完全匹配
-        if (currentPath === menu.path) return true;
-
-        // 如果 menu 有 children，递归检查
-        if (menu.children && menu.children.length > 0) {
-            const flag = menu.children.some((child) => isMenuActive(child, currentPath, menu.path));
-            console.log('menu.children.some', flag);
-            return flag;
-        }
-
-        return false;
-    }
-
     // ======================
     // 单个菜单渲染
     // ======================
     const menuItemNode = (index: number, menu: Menu) => {
         const isActive = isMenuActive(menu, location.pathname);
-        console.log(`isActive=${isActive}`, menu, location.pathname);
+        // console.log(`isActive=${isActive}`, menu, location.pathname);
 
         const menuItemBase = classNames(
             "flex items-center min-h-[40px] cursor-pointer transition-all duration-200 ease-in-out",

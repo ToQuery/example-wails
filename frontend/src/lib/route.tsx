@@ -1,8 +1,22 @@
-import {Menu} from "@/components/sidebar/sidebar";
 import React from "react";
 import {Route} from "react-router-dom";
 import {SettingRouters} from "../../config/routes";
-import SettingLeft from "@/components/setting/setting-left";
+import SettingLeftLayout from "@/components/setting-left-layout";
+
+// ======================
+// Menu 类型定义
+// ======================
+export interface Menu {
+    name: string;
+    path?: string;
+    icon?: string;
+    layout?: React.ReactNode;
+    render?: React.ReactNode;
+    page?: React.ReactNode;
+    children?: Menu[];
+    footer?: boolean;
+    hidden?: boolean;
+}
 
 export function joinPaths(parent: string, child: string): string {
     if (!child) return parent || "/";
@@ -16,6 +30,34 @@ export function joinPaths(parent: string, child: string): string {
     }
     // 确保中间只有一个 '/'
     return `${parent.replace(/\/+$/g, "")}/${child.replace(/^\/+/g, "")}`;
+}
+
+/**
+ * 判断菜单是否选中
+ * @param menu Menu 对象
+ * @param currentPath 当前 location.pathname
+ * @param parentPath
+ */
+export function isMenuActive(menu: Menu, currentPath: string, parentPath = ""): boolean {
+    if (!menu.path) return false;
+
+    // 过滤外部链接
+    if (menu.path.startsWith("http://") || menu.path.startsWith("https://")) return false;
+
+    const fullPath = joinPaths(parentPath, menu.path);
+
+    if (currentPath === fullPath) return true;
+    // 当前路径和菜单 path 完全匹配
+    if (currentPath === menu.path) return true;
+
+    // 如果 menu 有 children，递归检查
+    if (menu.children && menu.children.length > 0) {
+        const flag = menu.children.some((child) => isMenuActive(child, currentPath, menu.path));
+        console.log('menu.children.some', flag);
+        return flag;
+    }
+
+    return false;
 }
 
 /**
@@ -66,7 +108,7 @@ export function renderSettingRoutes(routes: Menu[], parentPath = ""): React.Reac
                 <Route
                     key={fullPath}
                     path={fullPath}
-                    element={<SettingLeft menus={route.children} />}
+                    element={<SettingLeftLayout menus={route.children}/>}
                 >
                     {renderSettingRoutes(route.children, fullPath)}
                 </Route>

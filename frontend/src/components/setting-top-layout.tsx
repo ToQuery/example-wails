@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {SettingRouters} from "../../config/routes";
 import SettingHeader from "@/components/setting/setting-header";
 
-function SettingLayout() {
+function SettingTopLayout() {
     const { t } = useTranslation();
 
     return (
@@ -20,4 +20,4 @@ function SettingLayout() {
     );
 }
 
-export default SettingLayout;
+export default SettingTopLayout;
