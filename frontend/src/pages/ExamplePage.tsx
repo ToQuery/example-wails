@@ -8,10 +8,14 @@ import {useGlobalClientBuild, useGlobalDialog, useGlobalUpdate} from "@/provider
 import classNames from "classnames";
 import {Button} from "@/components/ui/button";
 import {ClientPlatformModel} from "../../bindings/example-wails/internal/model";
+import {Link, useNavigate} from "react-router-dom";
 
 
 function ExamplePage() {
     const {t} = useTranslation();
+
+    const navigate = useNavigate();
+
 
     const [text, setText] = React.useState<string>("Hello Wails！");
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
@@ -68,6 +72,18 @@ function ExamplePage() {
                     </Button>
                     <Button onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
                         {t('page.example.client-open-browser')}
+                    </Button>
+                </div>
+            </section>
+            {separator}
+            <section>
+                <h2>{t('page.example.router')}</h2>
+                <div className={butGroupClass}>
+                    <Button onClick={() => navigate('/example/1')}>
+                        example 1
+                    </Button>
+                    <Button onClick={() => navigate('/example/2')}>
+                        example 2
                     </Button>
                 </div>
             </section>
@@ -289,4 +305,22 @@ function ExamplePage() {
         </div>);
 }
 
+export const Example1Page = () => {
+    return <div>
+        <div>
+            <h1>Example 1</h1>
+        </div>
+    </div>;
+}
+
+export const Example2Page = () => {
+    return <div>
+        <div>
+            <h1>Example 2</h1>
+        </div>
+    </div>;
+}
+
 export default ExamplePage;
+
+
