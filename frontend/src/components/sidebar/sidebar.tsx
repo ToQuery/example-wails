@@ -1,5 +1,5 @@
 import React from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useMatches} from "react-router-dom";
 import {Icon} from "@iconify/react";
 import {useTranslation} from "react-i18next";
 import {Browser, System} from "@wailsio/runtime";
@@ -45,7 +45,6 @@ export const SidebarStyles: SidebarStyle[] = [
 // Sidebar 组件
 // ======================
 interface SidebarProps {
-    menus: Menu[];
     sideBarStyle?: SidebarStyle;
     widthClass?: string;
     bgColorClass?: string;
@@ -53,7 +52,6 @@ interface SidebarProps {
 }
 
 function Sidebar({
-                     menus,
                      sideBarStyle,
                      widthClass = "w-[80px] min-w-[80px]",
                      bgColorClass = ui.theme.defaultBgClass,
@@ -66,6 +64,12 @@ function Sidebar({
     const location = useLocation();
     const {t} = useTranslation();
     const [configSidebarStyle] = useGlobalSidebarStyle();
+
+    const matches = useMatches();
+    // 从useMatches获取菜单数据
+    const rootMatch = matches?.[0];
+    const data = rootMatch?.data as { menus?: Menu[] };
+    const menus: Menu[] = data?.menus ?? [];
 
     if (!sideBarStyle) sideBarStyle = configSidebarStyle;
 

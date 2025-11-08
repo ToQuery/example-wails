@@ -7,10 +7,11 @@ import SettingHeader from "@/components/setting/setting-header";
 function SettingTopLayout() {
     const { t } = useTranslation();
 
+
     return (
         <div className="flex flex-col min-w-screen min-h-screen overflow-hidden">
             {/* 顶部导航栏 */}
-            <SettingHeader menus={SettingRouters}  />
+            <SettingHeader />
 
             {/* 内容区域 */}
             <div className="grow bg-gray-50 dark:bg-gray-900">

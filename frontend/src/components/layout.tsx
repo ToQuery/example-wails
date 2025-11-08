@@ -1,14 +1,13 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useMatches } from "react-router-dom";
 import Sidebar from "@/components/sidebar/sidebar";
-import {MainRouters} from "../../config/routes";
 import WindowTitle from "@/components/ui/window-title";
 
 function Layout() {
     return (
         <div className="flex h-screen w-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-            {/* 左侧固定导航栏 */}
-            <Sidebar menus={MainRouters} />
+            {/* 左侧固定导航栏 - 将菜单数据作为prop传递 */}
+            <Sidebar />
 
             {/* 主体区域 */}
             <div className="flex flex-col flex-1 min-w-0">

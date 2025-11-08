@@ -1,7 +1,10 @@
 import React from "react";
-import {Route} from "react-router-dom";
-import {SettingRouters} from "../../config/routes";
+import {createBrowserRouter, Outlet, Route, RouteObject} from "react-router-dom";
+import {MainRouters, SettingRouters} from "../../config/routes";
 import SettingLeftLayout from "@/components/setting-left-layout";
+import Layout from "@/components/layout";
+import SettingTopLayout from "@/components/setting-top-layout";
+import NotFound from "@/pages/NotFound";
 
 // ======================
 // Menu 类型定义
@@ -60,62 +63,77 @@ export function isMenuActive(menu: Menu, currentPath: string, parentPath = ""): 
     return false;
 }
 
+// 辅助函数：判断外链
+function isExternal(path: string): boolean {
+    return /^https?:\/\//.test(path);
+}
+
+// 辅助函数：标准化路径
+function normalizePath(path: string): string {
+    return path.replace(/\/{2,}/g, "/").replace(/\/$/, "");
+}
+
+
 /**
- * 把树形 routes 扁平化成 Route 元素数组，保留完整路径。
+ * 把树形 routes 扁平化成 RouteObject 数组，保留完整路径。
  * @param routes Menu[]
- * @param parentPath 父路径（调用时不用传，递归内部使用）
+ * @param parentPath 父路径（递归使用）
  */
-export function renderMainRoutes(routes: Menu[], parentPath = ""): React.ReactNode {
-    const out: React.ReactNode[] = [];
+export function buildRouteObjects(routes: Menu[], parentPath = ""): RouteObject[] {
+    const out: RouteObject[] = routes
+        .filter(route => route.path && !isExternal(route.path))
+        .map((route) => {
+            const routeObj: RouteObject = {};
 
-    routes.forEach((route) => {
-        if (!route || !route.path) return;
+            // path（去掉重复斜杠）
+            routeObj.path = normalizePath(route.path!);
 
-        // 过滤外部链接
-        if (route.path.startsWith("http://") || route.path.startsWith("https://")) {
-            return;
-        }
+            // 如果有子路由
+            if (route.children && route.children.length > 0) {
+                routeObj.element = route.layout ? route.layout : <Outlet />;
+                routeObj.children = [];
 
-        const fullPath = joinPaths(parentPath, route.path);
+                // 默认页作为 index
+                if (route.page) {
+                    routeObj.children.push({
+                        index: true,
+                        element: route.page,
+                    });
+                }
 
-        // 普通把当前节点作为独立路由渲染
-        if (route.page) {
-            out.push(<Route key={fullPath} path={fullPath} element={route.page} />);
-        }
+                // 递归处理子路由
+                routeObj.children.push(...buildRouteObjects(route.children));
+            } else {
+                // 没有 children，则普通页面
+                if (route.page) {
+                    routeObj.element = route.page;
+                }
+            }
 
-        // 如果有 children，继续递归，把 parentPath 换成当前的 fullPath
-        if (route.children && route.children.length > 0) {
-            out.push(...(renderMainRoutes(route.children, fullPath) as React.ReactNode[]));
-        }
-    });
+            return routeObj;
+        });
 
+    console.log('buildRouteObjects out', out.length);
     return out;
 }
+const routerConfig = [
+    {
+        path: "/",
+        element: <Layout />,
+        children: buildRouteObjects(MainRouters),
+        loader: () => ({ menus: MainRouters }),
+    },
+    {
+        path: "/setting",
+        element: <SettingTopLayout />,
+        children: buildRouteObjects(SettingRouters),
+        loader: () => ({ menus: SettingRouters }),
+    },
+    {
+        path: "*",
+        element: <NotFound />,
+    },
+];
 
-
-export function renderSettingRoutes(routes: Menu[], parentPath = ""): React.ReactNode {
-    return routes.map((route) => {
-        if (!route.path) return null;
-
-        // 拼接完整路径
-        const fullPath = parentPath
-            ? `${parentPath.replace(/\/+$/g, "")}/${route.path.replace(/^\/+/g, "")}`
-            : route.path;
-
-        // 如果有子菜单
-        if (route.children && route.children.length > 0) {
-            return (
-                <Route
-                    key={fullPath}
-                    path={fullPath}
-                    element={<SettingLeftLayout menus={route.children}/>}
-                >
-                    {renderSettingRoutes(route.children, fullPath)}
-                </Route>
-            );
-        }
-
-        // 普通路由
-        return <Route key={fullPath} path={fullPath} element={route.page} />;
-    });
-}
+console.log('routerConfig', routerConfig);
+export const router = createBrowserRouter(routerConfig);

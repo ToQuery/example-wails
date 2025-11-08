@@ -15,6 +15,7 @@ import SettingGeneralPage from "@/pages/settings/SettingGeneralPage";
 import SettingAdvancedMenu1 from "@/pages/settings/SettingAdvancedMenu1";
 import SettingInfo from "@/pages/settings/SettingInfo";
 import SettingAdvancedMenu2 from "@/pages/settings/SettingAdvancedMenu2";
+import SettingLeftLayout from "@/components/setting-left-layout";
 
 
 // 侧边栏导航
@@ -67,10 +68,11 @@ export const SettingRouters: Menu[] =  [
         name: 'menu.setting.advanced',
         path: "/setting/advanced",
         icon: "material-symbols:read-more-rounded",
+        layout: <SettingLeftLayout />,
         children: [
             {
                 name: 'menu.setting.advanced.menu1',
-                path: "/setting/advanced/menu1",
+                path: "menu1",
                 page: <SettingAdvancedMenu1/>,
                 icon: "material-symbols:timer-1-rounded",
                 hidden: false,

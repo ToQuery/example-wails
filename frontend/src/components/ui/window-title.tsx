@@ -5,7 +5,7 @@ import {ExampleService} from '../../../bindings/example-wails/internal/service';
 import {useLocation} from "react-router-dom";
 import {MainRouters} from "@/../config/routes";
 import {useTranslation} from 'react-i18next';
-import {Menu} from "@/components/sidebar/sidebar";
+import {Menu} from "@/lib/route";
 import classNames from "classnames";
 import {ui} from "@/const/ui";
 

@@ -2,14 +2,14 @@ import React from 'react';
 import classNames from "classnames";
 import {Icon} from '@iconify/react';
 import {Browser} from "@wailsio/runtime";
+import {ClientVersionLastestModel} from "../../../bindings/example-wails/internal/model";
 
 import {useTranslation} from "react-i18next";
 import {ui} from "@/const/ui";
 import {Button} from "@/components/ui/button";
-import {AppVersionLastestModel} from "../../../bindings/example-wails/internal/model";
 
 type DialogUpdateProps = {
-    versionLastest: AppVersionLastestModel;
+    versionLastest: ClientVersionLastestModel;
     onClose: () => void;
 }
 
