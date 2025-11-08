@@ -1,12 +1,13 @@
 import {Icon} from "@iconify/react";
 import React from "react";
-import {ExampleService} from '../../../bindings/example-wails/internal/service';
+import {ExampleService} from '../../bindings/example-wails/internal/service';
 
 import {useMatches} from "react-router-dom";
 import {useTranslation} from 'react-i18next';
 import classNames from "classnames";
 import {ui} from "@/const/ui";
 import {Menu} from "@/router/type";
+import {System} from "@wailsio/runtime";
 
 // 接收 props
 interface WindowTitleProps {
@@ -20,6 +21,7 @@ function WindowTitle(props: WindowTitleProps) {
 
     const matches = useMatches();
     // console.info("WindowTitle matches", matches);
+
     const current = matches[matches.length - 1]; // 当前匹配到的最后一个路由
     // console.info("WindowTitle current", current);
 
@@ -30,7 +32,7 @@ function WindowTitle(props: WindowTitleProps) {
     };
 
     // 是否非 Mac 平台
-    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+    const isNotMac = !System.IsMac(); // navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     // 窗口最大化/还原
     const toggleMaximize = () => {
