@@ -67,10 +67,15 @@ function Sidebar({
     const [configSidebarStyle] = useGlobalSidebarStyle();
 
     const matches = useMatches();
+    // console.info("Sidebar matches", matches);
+
     // 从useMatches获取菜单数据
     const rootMatch = matches?.[0];
     const data = rootMatch?.data as { menus?: Menu[] };
     const menus: Menu[] = data?.menus ?? [];
+
+    const current = matches[matches.length - 1]; // 当前匹配到的最后一个路由
+    console.info("Sidebar current", current);
 
     if (!sideBarStyle) sideBarStyle = configSidebarStyle;
 
@@ -82,7 +87,11 @@ function Sidebar({
         if (!path) return;
 
         if (path.startsWith("http://") || path.startsWith("https://")) {
-            Browser.OpenURL(path);
+            Browser.OpenURL(path).then(r => {
+                console.log('Browser.OpenURL', r);
+            }).catch(e => {
+                console.error('Browser.OpenURL', e);
+            });
         } else {
             navigate(path);
         }
@@ -92,7 +101,8 @@ function Sidebar({
     // 单个菜单渲染
     // ======================
     const menuItemNode = (index: number, menu: Menu) => {
-        const isActive = isMenuActive(menu, location.pathname);
+        const currentMenu = current.handle as Menu;
+        const isActive = isMenuActive(menu, currentMenu.path ?? "");
         // console.log(`isActive=${isActive}`, menu, location.pathname);
 
         const menuItemBase = classNames(
