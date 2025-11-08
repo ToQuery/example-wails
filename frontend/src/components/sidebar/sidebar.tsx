@@ -6,7 +6,8 @@ import {Browser, System} from "@wailsio/runtime";
 import classNames from "classnames";
 import {useGlobalSidebarStyle} from "@/provider/global-provider";
 import {ui} from "@/const/ui";
-import {isMenuActive, joinPaths, Menu} from "@/lib/route";
+import {isMenuActive} from "@/router/router";
+import {Menu} from "@/router/type";
 
 // ======================
 // Sidebar 样式模式定义

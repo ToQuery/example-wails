@@ -1,25 +1,11 @@
 import React from "react";
 import {createBrowserRouter, Outlet, Route, RouteObject} from "react-router-dom";
 import {MainRouters, SettingRouters} from "../../config/routes";
-import SettingLeftLayout from "@/components/setting-left-layout";
 import Layout from "@/components/layout";
 import SettingTopLayout from "@/components/setting-top-layout";
 import NotFound from "@/pages/NotFound";
+import {Menu} from "@/router/type";
 
-// ======================
-// Menu 类型定义
-// ======================
-export interface Menu {
-    name: string;
-    path?: string;
-    icon?: string;
-    layout?: React.ReactNode;
-    render?: React.ReactNode;
-    page?: React.ReactNode;
-    children?: Menu[];
-    footer?: boolean;
-    hidden?: boolean;
-}
 
 export function joinPaths(parent: string, child: string): string {
     if (!child) return parent || "/";
@@ -77,9 +63,8 @@ function normalizePath(path: string): string {
 /**
  * 把树形 routes 扁平化成 RouteObject 数组，保留完整路径。
  * @param routes Menu[]
- * @param parentPath 父路径（递归使用）
  */
-export function buildRouteObjects(routes: Menu[], parentPath = ""): RouteObject[] {
+export function buildRouteObjects(routes: Menu[]): RouteObject[] {
     const out: RouteObject[] = routes
         .filter(route => route.path && !isExternal(route.path))
         .map((route) => {
@@ -87,22 +72,25 @@ export function buildRouteObjects(routes: Menu[], parentPath = ""): RouteObject[
 
             // path（去掉重复斜杠）
             routeObj.path = normalizePath(route.path!);
+            routeObj.handle = route;
 
             // 如果有子路由
             if (route.children && route.children.length > 0) {
                 routeObj.element = route.layout ? route.layout : <Outlet />;
                 routeObj.children = [];
 
+                const children: RouteObject[] = [];
                 // 默认页作为 index
                 if (route.page) {
-                    routeObj.children.push({
+                    children.push({
                         index: true,
                         element: route.page,
+                        handle: route,
                     });
                 }
-
+                children.push(...buildRouteObjects(route.children));
                 // 递归处理子路由
-                routeObj.children.push(...buildRouteObjects(route.children));
+                routeObj.children = children;
             } else {
                 // 没有 children，则普通页面
                 if (route.page) {
@@ -116,6 +104,7 @@ export function buildRouteObjects(routes: Menu[], parentPath = ""): RouteObject[
     console.log('buildRouteObjects out', out.length);
     return out;
 }
+
 const routerConfig = [
     {
         path: "/",

@@ -2,8 +2,7 @@ import {Link, Outlet, useMatches} from "react-router-dom";
 import React from "react";
 import {Icon} from "@iconify/react";
 import {useTranslation} from "react-i18next";
-import {Menu} from "@/lib/route";
-import {SettingRouters} from "../../config/routes";
+import {Menu} from "@/router/type";
 
 type SettingLeftProps = {
 }

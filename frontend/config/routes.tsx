@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Menu} from "@/lib/route";
+import {Menu} from "@/router/type";
 import ThemeMode from "@/components/sidebar/theme-mode";
 import LanguageSwitcher from "@/components/sidebar/language-switcher";
 import SidebarStyleSwitcher from "@/components/sidebar/sidebar-style-switcher";
@@ -16,6 +16,7 @@ import SettingAdvancedMenu1 from "@/pages/settings/SettingAdvancedMenu1";
 import SettingInfo from "@/pages/settings/SettingInfo";
 import SettingAdvancedMenu2 from "@/pages/settings/SettingAdvancedMenu2";
 import SettingLeftLayout from "@/components/setting-left-layout";
+import {Outlet} from "react-router-dom";
 
 
 // 侧边栏导航
@@ -48,7 +49,7 @@ export const MainRouters: Menu[] = [
         ],
         hidden: false,
     },
-    {name: 'menu.browser', path: "https://github.com/toquery/example-wails", icon: "simple-icons:firefoxbrowser", hidden: false, },
+    {name: 'menu.browser', path: "https://github.com/toquery/example-wails", layout: <Outlet />, icon: "simple-icons:firefoxbrowser", hidden: false, },
     {name: 'menu.url', path: "/browser?url=https://github.com/toquery/example-wails", page: <BrowserPage/>, icon: "simple-icons:curl", hidden: true, },
     {name: "menu.dark", render: <ThemeMode/>, footer: true, hidden: false, },
     {name: "menu.language", render: <LanguageSwitcher/>, footer: true, hidden: false, },
@@ -68,7 +69,7 @@ export const SettingRouters: Menu[] =  [
         name: 'menu.setting.advanced',
         path: "/setting/advanced",
         icon: "material-symbols:read-more-rounded",
-        layout: <SettingLeftLayout />,
+        page: <SettingLeftLayout />,
         children: [
             {
                 name: 'menu.setting.advanced.menu1',

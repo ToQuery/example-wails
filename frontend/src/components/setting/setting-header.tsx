@@ -4,7 +4,7 @@ import {Link, useLocation, useMatches} from 'react-router-dom';
 import classNames from 'classnames';
 import {Icon} from "@iconify/react";
 import {ui} from "@/const/ui";
-import {Menu} from "@/lib/route";
+import {Menu} from "@/router/type";
 
 type SettingHeaderProps = {
 }
