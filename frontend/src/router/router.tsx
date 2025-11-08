@@ -1,5 +1,5 @@
 import React from "react";
-import {createBrowserRouter, Outlet, Route, RouteObject} from "react-router-dom";
+import {createBrowserRouter, Navigate, Outlet, Route, RouteObject} from "react-router-dom";
 import {MainRouters, SettingRouters} from "../../config/routes";
 import Layout from "@/components/layout";
 import SettingTopLayout from "@/components/setting-top-layout";
@@ -115,7 +115,13 @@ const routerConfig = [
     {
         path: "/setting",
         element: <SettingTopLayout />,
-        children: buildRouteObjects(SettingRouters),
+        children: [
+            {
+                index: true,
+                element: <Navigate to={SettingRouters[0].path ?? ""} replace />,
+            },
+            ...buildRouteObjects(SettingRouters),
+        ],
         loader: () => ({ menus: SettingRouters }),
     },
     {
