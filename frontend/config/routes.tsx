@@ -37,12 +37,12 @@ export const MainRouters: Menu[] = [
         icon: "material-symbols:featured-play-list-outline",
         children: [
             {
-                name: 'menu.example1',
+                name: 'menu.example.children2',
                 path: '1',
                 page: <Example1Page/>,
             },
             {
-                name: 'menu.example2',
+                name: 'menu.example.children2',
                 path: '/example/2',
                 page: <Example2Page/>,
             },

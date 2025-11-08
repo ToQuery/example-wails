@@ -30,6 +30,8 @@ const enUS = {
         'menu.client': 'Client',
         'menu.file': 'File',
         'menu.example': 'Example',
+        'menu.example.children1': '示例子页面 1',
+        'menu.example.children2': '示例子页面 2',
         'menu.info': 'Info',
         'menu.url': 'Url',
         'menu.browser': 'Browser',

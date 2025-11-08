@@ -30,6 +30,8 @@ const zhHK = {
         'menu.client': '客户端',
         'menu.file': '文件',
         'menu.example': '示例',
+        'menu.example.children1': '示例子页面 1',
+        'menu.example.children2': '示例子页面 2',
         'menu.info': '信息',
         'menu.url': 'Url',
         'menu.browser': '瀏覽器',
