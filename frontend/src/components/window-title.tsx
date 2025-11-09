@@ -7,7 +7,6 @@ import {useTranslation} from 'react-i18next';
 import classNames from "classnames";
 import {ui} from "@/const/ui";
 import {Menu} from "@/router/type";
-import {System} from "@wailsio/runtime";
 
 // 接收 props
 interface WindowTitleProps {
