@@ -5,7 +5,7 @@ import React from "react";
 
 import {useGlobalSidebarStyle} from "@/provider/global-provider";
 
-import {Browser} from "@wailsio/runtime";
+import {Browser, System} from "@wailsio/runtime";
 import classNames from "classnames";
 import {ui} from "@/const/ui";
 
@@ -147,7 +147,7 @@ function Sidebar({
                 style={{"--wails-draggable": "drag"} as React.CSSProperties}
             >
                 <ul
-                    className={classNames("w-full overflow-y-auto mt-11", isNotMac ? '' : '')}>
+                    className={classNames("w-full overflow-y-auto mt-11",  System.IsMac() ? '' : '')}>
                     {menus.filter(menu => !menu.hidden && !menu.footer).map((menu, index) => menuItemNode(index, menu))}
                 </ul>
                 <ul
