@@ -1,6 +1,6 @@
 package wails3
 
 const (
-	AppDatetime = "app.datetime"
-	AppUpdate   = "app.update"
+	ClientDatetime = "client.datetime"
+	ClientUpdate   = "client.update"
 )

@@ -27,6 +27,10 @@ func MacWindow() application.MacWindow {
 		Appearance: application.NSAppearanceNameVibrantLight,
 
 		WindowLevel: application.MacWindowLevelMainMenu,
+
+		LiquidGlass: application.MacLiquidGlass{
+			Style: application.LiquidGlassStyleAutomatic,
+		},
 	}
 }
 
@@ -107,19 +111,19 @@ func DiskFileMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func OnStartBefore(appInfo model.AppInfoModel) {
+func OnStartBefore(clientBuild model.ClientBuildModel) {
 	log.Printf("OnStartBefore")
 
 	exampleWails, version, err := assets.AssetsBinaryExampleWails()
 	if err == nil && exampleWails != nil {
-		pkg_core.CopyBinAddPath("example-wails", version, exampleWails, appInfo)
+		pkg_core.CopyBinAddPath("example-wails", version, exampleWails, clientBuild)
 	} else {
 		log.Printf("Failed to load example-wails binary: %s", err)
 	}
 }
 
-func OnStart(appInfo model.AppInfoModel) {
-	log.Printf("OnStart %s", appInfo.Name)
+func OnStart(clientBuild model.ClientBuildModel) {
+	log.Printf("OnStart %s", clientBuild.Name)
 }
 
 func OnShutdown() {
@@ -131,19 +135,19 @@ func ShouldQuit() bool {
 	return true
 }
 
-func PanicHandler(err *application.PanicDetails) {
+func PanicHandler(clientBuild model.ClientBuildModel, err *application.PanicDetails) {
 	log.Printf("PanicHandler", err)
 }
 
-func WarningHandler(text string) {
+func WarningHandler(clientBuild model.ClientBuildModel, text string) {
 	log.Printf("WarningHandler %s", text)
 }
 
-func ErrorHandler(err error) {
+func ErrorHandler(clientBuild model.ClientBuildModel, err error) {
 	log.Printf("ErrorHandler  %s \n%+v", err.Error(), err)
 }
 
-func RawMessageHandler(window application.Window, message string) {
+func RawMessageHandler(clientBuild model.ClientBuildModel, window application.Window, message string) {
 	log.Printf("Window [%s] Raw message: \n %s", window.Name(), message)
 }
 

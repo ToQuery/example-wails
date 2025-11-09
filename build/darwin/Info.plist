@@ -2,26 +2,26 @@
 <plist version="1.0">
     <dict>
         <key>CFBundlePackageType</key>
-        <string>APPL</string>
+            <string>APPL</string>
         <key>CFBundleName</key>
-        <string>Example Wails</string>
+            <string>Example Wails</string>
         <key>CFBundleExecutable</key>
-        <string>example-wails</string>
+            <string>example-wails</string>
         <key>CFBundleIdentifier</key>
-        <string>io.github.toquery.example-wails</string>
+            <string>io.github.toquery.example-wails</string>
         <key>CFBundleVersion</key>
-        <string>0.0.1</string>
+            <string>0.0.1</string>
         <key>CFBundleGetInfoString</key>
-        <string>Some Product Comments</string>
+            <string>Some Product Comments</string>
         <key>CFBundleShortVersionString</key>
-        <string>0.0.1</string>
+            <string>0.0.1</string>
         <key>CFBundleIconFile</key>
-        <string>icons</string>
+            <string>icons</string>
         <key>LSMinimumSystemVersion</key>
-        <string>10.13.0</string>
+            <string>10.15.0</string>
         <key>NSHighResolutionCapable</key>
-        <string>true</string>
+            <string>true</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(c) 2025, ToQuery</string>
+            <string>(c) 2025, ToQuery</string>
     </dict>
 </plist>

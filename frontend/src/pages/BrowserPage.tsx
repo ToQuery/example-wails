@@ -7,7 +7,7 @@ const getUrlParam = (search: string) => {
     return params.get("url") || "";
 };
 
-const Browser: React.FC = () => {
+const BrowserPage: React.FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const url = getUrlParam(location.search);
@@ -29,4 +29,4 @@ const Browser: React.FC = () => {
     );
 };
 
-export default Browser;
+export default BrowserPage;

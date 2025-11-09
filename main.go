@@ -18,10 +18,10 @@ import (
 )
 
 var (
-	Version     = "dev"
-	VersionCode = "0"
-	BuildId     = "0x0001"
-	BuildTime   = "unknown"
+	Version     = "0.0.1"
+	VersionCode = "1"
+	BuildId     = "9f54fc3"
+	BuildAt     = "2025-09-30 20:45:36"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.
@@ -42,18 +42,18 @@ func main() {
 		versionCodeNum = 0
 	}
 
-	appInfo := model.AppInfoModel{
+	clientBuild := model.ClientBuildModel{
 		Name:        "example-wails",
 		Version:     Version,
 		VersionCode: versionCodeNum,
 		BuildId:     BuildId,
-		BuildTime:   BuildTime,
+		BuildAt:     BuildAt,
 	}
 
-	wails3.OnStartBefore(appInfo)
+	wails3.OnStartBefore(clientBuild)
 
 	config := &kvstore.Config{
-		Filename: filepath.Join(pkg_core.AppConfigHome(appInfo), appInfo.Name+".config"),
+		Filename: filepath.Join(pkg_core.ClientConfigHome(clientBuild), clientBuild.Name+".config"),
 		AutoSave: true,
 	}
 
@@ -63,16 +63,16 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name:        appInfo.Name,
-		Description: appInfo.Description,
+		Name:        clientBuild.Name,
+		Description: clientBuild.Description,
 
 		LogLevel: slog.LevelDebug,
 
 		Services: []application.Service{
 			//application.NewService(notifications.New()),
 			application.NewService(kvstore.NewWithConfig(config)),
-			application.NewService(service.NewExampleService(appInfo)),
-			application.NewService(service.NewBizCoreService(appInfo)),
+			application.NewService(service.NewClientService(clientBuild)),
+			application.NewService(service.NewExampleService(clientBuild)),
 		},
 		Assets: application.AssetOptions{
 			Handler:        application.BundledAssetFileServer(frontAssets),
@@ -103,13 +103,21 @@ func main() {
 
 		ShouldQuit: wails3.ShouldQuit,
 
-		PanicHandler: wails3.PanicHandler,
+		PanicHandler: func(err *application.PanicDetails) {
+			wails3.PanicHandler(clientBuild, err)
+		},
 
-		WarningHandler: wails3.WarningHandler,
+		WarningHandler: func(text string) {
+			wails3.WarningHandler(clientBuild, text)
+		},
 
-		ErrorHandler: wails3.ErrorHandler,
+		ErrorHandler: func(err error) {
+			wails3.ErrorHandler(clientBuild, err)
+		},
 
-		RawMessageHandler: wails3.RawMessageHandler,
+		RawMessageHandler: func(window application.Window, message string) {
+			wails3.RawMessageHandler(clientBuild, window, message)
+		},
 	})
 
 	// Create a new window with the necessary options.
@@ -130,12 +138,12 @@ func main() {
 	//go func() {
 	//	for {
 	//		now := time.Now().Format(time.RFC1123)
-	//		app.Event.Emit(wails3.AppDatetime, now)
+	//		app.Event.Emit(wails3.ClientDatetime, now)
 	//		time.Sleep(time.Second)
 	//	}
 	//}()
 
-	wails3.OnStart(appInfo)
+	wails3.OnStart(clientBuild)
 
 	// Run the application. This blocks until the application has been exited.
 	err = app.Run()

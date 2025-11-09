@@ -1,13 +1,13 @@
 import {Icon} from "@iconify/react";
 import React from "react";
-import {ExampleService} from '../../../bindings/example-wails/internal/service';
+import {ExampleService} from '../../bindings/example-wails/internal/service';
 
-import {useLocation} from "react-router-dom";
-import {MainRouters} from "@/../config/routes";
+import {useMatches} from "react-router-dom";
 import {useTranslation} from 'react-i18next';
-import {Menu} from "@/components/sidebar/sidebar";
 import classNames from "classnames";
 import {ui} from "@/const/ui";
+import {Menu} from "@/router/type";
+import {System} from "@wailsio/runtime";
 
 // 接收 props
 interface WindowTitleProps {
@@ -18,28 +18,21 @@ function WindowTitle(props: WindowTitleProps) {
 
     const windowName = 'main';
     const { t } = useTranslation();
-    const location = useLocation();
 
-    // 根据当前路径获取路由信息
-    const getCurrentRoute = (): Menu | undefined => {
-        // 移除查询参数，只保留路径部分
-        const pathname = location.pathname;
-        return MainRouters.find(route => route.path === pathname || (pathname === '/' && route.path === '/'));
-    };
+    const matches = useMatches();
+    // console.info("WindowTitle matches", matches);
 
-    // 获取当前路由
-    const currentRoute = getCurrentRoute();
+    const current = matches[matches.length - 1]; // 当前匹配到的最后一个路由
+    // console.info("WindowTitle current", current);
 
     // 获取标题
     const getTitle = (): string => {
-        if (currentRoute && currentRoute.name) {
-            return t(currentRoute.name);
-        }
-        return t('app.title', '应用');
+        const routeInfo = current.handle as Menu; // 在构建路由时存储自定义信息
+        return t(routeInfo.name, '应用');
     };
 
     // 是否非 Mac 平台
-    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+    const isNotMac = !System.IsMac(); // navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     // 窗口最大化/还原
     const toggleMaximize = () => {

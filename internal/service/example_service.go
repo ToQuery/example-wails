@@ -5,14 +5,12 @@ import (
 	"example-wails/cmd/wails3"
 	"example-wails/internal/model"
 	"example-wails/internal/pkg/pkg_core"
-	"example-wails/internal/pkg/pkg_example"
+	"example-wails/internal/pkg/pkg_http_api"
 	"io"
 	"log"
-	"math/rand"
 	"os"
 	"os/exec"
 	"runtime"
-	"time"
 
 	"github.com/adrg/xdg"
 
@@ -20,21 +18,19 @@ import (
 )
 
 type ExampleService struct {
-	AppInfo model.AppInfoModel
+	ClientBuild model.ClientBuildModel
 }
 
-func NewExampleService(appInfo model.AppInfoModel) *ExampleService {
-	return &ExampleService{AppInfo: appInfo}
+func NewExampleService(clientBuild model.ClientBuildModel) *ExampleService {
+	return &ExampleService{ClientBuild: clientBuild}
 }
 
-func (s *ExampleService) AppLaunch() model.BaseExchange[model.AppLaunchModel] {
-	log.Printf("AppLaunch")
-	// 50% 概率执行模拟网络错误
-	if rand.New(rand.NewSource(time.Now().UnixNano())).Intn(2) == 0 {
-		return model.BaseExchangeFail[model.AppLaunchModel]("模拟网络错误")
+func (s *ExampleService) HttpBinUUID() model.BaseExchange[model.HttpBinUUID] {
+	httpBinUUID, err := pkg_http_api.HttpBinUUID(s.ClientBuild)
+	if err != nil {
+		return model.BaseExchangeFail[model.HttpBinUUID](err.Error())
 	}
-
-	return model.BaseExchangeSuccess[model.AppLaunchModel](pkg_example.BuildAppLaunch())
+	return model.BaseExchangeSuccess[model.HttpBinUUID](*httpBinUUID)
 }
 
 /*------File Start----------------------------------------------------------------------------------------------------*/
@@ -151,28 +147,7 @@ func (s *ExampleService) GetAppDirInfo() model.BaseExchange[model.DirInfoModel] 
 
 /*------App Start-----------------------------------------------------------------------------------------------------*/
 
-func (s *ExampleService) GetAppInfo() model.BaseExchange[model.AppInfoModel] {
-	log.Printf("GetAppInfo = %v", s.AppInfo)
-	log.Printf("GetAppInfo Env = %v", application.Get().Env.Info())
-	return model.BaseExchangeSuccess[model.AppInfoModel](s.AppInfo)
-}
-
-func (s *ExampleService) AppUpdateFromEvent(force bool) {
-	log.Printf("AppUpdateFromEvent")
-	updateInfo := pkg_example.BuildAppVersionLastest(force)
-	application.Get().Event.Emit(wails3.AppUpdate, updateInfo)
-}
-
-func (s *ExampleService) AppUpdateCheck(forceUpdate bool) model.BaseExchange[*model.AppVersionLastestModel] {
-	log.Printf("AppUpdateCheck")
-	updateInfo := pkg_example.BuildAppVersionLastest(forceUpdate)
-	if updateInfo.VersionCode > s.AppInfo.VersionCode {
-		return model.BaseExchangeSuccess(&updateInfo)
-	}
-	return model.BaseExchangeSuccess[*model.AppVersionLastestModel](nil)
-}
-
-func (s ExampleService) AppEmbedExecBinary() {
+func (s ExampleService) EmbedExecBinary() {
 	// 执行二进制文件
 	cmd := exec.Command(pkg_core.GetBinFileName("example-wails"))
 
@@ -193,7 +168,7 @@ func (s ExampleService) AppEmbedExecBinary() {
 	dialog.Show()
 }
 
-func (s ExampleService) AppEmbedFile() {
+func (s ExampleService) EmbedFile() {
 	file, err := assets.Assets().Open("README.md")
 	if err != nil {
 		log.Printf("打开文件失败: %v\n", err)
@@ -214,7 +189,7 @@ func (s ExampleService) AppEmbedFile() {
 
 }
 
-func (s ExampleService) AppOpenApplication(application string) {
+func (s ExampleService) OpenApplication(application string) {
 	// 根据不同操作系统打开应用程序
 	var cmd *exec.Cmd
 

@@ -23,6 +23,10 @@ const Dialog: React.FC<DialogProps> = (props: DialogProps) => {
                 {props.message}
             </p>
         );
+    } else {
+        contentNode = (<div className="animate-spin text-4xl text-black dark:text-white mb-4">
+            <Icon icon="mdi:loading"/>
+        </div>);
     }
 
 
@@ -30,12 +34,7 @@ const Dialog: React.FC<DialogProps> = (props: DialogProps) => {
         <div
             className="fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out bg-white/30 backdrop-blur-sm dark:bg-black/30">
             <div className="flex flex-col items-center justify-center p-6 text-center">
-                <div className="animate-spin text-4xl text-black dark:text-white mb-4">
-                    <Icon icon="mdi:loading"/>
-                </div>
-                <div>
-                    {contentNode}
-                </div>
+                {contentNode}
             </div>
         </div>
     );

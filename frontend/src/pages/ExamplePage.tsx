@@ -3,14 +3,19 @@ import {Browser, Clipboard, Dialogs, Events, Screens} from '@wailsio/runtime'
 import {ExampleService} from '../../bindings/example-wails/internal/service';
 import {useTranslation} from "react-i18next";
 import {Event, Value} from "@/const";
-import {useGlobalAppInfo, useGlobalDialog, useGlobalUpdate} from "@/provider/global-provider";
+import {useGlobalClientBuild, useGlobalDialog, useGlobalUpdate} from "@/provider/global-provider";
 
 import classNames from "classnames";
 import {Button} from "@/components/ui/button";
+import {ClientPlatformModel} from "../../bindings/example-wails/internal/model";
+import {Link, useNavigate} from "react-router-dom";
 
 
-function Example() {
+function ExamplePage() {
     const {t} = useTranslation();
+
+    const navigate = useNavigate();
+
 
     const [text, setText] = React.useState<string>("Hello Wails！");
     const [dateTime, setDateTime] = React.useState<string>("2000-01-01 00:00:00");
@@ -19,13 +24,11 @@ function Example() {
     const [diskImagePath, setDiskImagePath] = React.useState<string>();
 
     const [, setDialog] = useGlobalDialog();
-    const [appInfo, setAppInfo] = useGlobalAppInfo();
-    const [showUpdateDialog, setShowUpdateDialog, updateInfo, setUpdateInfo, checkForUpdates] = useGlobalUpdate();
 
     useEffect(() => {
         listerEvent();
         return () => {
-            Events.Off(Event.events.AppDatetime);
+            Events.Off(Event.events.ClientDatetime);
         }
     }, []);
 
@@ -34,11 +37,11 @@ function Example() {
     const separator = <hr className="my-4 border-t border-gray-600 dark:border-gray-400"/>;
 
     const listerEvent = () => {
-        Events.On(Event.events.AppDatetime, function (event) {
-            console.log(Event.events.AppDatetime, event);
+        Events.On(Event.events.ClientDatetime, function (event) {
+            console.log(Event.events.ClientDatetime, event);
             const eventDatas: string[] = event.data;
             const eventData: string = eventDatas[0];
-            console.log(Event.events.AppDatetime + " data ", eventData);
+            console.log(Event.events.ClientDatetime + " data ", eventData);
             setDateTime(eventData);
         });
     }
@@ -46,81 +49,41 @@ function Example() {
     return (
         <div className='p-4'>
             <section>
-                <h2>{t('page.example.app-info')}</h2>
-                <div className={classNames(butGroupClass)}>
-                    <div>Version: {appInfo.version}</div>
-                    <div>VersionCode: {appInfo.versionCode}</div>
-                    <div>BuildId: {appInfo.buildId}</div>
-                    <div>BuildTime: {appInfo.buildTime}</div>
-                </div>
+                <h2>{t('page.example.client-info')}</h2>
                 <div className={butGroupClass}>
-                    <Button onClick={async () => {
-                        setDialog(true);
-                        ExampleService.GetAppInfo()
-                            .then((exchange) => {
-                                if (exchange.success && exchange.data) {
-                                    const appInfoModel = exchange.data;
-                                    console.log("appInfoModel", appInfoModel);
-                                    setAppInfo(appInfoModel);
-                                }
-
-                            })
-                            .finally(() => {
-                                setTimeout(() => setDialog(false), 1000);
-                            });
-
-                    }}>
-                        {t('page.example.app-info')}
-                    </Button>
-                    <Button onClick={async () => {
-                        const exchange = await ExampleService.AppUpdateCheck(false);
-                        console.log("updateInfoModel", exchange);
-                        if (exchange.success && exchange.data) {
-                            const updateInfoModel = exchange.data;
-                            setUpdateInfo(updateInfoModel);
-                            setShowUpdateDialog(true);
-                        }
-                    }}>
-                        {t('page.example.app-update')}
-                    </Button>
-                    <Button onClick={async () => {
-                        const exchange = await ExampleService.AppUpdateCheck(true);
-                        console.log("updateInfoModel", exchange);
-                        if (exchange.success && exchange.data) {
-                            const updateInfoModel = exchange.data;
-                            setUpdateInfo(updateInfoModel);
-                            setShowUpdateDialog(true);
-                        }
-                    }}>
-                        {t('page.example.app-force-update')}
-                    </Button>
-                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(false)}>
-                        {t('page.example.app-update-from-event')}
-                    </Button>
-                    <Button onClick={async () => await ExampleService.AppUpdateFromEvent(true)}>
-                        {t('page.example.app-force-update-from-event')}
-                    </Button>
-                    <Button onClick={() => ExampleService.AppEmbedFile()}>
-                        {t('page.example.app-embed-file')}
+                    <Button onClick={() => ExampleService.EmbedFile()}>
+                        {t('page.example.client-embed-file')}
                     </Button>
                     <Button onClick={() => {
                         setDialog(true);
-                        ExampleService.AppEmbedExecBinary().then(() => {
+                        ExampleService.EmbedExecBinary().then(() => {
                             console.log("AppEmbedExecBinary done");
                         }).catch((err) => {
                             console.log("AppEmbedExecBinary err", err);
                         }).finally(() => setDialog(false));
                     }}>
-                        {t('page.example.app-embed-exec-binary')}
+                        {t('page.example.client-embed-exec-binary')}
                     </Button>
-                    <Button onClick={() => ExampleService.AppOpenApplication("WeChat")}>
-                        {t('page.example.app-open-application-wechat')}
+                    <Button onClick={() => ExampleService.OpenApplication("WeChat")}>
+                        {t('page.example.client-open-application-wechat')}
                     </Button>
-                    <Button onClick={() => ExampleService.AppOpenApplication("QQ")}>
-                        {t('page.example.app-open-application-qq')}
+                    <Button onClick={() => ExampleService.OpenApplication("QQ")}>
+                        {t('page.example.client-open-application-qq')}
                     </Button>
                     <Button onClick={() => Browser.OpenURL('https://github.com/toquery/example-wails')}>
-                        {t('page.example.app-open-browser')}
+                        {t('page.example.client-open-browser')}
+                    </Button>
+                </div>
+            </section>
+            {separator}
+            <section>
+                <h2>{t('page.example.router')}</h2>
+                <div className={butGroupClass}>
+                    <Button onClick={() => navigate('/example/1')}>
+                        example 1
+                    </Button>
+                    <Button onClick={() => navigate('/example/2')}>
+                        example 2
                     </Button>
                 </div>
             </section>
@@ -342,4 +305,22 @@ function Example() {
         </div>);
 }
 
-export default Example;
+export const Example1Page = () => {
+    return <div>
+        <div>
+            <h1>Example 1</h1>
+        </div>
+    </div>;
+}
+
+export const Example2Page = () => {
+    return <div>
+        <div>
+            <h1>Example 2</h1>
+        </div>
+    </div>;
+}
+
+export default ExamplePage;
+
+

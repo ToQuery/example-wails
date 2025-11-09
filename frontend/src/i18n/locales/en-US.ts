@@ -27,8 +27,11 @@ const enUS = {
 
         // Navigation menu
         'menu.home': 'Home',
+        'menu.client': 'Client',
         'menu.file': 'File',
         'menu.example': 'Example',
+        'menu.example.children1': '示例子页面 1',
+        'menu.example.children2': '示例子页面 2',
         'menu.info': 'Info',
         'menu.url': 'Url',
         'menu.browser': 'Browser',
@@ -45,6 +48,16 @@ const enUS = {
         // Page
         'page.home.title': 'Home',
         'page.home.counter': 'Counter: ',
+        'page.home.httpbin-uuid': "Http Bin UUID",
+
+        // Client 页面
+        'page.client.title': '示例',
+        'page.client.client-build': '构建信息',
+        'page.client.client-update': '应用更新',
+        'page.client.client-force-update': '强制应用更新',
+        'page.client.client-update-from-event': '从事件更新应用',
+        'page.client.client-force-update-from-event': '从事件强制更新应用',
+
 
         // File page
         'page.file.directory': 'Directory',
@@ -83,16 +96,16 @@ const enUS = {
 
         'page.example.title': 'Example',
         'page.example.input': 'Input',
-        'page.example.app-info': 'App Info',
-        'page.example.app-update': 'App Update',
-        'page.example.app-force-update': 'Force App Update',
-        'page.example.app-update-from-event': 'App Update From Event',
-        'page.example.app-force-update-from-event': 'Force App Update From Event',
-        'page.example.app-embed-exec-binary': 'Embed Exec Binary',
-        'page.example.app-embed-file': 'Embed File',
-        'page.example.app-open-application-wechat': 'Open Application(Wechat)',
-        'page.example.app-open-application-qq': 'Open Application(QQ)',
-        'page.example.app-open-browser': 'Open Browser',
+        'page.example.client-info': 'App Info',
+        'page.example.client-update': 'App Update',
+        'page.example.client-force-update': 'Force App Update',
+        'page.example.client-update-from-event': 'App Update From Event',
+        'page.example.client-force-update-from-event': 'Force App Update From Event',
+        'page.example.client-embed-exec-binary': 'Embed Exec Binary',
+        'page.example.client-embed-file': 'Embed File',
+        'page.example.client-open-application-wechat': 'Open Application(Wechat)',
+        'page.example.client-open-application-qq': 'Open Application(QQ)',
+        'page.example.client-open-browser': 'Open Browser',
         'page.example.clipboard': 'Clipboard',
         'page.example.get-clipboard': 'Get Clipboard',
         'page.example.set-clipboard': 'Set Clipboard',

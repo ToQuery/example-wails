@@ -11,14 +11,16 @@ tasks:
       - task: common:build:frontend
       - task: common:generate:icons
     cmds:
-      - go build {{.BUILD_FLAGS}} -o {{.BIN_DIR}}/{{.APP_NAME}}
+      - '{{.BUILD_OBFUSCATE}} build {{.BUILD_FLAGS}} -o {{.OUTPUT}}'
     vars:
+      BUILD_OBFUSCATE: '{{if eq .OBFUSCATE "true"}}garble -literals -tiny{{else}}go{{end}}'
       BUILD_FLAGS: '{{if eq .PRODUCTION "true"}}-tags production -trimpath -buildvcs=false -ldflags="-w -s"{{else}}-buildvcs=false -gcflags=all="-l"{{end}}'
     env:
       GOOS: linux
       CGO_ENABLED: 1
       GOARCH: '{{.ARCH | default ARCH}}'
       PRODUCTION: '{{.PRODUCTION | default "false"}}'
+      OBFUSCATE: '{{.OBFUSCATE | default "false"}}'
 
   package:
     summary: Packages a production build of the application for Linux
@@ -83,17 +85,17 @@ tasks:
 
   generate:deb:
     summary: Creates a deb package
-    cmds: 
+    cmds:
       - wails3 tool package -name {{.APP_NAME}} -format deb -config ./build/linux/nfpm/nfpm.yaml -out {{.ROOT_DIR}}/bin
 
   generate:rpm:
     summary: Creates a rpm package
-    cmds: 
+    cmds:
       - wails3 tool package -name {{.APP_NAME}} -format rpm -config ./build/linux/nfpm/nfpm.yaml -out {{.ROOT_DIR}}/bin
 
   generate:aur:
     summary: Creates a arch linux packager package
-    cmds: 
+    cmds:
       - wails3 tool package -name {{.APP_NAME}} -format archlinux -config ./build/linux/nfpm/nfpm.yaml -out {{.ROOT_DIR}}/bin
 
   generate:dotdesktop:

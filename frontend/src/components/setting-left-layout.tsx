@@ -1,22 +1,28 @@
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useMatches} from "react-router-dom";
 import React from "react";
 import {Icon} from "@iconify/react";
 import {useTranslation} from "react-i18next";
-import {Menu} from "@/components/sidebar/sidebar";
+import {Menu} from "@/router/type";
 
 type SettingLeftProps = {
-    menus: Menu[];
 }
 
-function SettingLeft(props: SettingLeftProps) {
+function SettingLeftLayout(props: SettingLeftProps) {
     const {t} = useTranslation();
+
+    const matches = useMatches();
+    // 从useMatches获取菜单数据
+    const rootMatch = matches?.[0];
+    const data = rootMatch?.data as { menus?: Menu[] };
+    const menus: Menu[] = data?.menus ?? [];
+
 
     return (
         <div className="flex h-full">
             {/* 左侧导航栏 */}
             <div className=" h-full w-48 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700">
                 <nav className="p-4 space-y-2">
-                    {props.menus.map((menu, index) => (
+                    {menus.map((menu, index) => (
                         <Link to={menu.path!}
                               className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg">
                             <Icon icon={menu.icon!} className="mr-3"/>
@@ -35,4 +41,4 @@ function SettingLeft(props: SettingLeftProps) {
     );
 }
 
-export default SettingLeft;
+export default SettingLeftLayout;

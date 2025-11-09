@@ -8,6 +8,7 @@ includes:
 
 vars:
   APP_NAME: "example-wails"
+  APP_PACKAGE_NAME: "Wails3 最佳实践"
   BIN_DIR: "bin"
   VITE_PORT: '{{.WAILS_VITE_PORT | default 9245}}'
 

@@ -28,8 +28,11 @@ const zhCN = {
 
         // 导航菜单
         'menu.home': '首页',
+        'menu.client': '客户端',
         'menu.file': '文件',
         'menu.example': '示例',
+        'menu.example.children1': '示例子页面 1',
+        'menu.example.children2': '示例子页面 2',
         'menu.info': '信息',
         'menu.url': 'Url',
         'menu.browser': '浏览器',
@@ -51,8 +54,17 @@ const zhCN = {
         // 页面
         'page.home.title': '首页',
         'page.home.counter': '计数器：',
+        'page.home.httpbin-uuid': "Http Bin UUID",
 
-        // File页面
+        // Client 页面
+        'page.client.title': '示例',
+        'page.client.client-build': '构建信息',
+        'page.client.client-update': '应用更新',
+        'page.client.client-force-update': '强制应用更新',
+        'page.client.client-update-from-event': '从事件更新应用',
+        'page.client.client-force-update-from-event': '从事件强制更新应用',
+
+        // File 页面
         'page.file.directory': '目录',
         'page.file.dir-info': '目录信息',
         'page.file.os_directory': 'OS 目录',
@@ -90,16 +102,11 @@ const zhCN = {
         // Example页面
         'page.example.title': '示例',
         'page.example.input': '输入',
-        'page.example.app-info': '应用信息',
-        'page.example.app-update': '应用更新',
-        'page.example.app-force-update': '强制应用更新',
-        'page.example.app-update-from-event': '从事件更新应用',
-        'page.example.app-force-update-from-event': '从事件强制更新应用',
-        'page.example.app-embed-exec-binary': '嵌入执行二进制文件',
-        'page.example.app-embed-file': '嵌入文件',
-        'page.example.app-open-application-wechat': '打开应用程序(Wechat)',
-        'page.example.app-open-application-qq': '打开应用程序(QQ)',
-        'page.example.app-open-browser': '打开浏览器',
+        'page.example.client-embed-exec-binary': '嵌入执行二进制文件',
+        'page.example.client-embed-file': '嵌入文件',
+        'page.example.client-open-application-wechat': '打开应用程序(Wechat)',
+        'page.example.client-open-application-qq': '打开应用程序(QQ)',
+        'page.example.client-open-browser': '打开浏览器',
         'page.example.clipboard': '剪切板',
         'page.example.get-clipboard': '获取剪切板',
         'page.example.set-clipboard': '设置剪切板',

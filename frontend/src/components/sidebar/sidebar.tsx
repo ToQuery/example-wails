@@ -1,14 +1,19 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import React from "react";
+import {useLocation, useNavigate, useMatches} from "react-router-dom";
 import {Icon} from "@iconify/react";
 import {useTranslation} from 'react-i18next';
-import React from "react";
 
 import {useGlobalSidebarStyle} from "@/provider/global-provider";
 
-import {Browser, System} from "@wailsio/runtime";
+import {Browser} from "@wailsio/runtime";
 import classNames from "classnames";
 import {ui} from "@/const/ui";
+import {isMenuActive} from "@/router/router";
+import {Menu} from "@/router/type";
 
+// ======================
+// Sidebar 样式模式定义
+// ======================
 export type SidebarStyle = {
     code: string;
     label: string;
@@ -16,146 +21,191 @@ export type SidebarStyle = {
 };
 
 export const sidebarStyleIcon: SidebarStyle = {
-    code: 'icon',
-    label: '图标模式',
-    icon: 'material-symbols:view-headline'
+    code: "icon",
+    label: "图标模式",
+    icon: "material-symbols:view-headline",
 };
 
 export const sidebarStyleRow: SidebarStyle = {
-    code: 'row', label: '列表模式', icon: 'material-symbols:view-sidebar'
+    code: "row",
+    label: "列表模式",
+    icon: "material-symbols:view-sidebar",
 };
 
 export const sidebarStyleGrid: SidebarStyle = {
-    code: 'grid',
-    label: '网格模式',
-    icon: 'material-symbols:view-module-outline'
-}
+    code: "grid",
+    label: "网格模式",
+    icon: "material-symbols:view-module-outline",
+};
 
-export const SidebarStyles: SidebarStyle[] = [sidebarStyleIcon, sidebarStyleRow, sidebarStyleGrid];
+export const SidebarStyles: SidebarStyle[] = [
+    sidebarStyleIcon,
+    sidebarStyleRow,
+    sidebarStyleGrid,
+];
 
-// 定义 menu 类型
-export interface Menu {
-    name: string;
-    path?: string;
-    icon?: string;
-    render?: React.ReactNode;
-    page?: React.ReactNode;
-    children?: Menu[];
-    footer?: boolean;
-    hidden?: boolean;
-}
-
-// 接收 props
+// ======================
+// Sidebar 组件
+// ======================
 interface SidebarProps {
-    menus: Menu[];
     sideBarStyle?: SidebarStyle;
     widthClass?: string;
     bgColorClass?: string;
     activeClass?: string;
 }
 
-
 function Sidebar({
-                     menus,
                      sideBarStyle,
-                     widthClass = 'min-w-[75px] w-[75px]',
+                     widthClass = "w-[80px] min-w-[80px]",
                      bgColorClass = ui.theme.defaultBgClass,
-                     activeClass = classNames(ui.theme.defaultActiveBgClass, ui.theme.defaultActiveTextClass),
+                     activeClass = classNames(
+                         ui.theme.defaultActiveBgClass,
+                         ui.theme.defaultActiveTextClass
+                     ),
                  }: SidebarProps) {
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const location = useLocation();
     const {t} = useTranslation();
+    const [configSidebarStyle] = useGlobalSidebarStyle();
 
-    const [configSidebarStyle,] = useGlobalSidebarStyle();
+    const matches = useMatches();
+    // console.info("Sidebar matches", matches);
 
-    if (!sideBarStyle) {
-        sideBarStyle = configSidebarStyle;
-    }
+    // 从useMatches获取菜单数据
+    const rootMatch = matches?.[0];
+    const data = rootMatch?.data as { menus?: Menu[] };
+    const menus: Menu[] = data?.menus ?? [];
 
+    const current = matches[matches.length - 1]; // 当前匹配到的最后一个路由
+    console.info("Sidebar current", current);
 
-    // 是否非 Mac 平台
-    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+    if (!sideBarStyle) sideBarStyle = configSidebarStyle;
 
+    // ======================
+    // 菜单点击逻辑
+    // ======================
     const handleMenuItemClick = (menu: Menu) => {
-        const path = menu.path
-        if (path) {
-            if (path.startsWith("http://") || path.startsWith("https://")) {
-                Browser.OpenURL(path)
-            } else {
-                navigate(path);
-            }
-        }
-    }
+        const path = menu.path;
+        if (!path) return;
 
+        if (path.startsWith("http://") || path.startsWith("https://")) {
+            Browser.OpenURL(path).then(r => {
+                console.log('Browser.OpenURL', r);
+            }).catch(e => {
+                console.error('Browser.OpenURL', e);
+            });
+        } else {
+            navigate(path);
+        }
+    };
+
+    // ======================
+    // 单个菜单渲染
+    // ======================
     const menuItemNode = (index: number, menu: Menu) => {
-        let isActive = false;
-        const path = menu.path
+        const currentMenu = current.handle as Menu;
+        const isActive = isMenuActive(menu, currentMenu.path ?? "");
+        // console.log(`isActive=${isActive}`, menu, location.pathname);
 
-        if (path && !path.startsWith("http://") && !path.startsWith("https://")) {
-            const url = new URL(path, window.location.origin);
-            isActive = location.pathname == url.pathname || location.pathname == menu.path;
+        const menuItemBase = classNames(
+            "flex items-center min-h-[40px] cursor-pointer transition-all duration-200 ease-in-out",
+            ui.theme.defaultHoverBgClass,
+            ui.theme.defaultHoverTextClass
+        );
+
+        if (menu.render) {
+            return <li key={menu.name} className={classNames(menuItemBase, 'justify-center')}>{menu.render}</li>
         }
 
-        const menuItemStyle = classNames('flex items-center min-h-[40px]', ui.theme.defaultHoverBgClass, ui.theme.defaultHoverTextClass);
+        let node: React.ReactNode;
 
-        let node: React.ReactNode = <></>
         switch (sideBarStyle.code) {
-            case 'icon': {
-                node = menu.render
-                    ? <li key={menu.name} className={classNames(menuItemStyle, 'justify-center')}>{menu.render}</li>
-                    : <li key={menu.name}
-                          className={classNames(menuItemStyle, isActive ? activeClass : '', 'justify-center')}
-                          onClick={() => handleMenuItemClick(menu)}>
+            case "icon":
+                node = <li
+                        key={menu.name}
+                        className={classNames(
+                            menuItemBase,
+                            "justify-center text-lg",
+                            isActive && activeClass
+                        )}
+                        onClick={() => handleMenuItemClick(menu)}
+                    >
                         {menu.icon && <Icon icon={menu.icon}/>}
-                    </li>
-                break;
-            }
-            case 'row': {
-                node =
-                    menu.render
-                        ? <li key={menu.name} className={classNames(menuItemStyle, 'justify-center')}>{menu.render}</li>
-                        : <li key={menu.name}
-                              className={classNames(menuItemStyle, isActive ? activeClass : '', 'flex-row pl-[20px]')}
-                              onClick={() => handleMenuItemClick(menu)}>
-                            {menu.icon && <Icon icon={menu.icon} className='text-xl'/>}
-                            <span className='text-sm ml-1.5'>{t(menu.name)}</span>
-                        </li>;
-                break;
-            }
-            case 'grid': {
-                const rowDoubleClass = classNames(menuItemStyle, 'flex-col justify-center py-2');
-                node = menu.render
-                    ? <li key={menu.name} className={rowDoubleClass}>{menu.render}</li>
-                    : <li key={menu.name} className={classNames(rowDoubleClass, isActive ? activeClass : '')}
-                          onClick={() => handleMenuItemClick(menu)}>
-                        {menu.icon && <Icon className='text-xl' icon={menu.icon}/>}
-                        <span className='text-xs mt-1'>{t(menu.name)}</span>
                     </li>;
                 break;
-            }
+
+            case "row":
+                node = <li
+                        key={menu.name}
+                        className={classNames(
+                            menuItemBase,
+                            "flex-row px-4 text-sm justify-start space-x-2",
+                            isActive && activeClass
+                        )}
+                        onClick={() => handleMenuItemClick(menu)}
+                    >
+                        {menu.icon && <Icon icon={menu.icon} className="text-xl"/>}
+                        <span>{t(menu.name)}</span>
+                    </li>;
+                break;
+
+            case "grid":
+                node = <li
+                        key={menu.name}
+                        className={classNames(
+                            menuItemBase,
+                            "flex-col justify-center py-2 text-xs",
+                            isActive && activeClass
+                        )}
+                        onClick={() => handleMenuItemClick(menu)}
+                    >
+                        {menu.icon && <Icon className="text-xl" icon={menu.icon}/>}
+                        <span className="mt-1">{t(menu.name)}</span>
+                    </li>;
+                break;
+
+            default:
+                node = <></>;
         }
 
         return node;
-    }
+    };
 
     return (
-        <>
-            {/* 侧边栏导航 --wails-draggable：窗口可拖动 */}
-            <aside
-                className={classNames("flex flex-col justify-between items-center text-center select-none z-20", widthClass, bgColorClass)}
-                style={{"--wails-draggable": "drag"} as React.CSSProperties}
-            >
+        <aside
+            className={classNames(
+                "flex flex-col justify-between select-none text-center z-30 border-r border-gray-200 dark:border-gray-800",
+                widthClass,
+                bgColorClass
+            )}
+            style={{"--wails-draggable": "drag"} as React.CSSProperties}
+        >
+            {/* 顶部 Logo 区域 */}
+            <div className='h-11'></div>
+
+            {/* 菜单主体（可滚动） */}
+            <div
+                className="flex-1 w-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
                 <ul
-                    className={classNames("w-full overflow-y-auto mt-11",  System.IsMac() ? '' : '')}>
-                    {menus.filter(menu => !menu.hidden && !menu.footer).map((menu, index) => menuItemNode(index, menu))}
+                    className={classNames(
+                        "space-y-1",
+                    )}
+                >
+                    {menus
+                        .filter((menu) => !menu.hidden && !menu.footer)
+                        .map((menu, index) => menuItemNode(index, menu))}
                 </ul>
-                <ul
-                    className="w-full  my-3">
-                    {menus.filter(menu => !menu.hidden && menu.footer).map((menu, index) => menuItemNode(index, menu))}
+            </div>
+
+            {/* 底部菜单区 */}
+            <div className="w-full border-t border-gray-200 dark:border-gray-800 py-3">
+                <ul className="space-y-1">
+                    {menus
+                        .filter((menu) => !menu.hidden && menu.footer)
+                        .map((menu, index) => menuItemNode(index, menu))}
                 </ul>
-            </aside>
-        </>
+            </div>
+        </aside>
     );
 }
 

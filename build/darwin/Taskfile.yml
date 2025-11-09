@@ -49,6 +49,7 @@ tasks:
     cmds:
       - task: create:app:bundle
 
+
   package:universal:
     summary: Packages darwin universal binary (arm64 + amd64)
     deps:
@@ -61,6 +62,7 @@ tasks:
     summary: Creates an `.app` bundle
     cmds:
       - mkdir -p {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/{MacOS,Resources}
+      - cp -rf build/darwin/Resources {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents
       - cp build/darwin/icons.icns {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/Resources
       - cp {{.BIN_DIR}}/{{.APP_NAME}} {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents/MacOS
       - cp build/darwin/Info.plist {{.BIN_DIR}}/{{.APP_NAME}}.app/Contents

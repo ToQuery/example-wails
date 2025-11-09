@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=Example Wails
+Comment=A program that does X
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/example-wails %u
+Terminal=false
+Type=Application
+Icon=example-wails
+Categories=Utility;
+StartupWMClass=example-wails
+
+ 
