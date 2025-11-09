@@ -32,7 +32,8 @@ function WindowTitle(props: WindowTitleProps) {
     };
 
     // 是否非 Mac 平台
-    const isNotMac = !System.IsMac(); // navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
+    // const isNotMac = !System.IsMac(); //
+    const isNotMac = navigator.userAgent.toUpperCase().indexOf('MAC') < 0;
 
     // 窗口最大化/还原
     const toggleMaximize = () => {
