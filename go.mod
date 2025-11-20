@@ -9,7 +9,7 @@ require (
 	github.com/hashicorp/go-version v1.7.0
 	github.com/nicksnyder/go-i18n/v2 v2.6.0
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.40
-	golang.org/x/text v0.28.0
+	golang.org/x/text v0.31.0
 )
 
 require (
@@ -46,9 +46,9 @@ require (
 	github.com/wailsapp/go-webview2 v1.0.22 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.41.0 // indirect
-	golang.org/x/net v0.43.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
